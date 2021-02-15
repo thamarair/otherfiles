@@ -1,0 +1,47 @@
+
+Home ctrl
+
+/*................. Dubai School features ...............*/
+		//$data['new_features'] = $this->Assessment_model->new_features($data['query'][0]->sid);
+		//$new_features =$data['new_features'][0]->new_features;
+
+		//if($new_features=="Y") // N - new feature, O - old features
+		if(1!=1)
+		{ 	 
+		
+		
+		<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+$lang['centertext'] = "You are at India's number #1 Brain Skills Puzzles Suite!";
+$lang['countermessage1'] = "Minutes of Super Brain Training completed";
+$lang['countermessage2'] = "Brain Puzzles solved by Super Brains";
+$lang['childtitle'] = "Children";
+$lang['childrenmsg1'] = "Talent hits a target";
+$lang['childrenmsg2'] = "No one else can hit";
+$lang['academictitle'] = "Academic";
+$lang['academicmsg1'] = "Genius hits a target";
+$lang['academicmsg2'] = "No one else can see";
+$lang['parentstitle'] = "Parents";
+$lang['parentsmsg1'] = "Awaken the Genius";
+$lang['parentsmsg2'] = "in you";
+$lang['awardstitle'] = "Awards & Recognition";
+$lang['awards1'] = "Winners of Hot 100 Technology Awards Dec 2014";
+$lang['awards2'] = "Best Startup Award - Development of Entrepreneurs (TIDE) Award at Department of Electronics & IT New Delhi";
+$lang['awards3'] = "CII Startupreneurs - Best Startup - People's Choice Award";
+$lang['awards4'] = "Qualcomm – Qprize Finalist";
+$lang['awards5'] = "Assist World Record - Largest Computer Based Skill Competition";
+$lang['awards6'] = "Winners of Tech4Impact Accelerator Program, 2013";
+
+$lang['media'] = "In The Media";
+$lang['mediamessage'] = "Thanks to Media for featuring us";
+$lang['latest'] = "Latest News";
+$lang['latestnews'] = "Top 2 winner of Tech4 Impact Accelereator Program 2013 conducted by CIIEIIM Ahmedabad, Village Capital.";
+$lang['latestnews1'] = "Top 2 winner of Tech4 Impact Accelereator Program 2014 conducted by CIIEIIM Ahmedabad, Village Capital.";
+$lang['latestnews2'] = "Top 2 winner of Tech4 Impact Accelereator Program 2015 conducted by CIIEIIM Ahmedabad, Village Capital.";
+
+
+
+ 
+
+?>
