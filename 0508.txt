@@ -1,0 +1,17 @@
+acm SELECT centername,count(*) as usedlicense from academic_center_master a JOIN users u ON a.id=u.academic_center_id where u.status=1 group by a.id
+changed db2 as summercamp
+
+academy_gradewiseusers_sc
+brainy.31723	brainy.31517
+BR@INY		37603-del in clp usrs
+assess
+SELECT centername,count(*) as usedlicense  from academic_center_master a JOIN users u ON a.id=u.academic_center_id where u.status=1 group  by a.id
+
+SELECT centername,count(*) as usedlicense  from academic_center_master a JOIN users u ON a.id=u.academic_center_id where u.isdemo=0 and u.status=1 and a.isdemo=0 group  by a.id
+
+change the email into usermailid in forgetpassword in confirmation mail
+31472
+Shitanshu Demo
+brainysers	sers@123	31846
+vsdvds
+<a id="userslist" class="Dashboard menu" href="<?php echo base_url(); ?>index.php/home/newuser_reglist"><i class="fa fa-list"></i>Assessment Status</a>

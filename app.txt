@@ -1,0 +1,34 @@
+started at 12:45pm to 2:00pm
+started at 3:05pm to 5:45pm
+
+
+
+
+$this->info=array("secret_key"=>"ED6@PAPP" ) ;
+
+$deviceid = $this->input->post('DeviceId');
+$Key = $this->input->post('Key');
+$timestamp = $this->input->post('ts');
+$Version = $this->input->post('Version');
+
+$token=$this->encMethod($timestamp,$deviceid,$this->info['secret_key']); 
+			 
+if($Key==$token['Hash'])
+
+public function encMethod($salt1,$password,$salt2)
+{
+	$salted_pass = $salt1 . $password . $salt2;
+	$pwdhash = sha1($salted_pass);
+	$hash['Salt1'] = $salt1;
+	$hash['Salt2'] = $salt2;
+	$hash['Hash'] = $pwdhash;
+	return $hash;
+
+}
+
+ Array
+(
+    [Salt1] => 22-11-2019 08:53
+    [Salt2] => ED6@PAPP
+    [Hash] => 1621553a344fc0fb2d8ff464bc3fc17133a94019
+)

@@ -1,0 +1,19 @@
+C:\Users\edsix>d:
+
+D:\>cd D:\xampp\mysql\bin
+
+D:\xampp\mysql\bin>mysql -u  root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 46
+Server version: 10.1.37-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use asap1920
+Database changed
+MariaDB [asap1920]> source db/may/asap-db.sql
+
+D:\xampp\mysql\bin\db\2019\june

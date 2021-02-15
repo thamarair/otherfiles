@@ -1,0 +1,325 @@
+<tr>
+      <th colspan="2">Major 1</th>
+      <th colspan="2">Major 2</th>
+    </tr>
+    <tr>
+      <th>col1</th>
+      <th>col2</th>
+      <th>col3</th>
+      <th>col4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>data1</td>
+      <td>data2</td>
+      <td>data3</td>
+      <td>data4</td>
+    </tr>
+  </tbody>
+</table>
+<tr>
+      <th colspan="2" scope='colgroup'>Major Heading 1</th>
+      <th colspan="2" scope='colgroup'>Major Heading 2</th>
+    </tr>
+    <tr>
+      <th scope='col'>Minor1</th>
+      <th scope='col'>Minor2</th>
+      <th scope='col'>Minor3</th>
+      <th scope='col'>Minor4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>col1</td>
+      <td>col2</td>
+      <td>col3</td>
+      <td>col4</td>
+    </tr>
+  </tbody>
+</table>
+SELECT c.id,c.classname from class c join skl_class_plan scp on c.id=scp.class_id where c.id not in(1,2,11)(select classname from class where id=u.grade_id) as grade
+CREATE PROCEDURE myproc(OUT id INT, IN otherid INT, IN title VARCHAR(255))
+BEGIN
+LOCK TABLES `table1` WRITE;
+INSERT INTO `table1` ( `title` ) VALUES ( @title ); 
+SET @id = LAST_INSERT_ID();
+UNLOCK TABLES;
+INSERT INTO `table2` ( `parentid`, `otherid`, `userid` ) VALUES (@id, @otherid, 1); 
+END
+
+
+inacademyname
+
+
+
+
+
+
+
+	$("#frmpwd").validate({
+		
+		rules : {
+                txtpwd : {required:true,  minlength : 6 },
+                txtcpwd : {required:true, equalTo : "#txtpwd" }
+            },
+			
+		messages: {
+            "txtpwd": {required: "Please enter password"},
+			"txtcpwd": {required: "Please enter confirm password", equalTo:"Please enter same password as confirm password" }
+           
+        },
+		
+		
+		errorPlacement: function(error, element) {
+    if (element.attr("type") === "radio") {
+        error.insertAfter(element.parent().parent());
+    } 
+	else {
+        error.insertAfter(element);
+    }
+	
+},
+		highlight: function(input) {
+           // $(input).addClass('error');
+        } 
+    });
+	
+	$('#btnchange').click(function(){
+		if($("#frmpwd").valid()==true)
+		{
+			var pwd = $("#txtpwd").val(); 
+			
+			$.ajax({
+			type:"POST",
+			data:{pwd:pwd},
+			url:"http://localhost/myproject/superadmin/sadmin/index.php/home/resetpwd",
+			success:function(result)
+			{		
+			if(result==1)
+			{
+				$("#frmpwd")[0].reset();
+				$('#successmsg').html('Your Password Updated Successfully');
+			//window.location.href= "http://localhost/myproject/superadmin/sadmin/index.php/home/userperformance";
+			}
+			
+			}
+		});
+		}		
+	});
+	
+	
+		
+$('.numbersOnly').keyup(function () { 
+    this.value = this.value.replace(/[^0-9]/g,'');
+});
+
+$('.alphaOnly').keyup(function () { 
+    this.value = this.value.replace(/[^a-zA-Z ]/g,'');
+});
+
+jQuery.validator.addMethod("noSpace", function(value, element) { 
+  return value.indexOf(" ") < 0 && value != ""; 
+}, "No space please and don't leave it empty");
+
+
+$("#txtusername").keyup(function(e){
+			
+			var username = $(this).val();
+			
+			 if(e.keyCode == 32){
+       $('#errormsg').html("No space please and don't leave it empty");
+	   //$('#regsubmit').prop('disabled', true);
+   }
+   
+			$.ajax({
+			type:"POST",
+			data:{username:username},
+			url:"http://localhost/myproject/superadmin/sadmin/index.php/home/usernamecheck",
+			success:function(result)
+			{		
+			$('.loading').fadeOut("slow");
+//		alert(result);
+			if(result==1)
+			{
+				$('#usernameerrormsg').html('Username already exist');
+				$('#regsubmit').prop('disabled', true);
+			}
+			else{
+				
+				$('#usernameerrormsg').html('');
+				$('#regsubmit').prop('disabled', false);
+			}
+			
+			}
+		});
+			
+		});
+		
+		
+		$("#txtcode").keyup(function(e){
+			
+			var txtcode = $(this).val();
+			
+			 if(e.keyCode == 32){
+       $('#errormsg').html("No space please and don't leave it empty");
+	   //$('#regsubmit').prop('disabled', true);
+   }
+   
+			$.ajax({
+			type:"POST",
+			data:{txtcode:txtcode},
+			url:"http://localhost/myproject/superadmin/sadmin/index.php/home/academycodecheck",
+			success:function(result)
+			{		
+			$('.loading').fadeOut("slow");
+//		alert(result);
+			if(result==1)
+			{
+				$('#codeerrormsg').html('Center code already exist');
+				$('#regsubmit').prop('disabled', true);
+			}
+			else{
+				
+				$('#codeerrormsg').html('');
+				$('#regsubmit').prop('disabled', false);
+			}
+			
+			}
+		});
+			
+		});
+
+ $("#frmRegister").validate({
+        rules: {
+            "txtname": {required: true},
+			"txtcode": {required: true},
+			"txtusername": {required: true,noSpace:true},
+			"txtemail": {email: true},
+            "txtmobile": {minlength: 10}
+			},
+        messages: {
+            "txtname": {required: "Please enter center name"},
+			"txtcode": {required: "Please enter center code"},
+			"txtusername": {required: "Please enter username"},
+            "txtemail": {email: "Please enter valid email id"},
+			"txtmobile": {minlength:"Please enter valid mobile number" }
+        },
+		errorPlacement: function(error, element) {
+    if (element.attr("type") === "radio") {
+        error.insertAfter(element.parent().parent());
+    } 
+	else if (element.attr("id") === "txtMobile") {
+        error.insertAfter(element.parent());
+    } 
+	
+	else if (element.attr("id") === "txtSMobile") {
+        error.insertAfter(element.parent());
+    } 
+	else {
+        error.insertAfter(element);
+    }
+	
+},
+		highlight: function(input) {
+           // $(input).addClass('error');
+        } 
+    });
+	
+	$("#editfrmRegister").validate({
+        rules: {
+            "txteditname": {required: true},
+			"txteditemail": {email: true},
+            "txteditmobile": {minlength: 10}
+			},
+        messages: {
+            "txteditname": {required: "Please enter center name"},
+            "txteditemail": {email: "Please enter valid email id"},
+			"txteditmobile": {minlength:"Please enter valid mobile number" }
+        },
+		errorPlacement: function(error, element) {
+    if (element.attr("type") === "radio") {
+        error.insertAfter(element.parent().parent());
+    } 
+	else if (element.attr("id") === "txtMobile") {
+        error.insertAfter(element.parent());
+    } 
+	
+	else if (element.attr("id") === "txtSMobile") {
+        error.insertAfter(element.parent());
+    } 
+	else {
+        error.insertAfter(element);
+    }
+	
+},
+		highlight: function(input) {
+           // $(input).addClass('error');
+        } 
+    });
+	
+	$('#regsubmit').click(function(){
+		//alert('true');
+		
+		if($("#frmRegister").valid()==true)
+		{
+			var name = $('#txtname').val();
+			var code = $('#txtcode').val();
+			var username = $('#txtusername').val();
+			var mobile = $('#txtmobile').val();
+			var emailid = $('#txtemail').val();
+			$('.loading').show();
+			$.ajax({
+			type:"POST",
+			data:{name:name,code:code,username:username,mobile:mobile,emailid:emailid},
+			url:"http://localhost/myproject/superadmin/sadmin/index.php/home/insertacademy",
+			success:function(result)
+			{		
+			$('.loading').fadeOut("slow");
+		//alert(result);
+			if(result==1)
+			{
+				$("#frmRegister")[0].reset();
+				$('#successmsg').html('Center Added Successfully');
+			window.location.href= "http://localhost/myproject/superadmin/sadmin/index.php/home/academylist";
+			}
+			
+			}
+		});
+		}
+		
+	});
+	
+	
+	$('#updateacademy').click(function(){
+		//alert('true');
+		
+		if($("#editfrmRegister").valid()==true)
+		{
+			var name = $('#txteditname').val();
+			var mobile = $('#txteditmobile').val();
+			var emailid = $('#txteditemail').val();
+			var editid = $('#editid').val();
+			$('.loading').show();
+			$.ajax({
+			type:"POST",
+			data:{name:name,mobile:mobile,emailid:emailid,editid:editid},
+			url:"http://localhost/myproject/superadmin/sadmin/index.php/home/updateacademy",
+			success:function(result)
+			{		
+			$('.loading').fadeOut("slow");
+		//alert(result);
+			if(result==1)
+			{
+				$("#editfrmRegister")[0].reset();
+				$('#successmsg').html('Center Updated Successfully');
+			window.location.href= "http://localhost/myproject/superadmin/sadmin/index.php/home/academylist";
+			}
+			
+			}
+		});
+		}
+		
+	});
+	
+	

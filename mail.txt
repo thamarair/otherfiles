@@ -1,0 +1,16 @@
+schoolsclp_1920_live_1906 bbd9ad01a9ccbb5e60a54bd5542b9bab
+pvsscl@gmail.com
+
+kgsscl@gmail.com
+brainy.31718
+userg9
+<button type="reset" class="btn btn-primary" name="reset" id="reset"value="Reset">
+BEGIN
+	declare userid varchar(500);
+	declare lid int(100);
+    INSERT INTO users(salt1,password,salt2,fname, lname,status,grade_id,sid,section,academicyear,creation_date,agreetermsandservice,academic_center_id,isapp,isnewuser,gp_id)VALUES (insalt1,inpwdhash,insalt2,infname,inlname,1,ingradename,2,'A',19,now(),1,inacademyname,'N','Y',inplanid);     
+		set lid=last_insert_id();
+		set userid=concat('brainy','.',lid);
+		update users set username=userid where id=lid;
+        select userid;
+END

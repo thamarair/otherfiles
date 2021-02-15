@@ -1,0 +1,12 @@
+
+	Move from ASAP1 to ASAP2
+
+1. BA_code -> assets ->redirecturl.json 
+	change live url to base url
+
+2. BA_code -> assets ->swf ->select grade you want(ex: grade1) -> assets ->GameInit.js 
+	inside if condition in window.location.href="base_url"
+	var baseurl="base_url"
+
+3.BA_code ->assets ->swf -> select grade you want(ex: grade1) -> assets ->HtmlRedirect.js
+	var redirectJsonPath="base_url"

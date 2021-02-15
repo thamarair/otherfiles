@@ -1,0 +1,64 @@
+DELIMITER //
+CREATE  PROCEDURE `getMyCurrentSparkies`(IN inSID INT(11), IN inGID INT(11), IN inUID INT(11),IN instartdate Date,IN inenddate Date)
+BEGIN
+
+Select sum(Points) as mysparkies from user_sparkies_history where S_ID=inSID and G_ID=inGID and U_ID=inUID AND DATE(Datetime) between instartdate and inenddate;
+
+END //
+DELIMITER ;
+
+-----------------------------
+DELIMITER //
+CREATE  PROCEDURE `getNewsFeed`(IN `inSID` INT(11), IN `inGID` INT(11), IN `inUID` INT(11), IN `intype` VARCHAR(55),IN instartdate Date,IN inenddate Date)
+BEGIN
+
+DECLARE OUTTYPE INT(11);
+
+IF(intype='ALL')THEN
+	SET OUTTYPE=(select Type from newsfeed_config where status=1);
+	IF(OUTTYPE=1)THEN
+		SELECT U_ID,(select avatarimage from users where id=U_ID) as avatarimage,REPLACE(scenario,'#NAME#',(select username from users where id=U_ID)) as scenario from user_newsfeed_history where S_ID=inSID AND DATE(Datetime) between instartdate and inenddate ORDER BY ID DESC;
+	ELSE
+		SELECT U_ID,(select avatarimage from users where id=U_ID) as avatarimage,REPLACE(scenario,'#NAME#',(select username from users where id=U_ID)) as scenario from user_newsfeed_history where G_ID=inGID AND DATE(Datetime) between instartdate and inenddate ORDER BY ID DESC;
+	END IF;
+ELSE
+		SELECT U_ID,(select avatarimage from users where id=U_ID) as avatarimage,REPLACE(scenario,'#NAME#','You') as scenario from user_newsfeed_history where U_ID=inUID AND DATE(Datetime) between instartdate and inenddate ORDER BY ID DESC;	
+END IF;
+	
+END //
+DELIMITER;
+---------------------------------
+DELIMITER //
+CREATE PROCEDURE `getNewsFeedCount`(IN `inSID` INT(11), IN `inGID` INT(11), IN `inUID` INT(11), IN `intype` VARCHAR(55),IN instartdate Date,IN inenddate Date)
+BEGIN
+DECLARE OUTTYPE INT(11);
+DECLARE OUTMINECOUNT INT(11);
+DECLARE OUTALLCOUNT INT(11);
+
+
+	SET OUTTYPE=(select Type from newsfeed_config where status=1);
+	IF(OUTTYPE=1)THEN
+		SET OUTALLCOUNT=(SELECT COUNT(U_ID) As ALLCount from user_newsfeed_history where S_ID=inSID DATE(Datetime) between instartdate and inenddate  ORDER BY ID DESC);
+	ELSE
+		SET OUTALLCOUNT=(SELECT COUNT(U_ID) As ALLCount from user_newsfeed_history where G_ID=inGID DATE(Datetime) between instartdate and inenddate ORDER BY ID DESC);
+	END IF;
+
+		SET OUTMINECOUNT=(SELECT COUNT(U_ID) As MineCount from user_newsfeed_history where U_ID=inUID DATE(Datetime) between instartdate and inenddate ORDER BY ID DESC);	
+
+	
+select 	OUTALLCOUNT,OUTMINECOUNT;
+
+END //
+DELIMITER ;
+
+
+
+
+
+
+
+
+
+select U_ID,points,monthName,monthNumber,S_ID,G_ID,(select GROUP_CONCAT(username) from `users` where id = U_ID) as username,classname,school_name from (select U_ID,points,monthName,monthNumber,S_ID,G_ID,(select username from `users` where id = U_ID) as username,(select classname from class where id = G_ID)as classname,(select school_name from schools where id = S_ID)as school_name from (select `a2`.`U_ID` AS `U_ID`,sum(`a2`.`Points`) AS `points`,date_format(`a2`.`Datetime`,'%b') AS `monthName`,date_format(`a2`.`Datetime`,'%m') AS `monthNumber`,a2.S_ID,a2.G_ID from user_sparkies_history `a2` where (date_format(`a2`.`Datetime`,'%Y-%m-%d') between '' and '') group by date_format(`a2`.`Datetime`,'%m'),`a2`.`U_ID`) a1 where a1.points in (select points from vi_overallsparkytopper as vv3 where vv3.monthNumber =a1.monthNumber and vv3.monthNumber=date_format(CURDATE()-INTERVAL 1 MONTH,'%m') )) as a5 group by monthNumber,classname
+
+

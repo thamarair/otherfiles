@@ -1,0 +1,5 @@
+for db including
+
+1.find and delete the lines  that starts with : SET  @@ 
+2.find and remove (from DEFINER to) : DEFINER it is in CREATE DEFINER .only have => CREATE PROCEDURE
+3.remove edsixdb if db name exists

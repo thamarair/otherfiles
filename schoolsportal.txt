@@ -1,0 +1,9 @@
+	project name:school
+http://localhost/project/2019/schools/v4/
+ALTER TABLE `users` ADD `user_game_sound` VARCHAR(500) NOT NULL AFTER `org_username`;
+ALTER TABLE `users` CHANGE `user_game_sound` `user_game_sound` VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'sound1';
+
+ALTER TABLE `users` ADD `u` VARCHAR(500) NOT NULL DEFAULT 'sound1' AFTER `org_username`;
+ALTER TABLE `users` CHANGE `u` `user_game_sound` VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'sound1';
+75515
+$centerid = $this->session->centerid;

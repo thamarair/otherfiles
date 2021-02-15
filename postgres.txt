@@ -1,0 +1,153 @@
+Installation Directory: D:\PostgreSQL\11
+Server Installation Directory: D:\PostgreSQL\11
+Data Directory: D:\PostgreSQL\11\data
+Database Port: 5432
+Database Superuser: postgres
+Operating System Account: NT AUTHORITY\NetworkService
+Database Service: postgresql-x64-11
+Command Line Tools Installation Directory: D:\PostgreSQL\11
+pgAdmin4 Installation Directory: D:\PostgreSQL\11\pgAdmin 4
+
+D:\PostgreSQL\11\pgAdmin 4\bin
+https://www.postgresql.org/message-id/AANLkTimtfJVqyAyNVde4iIfDiU2Q2GnNlifqI0esD9Zg@mail.gmail.com
+https://www.convert-in.com/import-postgresql-script.htm
+https://www.postgresql.org/message-id/AANLkTimtfJVqyAyNVde4iIfDiU2Q2GnNlifqI0esD9Zg@mail.gmail.com
+https://www.postgresql.org/docs/8.1/backup.html#BACKUP-DUMP-RESTORE
+COPY users(first_name,last_name,dob,email) 
+FROM 'D:\users4.csv' DELIMITER ',' CSV HEADER;
+
+https://www.postgresql.org/docs/9.1/sql-
+
+insert into demo values(1,'tom',1234567890,1);
+INSERT INTO users(id, deviceid, rollno,email, salt1, password,salt2,fname,lname, gender,mobile, dob, status, visible, gp_id, glevel, grade_id, sname, father, mother, address, username, initial, sid, sect, academicyear, createdby, login_count, login_date, pre_logindate, creation_date, modifiedby, modified_date, avatarimage, agreetermsandservice, creationkey, usertheme, session_id,parent_session_id, islogin,last_active_datetime, school_name, referedby, org_pwd, time_zone, current_session, org_username) VALUES (1,101,2233, rvgmailcom,7374071240,51877,895351184,PRAGADEESH,ss,male,1234567890,12-3-1997,1,1,3,2,5,aaa,bbb,ccc,chennai,uuu,a,141,A,20,11,0,11-2-2019,11-8-2019,25-7-2019,11,qq , w,d , f, r, vb, b, n, m,u , t,skillangels,e , f,s );
+createfunction.html
+create table school(id serial primary key,schoolname varchar(100),school_code integer,address text,email varchar(400),phone integer,zone varchar(600),district varchar(500),state varchar(500),country varchar(500),created_on date,status integer);
+select * from users;
+
+alter table users add column address varchar(500);
+
+ALTER TABLE schools RENAME column_name TO new_column_name;
+
+INSERT INTO schools (id,school_name, school_code,school_address, email,phone, zone, district, state, city, logo, active, type, flag, status, academic_id, createdby, creation_date, modifiedby, modified_date, visible,start_date, session_division, emailcc, emailcc1, timer_value, isemailneed, maildays) VALUES
+(153, 'St Joseph of Cluny school','sjc', 'Pondicherry','sjc@skillangels.com', 2147483647,'','', '', 'Puducherry', 'Pondicherry', '', '1', 'Matric', 1, 1, 20, '', '2019-06-19', '', '2019-06-17 04:16:57', 1, '2019-06-19 12:58:53', '1', 'sjclunypondycbse@gmail.com', '', 2400, 'Y', 1);
+
+(153, 'St Joseph of Cluny school','sjc', 'Pondicherry','sjc@skillangels.com', 2147483647,'','', '', 'Puducherry','', '1', 'Matric', 1, 1, 20, '', '2019-06-19', '', '2019-06-17 04:16:57', 1, '2019-06-19 12:58:53', '1', 'sjclunypondycbse@gmail.com', '', 2400, 'Y', 1),
+
+create table usrs(id serial primary key,deviceid varchar(100),rollno varchar(100),email varchar(200),salt1 varchar(400),password varchar,salt2 varchar(20),fname varchar(200),lname varchar(200),gender varchar(20),mobile varchar(20),dob varchar(100),status integer,visible integer,gp_id integer,glevel varchar,grade_id integer,sname varchar(100),father varchar,mother varchar(100),address text,username varchar(100),initial varchar(100),sid varchar(100),sect varchar(10),academicyear varchar(20),createdby varchar(100),login_count integer,login_date date,pre_logindate date,creation_date date,modifiedby varchar(100),modified_date timestamp,avatarimage varchar(800),agreetermsandservice integer,creationkey varchar,usertheme varchar,session_id varchar,parent_session_id varchar,islogin integer,last_active_datetime timestamp,school_name varchar(255),referedby varchar(55),org_pwd varchar(255),time_zone varchar(255),current_session integer,org_username varchar(400));
+
+ALTER TABLE the_table ALTER COLUMN col_name TYPE integer USING (col_name::integer);
+SELECT   TO_CHAR(      AVG (amount),     'FM999999999.00'   ) AS "Average",   TO_CHAR(      SUM (amount),      'FM999999999.00'   ) AS "Total"
+FROM   payment;
+----------------------------games-------------------------
+CREATE TABLE gamescore (
+  id integer NOT NULL,
+  gu_id integer NOT NULL,
+  gs_id integer NOT NULL,
+  g_id integer NOT NULL,
+  que_id integer NOT NULL,
+  answer varchar(20) NOT NULL,
+  useranswer varchar(55) NOT NULL,
+  game_score varchar(50) NOT NULL,
+  answer_status varchar(55) NOT NULL,
+  timeoverstatus integer NOT NULL,
+  responsetime integer NOT NULL,
+  balancetime integer NOT NULL,
+  lastupdate date NOT NULL,
+  creation_date date NOT NULL,
+  modified_date timestamp NOT NULL ,
+  puzzle_cycle integer NOT NULL
+);
+
+INSERT INTO gamescore (id, gu_id,gs_id,g_id,que_id,answer,useranswer,game_score,answer_status,timeoverstatus,responsetime,balancetime,lastupdate,creation_date,modified_date, puzzle_cycle) VALUES
+(425906, 74349, 61, 1033, 42, '4', '10', '10', 'correct', 0, 2, 151, '2019-06-29', '2019-06-29', '2019-06-29 04:25:45', 1),
+(425905, 74417, 62, 1029, 67, '0', '106', '0', 'wrong', 0, 4, 170, '2019-06-29', '2019-06-29', '2019-06-29 04:25:41', 1),
+(425904, 74349, 61, 1033, 82, '3', '9', '10', 'correct', 0, 2, 154, '2019-06-29', '2019-06-29', '2019-06-29 04:25:40', 1),
+(425903, 71798, 59, 1116, 57, '1', '2', '10', 'correct', 0, 2, 176, '2019-06-29', '2019-06-29', '2019-06-29 04:25:39', 1),
+(425902, 73596, 63, 1010, 5, '7', '4', '10', 'correct', 0, 3, 93, '2019-06-29', '2019-06-29', '2019-06-29 04:25:34', 2),
+(425901, 74349, 61, 1033, 65, '2', '18', '10', 'correct', 0, 1, 157, '2019-06-29', '2019-06-29', '2019-06-29 04:25:34', 1),
+(425900, 74417, 62, 1029, 0, '0', '111', '0', 'wrong', 0, 4, 175, '2019-06-29', '2019-06-29', '2019-06-29 04:25:33', 1),
+(425899, 74349, 61, 1033, 3, '1', '18', '10', 'correct', 0, 3, 158, '2019-06-29', '2019-06-29', '2019-06-29 04:25:30', 1),
+(425898, 73596, 63, 1010, 2, '6', '8', '0', 'wrong', 0, 6, 98, '2019-06-29', '2019-06-29', '2019-06-29 04:25:26', 2),
+(425897, 74349, 61, 1033, 67, '0', '15', '0', 'wrong', 0, 11, 162, '2019-06-29', '2019-06-29', '2019-06-29 04:25:23', 1),
+(425896, 74332, 62, 1034, 26, '0', 'NotAnswered', '0', 'U', 0, 1, 0, '2019-06-29', '2019-06-29', '2019-06-29 04:25:15', 4),
+(425895, 73596, 63, 1010, 0, '6', '7', '0', 'wrong', 0, 1, 106, '2019-06-29', '2019-06-29', '2019-06-29 04:25:14', 2),
+(425894, 73596, 63, 1010, 6, '6', '11', '2', 'correct', 0, 18, 108, '2019-06-29', '2019-06-29', '2019-06-29 04:25:08', 2),
+(425893, 74349, 61, 1033, 59, '0', '7', '0', 'wrong', 0, 5, 174, '2019-06-29', '2019-06-29', '2019-06-29 04:25:08', 1),
+(425892, 73583, 59, 1006, 46, '3', 'ch3', '0', 'wrong', 0, 6, 121, '2019-06-29', '2019-06-29', '2019-06-29 04:24:56', 1),
+(425891, 73596, 63, 1010, 9, '5', '8', '8', 'correct', 0, 5, 128, '2019-06-29', '2019-06-29', '2019-06-29 04:24:44', 2),
+(425890, 73583, 59, 1006, 37, '3', 'ch3', '8', 'correct', 0, 5, 128, '2019-06-29', '2019-06-29', '2019-06-29 04:24:42', 1),
+(425889, 73596, 63, 1010, 7, '4', '14', '10', 'correct', 0, 2, 134, '2019-06-29', '2019-06-29', '2019-06-29 04:24:34', 2),
+(425888, 73583, 59, 1006, 21, '2', 'ch0', '5', 'correct', 0, 8, 135, '2019-06-29', '2019-06-29', '2019-06-29 04:24:29', 1),
+(425887, 73571, 63, 1010, 5, '3', '0', '0', 'wrong', 0, 2, 143, '2019-06-29', '2019-06-29', '2019-06-29 04:24:29', 4),
+(425886, 73596, 63, 1010, 3, '3', '7', '2', 'correct', 0, 16, 138, '2019-06-29', '2019-06-29', '2019-06-29 04:24:27', 2),
+(425885, 73571, 63, 1010, 7, '3', '17', '0', 'wrong', 0, 1, 146, '2019-06-29', '2019-06-29', '2019-06-29 04:24:22', 4),
+(425884, 73571, 63, 1010, 3, '3', '7', '9', 'correct', 0, 4, 147, '2019-06-29', '2019-06-29', '2019-06-29 04:24:17', 4),
+(425883, 73583, 59, 1006, 81, '1', 'ch0', '10', 'correct', 0, 2, 144, '2019-06-29', '2019-06-29', '2019-06-29 04:24:13', 1),
+(425882, 73571, 63, 1010, 1, '2', '12', '0', 'wrong', 0, 1, 153, '2019-06-29', '2019-06-29', '2019-06-29 04:24:07', 4);
+
+ALTER TABLE gamescore ALTER COLUMN game_score TYPE integer USING (game_score::integer);
+alter table gamescore alter column game_score type integer;
+
+select * from gamescore;
+select gs_id,gu_id from gamescore order by gs_id asc limit 10;
+select distinct(gu_id) from gamescore order by gs_id;
+select min(game_score) from gamescore where gs_id=63;
+select max(game_score) from gamescore where gs_id=63 and  gu_id=73596;
+select count(*) from gamescore group by gs_id; 
+SELECT gu_id, min(game_score) minimum_score,max(game_score) maximum_score,TO_CHAR(AVG (game_score),'FM999999999.00') AS "Average",TO_CHAR(SUM (game_score),'FM999999999.00') AS "Total"
+FROM gamescore  where gs_id=63 group by gu_id;
+select distinct(gs_id) as skill_id from gamescore; 
+select gu_id,min(game_score) from gamescore group by gu_id having min(game_score)=0;
+
+select  * from userdetails;
+alter view userdata  rename to vi_userdata;
+drop view userdetails;
+create function fn_score(val integer) returns integer as $$
+begin 
+if(val==0) then
+return 1;
+else if (val==5) then
+return 0;
+end $$
+language plpgsql;
+
+CREATE FUNCTION inc(val integer) RETURNS integer AS $$
+BEGIN
+RETURN val + 1;
+END; $$
+LANGUAGE PLPGSQL;
+select to_char(creation_date,'DD-MON-YYYY') as re_format from users;
+select * from users;
+select creation_date from users;
+select to_char(creation_date,'DD-MON-YYYY') as re_format from users;
+select to_char(creation_date,'MON-DD-YYYY') as re_format from users;
+select to_char(creation_date,'yyyy-MON-dd') as re_format from users;
+SELECT to_char(current_timestamp, 'HH:MM:SS');
+SELECT to_char(now(), 'HH:MM');
+
+select inc(10);
+select score(10,10);
+select fn_score(1);
+
+ANALYZE  VERBOSE  demooooo(table name) ;=> displays msg like nno. of live rows,deleted rows count ,sample rows
+select * from demooooo;
+	
+	update demooooo set visible=1 where fname='seetha';
+	insert into demooooo(id,fname,phone,status) values(2,'tom',235,1);
+	insert into demooooo values(4,'seetha',2635,1);
+	ANALYZE  VERBOSE  demooooo ;
+	alter table demooooo add column visible integer;
+	delete from demooooo where fname='nas'; 
+
+
+
+ALTER TABLE gamescore ALTER COLUMN game_score TYPE integer USING (game_score::integer);
+alter table gamescore alter column game_score type integer;
+
+
+Window function = >opposite to aggregate function
+returns value to all row =>syn:AVG(price) OVER (PARTITION BY group_name)
+PARTITION BY distributes result sets  to groups(all rows).
+Note:If we omit PARTITION BY, it will behave like aggregate functions 
+only works along with =>before JOIN,WHERE,GROUP BY,HAVING and before ORDER BY clause 
+The term window describes the set of rows on which the window function operates. A window function returns values from the rows in a window.
