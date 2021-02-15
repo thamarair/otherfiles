@@ -1,0 +1,92 @@
+ALTER TABLE `rand_selection` ADD `noofpuzzleplayed` INT(11) NOT NULL AFTER `complexity_level`, ADD `noofquestionplayed` INT(11) NOT NULL AFTER `noofpuzzleplayed`;
+
+
+
+BEGIN
+
+DECLARE OUTrandomGames varchar(55);
+DECLARE OUTrandomGamesCount INT(11);
+DECLARE OUTassignGames INT(11);
+DECLARE OUT1skill_id INT(11);
+DECLARE OUT1rand_sel INT(11);
+DECLARE OUT2rand_sel INT(11);
+DECLARE v_done INT DEFAULT FALSE;
+DECLARE cursorForProfile CURSOR FOR SELECT id FROM category_skills where category_id=1;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_done = TRUE;
+ 
+
+SET OUTrandomGames=(SELECT group_concat(gid) FROM rand_selection WHERE DATE(created_date)=incurdate AND gp_id = ingp_id AND grade_id = ingrade_id AND school_id = insid and user_id= inuserid ORDER BY gs_id ASC);
+
+SET OUTassignGames=(select count(distinct skill_id) from class_plan_game where plan_id=ingp_id and class_id=ingrade_id and complexity_level=inuser_current_session);
+
+SET OUTrandomGamesCount=(select COALESCE((CHAR_LENGTH(OUTrandomGames) - CHAR_LENGTH(REPLACE(OUTrandomGames, ',','')) + 1),0));
+
+if(OUTrandomGamesCount!=OUTassignGames)THEN
+	
+OPEN cursorForProfile;
+
+read_loop: LOOP
+FETCH cursorForProfile INTO OUT1skill_id;
+IF v_done THEN
+LEAVE read_loop;
+END IF;
+
+SET OUT1rand_sel=(SELECT g.gid FROM class_plan_game AS d 
+JOIN games AS g ON d.game_id = g.gid 
+JOIN category_skills AS j ON g.gs_id = j.id 
+WHERE d.class_id=ingrade_id AND d.plan_id = ingp_id AND g.gc_id = 1 and j.id = OUT1skill_id 
+and g.gid not in (SELECT gid FROM rand_selection WHERE gp_id = ingp_id AND grade_id = ingrade_id AND school_id = insid and user_id=inuserid and gs_id = OUT1skill_id) and complexity_level=inuser_current_session ORDER BY RAND() LIMIT 1);
+
+SET OUT2rand_sel=(select count(OUT1rand_sel));
+
+IF(OUT2rand_sel<=0)THEN
+
+	delete from rand_selection where gc_id=1 and gs_id=OUT1skill_id and gp_id=ingp_id and grade_id=ingrade_id  and school_id = insid and user_id=inuserid ;
+    
+    SET OUT1rand_sel=(SELECT g.gid FROM class_plan_game AS d 
+	JOIN games AS g ON d.game_id = g.gid 
+	JOIN category_skills AS j ON g.gs_id = j.id 
+	WHERE d.class_id=ingrade_id AND d.plan_id = ingp_id AND g.gc_id = 1 and j.id = OUT1skill_id 
+	and g.gid not in (SELECT gid FROM rand_selection WHERE gp_id = ingp_id AND grade_id = ingrade_id AND school_id = insid and 	user_id=inuserid and gs_id = OUT1skill_id) and complexity_level=inuser_current_session ORDER BY RAND() LIMIT 1);
+
+	SET OUT2rand_sel=(select count(OUT1rand_sel));
+
+END IF;
+IF(OUT2rand_sel>0)THEN
+
+INSERT INTO rand_selection SET gc_id = 1, gs_id = OUT1skill_id, gid = OUT1rand_sel, gp_id = ingp_id, grade_id = ingrade_id, section =insection,school_id = insid,user_id=inuserid,created_date = incurdate,complexity_level = inuser_current_session;
+
+END IF;
+
+END LOOP;
+
+CLOSE cursorForProfile; 
+
+
+SET OUTrandomGames=(SELECT group_concat(gid) FROM rand_selection WHERE DATE(created_date)=incurdate AND gp_id = ingp_id AND grade_id = ingrade_id AND school_id = insid and user_id= inuserid ORDER BY gs_id ASC);
+
+
+END IF;
+
+
+SELECT j.id,			
+(select count(*) as tot_game_played from game_reports where gu_id = inuserid  AND gc_id = 1 AND gs_id = d.skill_id AND gp_id = ingp_id AND lastupdate = incurdate) as tot_game_played ,
+
+(select MAX(game_score) from game_reports where gu_id =  inuserid  AND gc_id = 1 AND gs_id = d.skill_id AND gp_id = ingp_id AND lastupdate = incurdate) as tot_game_score ,
+
+(select DISTINCT puzzle_cycle from gamescore where g_id=g.gid and gu_id=inuserid and lastupdate=incurdate order by puzzle_cycle DESC limit 1) current_puzzle_cycle,
+
+(SELECT  CASE  when count(gs_id)>=10 THEN count(id) WHEN FIND_IN_SET('U',group_concat(answer_status))>=1 THEN 'TO' when count(gs_id)<10 THEN count(id) ELSE 0 END CompletedSkill FROM gamescore as gs   where gs.gs_id=d.skill_id and gu_id=inuserid and lastupdate=incurdate and puzzle_cycle=current_puzzle_cycle) as tot_ques_attend, 
+
+d.skill_id, j.name AS skill_name, g.gid, g.gname, g.img_path,g.game_html, j.icon 
+FROM class_plan_game AS d 
+
+JOIN category_skills AS j ON d.skill_id = j.id 
+
+JOIN games AS g ON d.game_id = g.gid	
+
+WHERE d.class_id=ingrade_id AND d.plan_id = ingp_id AND g.gc_id = 1  and find_in_set(g.gid,OUTrandomGames) GROUP BY skill_id,g.gid;
+
+
+ 
+END

@@ -1,0 +1,71 @@
+DELIMITER $$
+CREATE DEFINER=`skillangels`@`localhost` PROCEDURE `GameDataInsert`(IN `inuid` INT(11), IN `inSID` INT(11), IN `inGID` INT(11), IN `inResponseTime` INT(11), IN `inBalaceTime` INT(11), IN `inCorrectAnswer` INT(11), IN `inUserAnswer` VARCHAR(16), IN `inAnswerStaus` VARCHAR(16), IN `inQNO` INT(11), IN `inSCORE` INT(11), IN `inTimeOverStatus` INT(11), IN `inpuzzle_cycle` INT(11), IN `incurdate` DATE, IN `incurdatetime` DATETIME, IN `ingtime` INT(11), IN `ingp_id` INT(11))
+BEGIN
+
+DECLARE outPlayedCount INT(11);
+DECLARE outPlayedQusCount INT(11);
+DECLARE Ototal_question INT(11);
+DECLARE Oattempt_question INT(11);
+DECLARE Oanswer INT(11);
+DECLARE Ogame_score INT(11);
+DECLARE Ogtime INT(11);
+DECLARE Ortime INT(11);
+DECLARE Ocrtime INT(11);
+DECLARE Owrtime INT(11);
+DECLARE OUTPUT Varchar(55);
+
+SET OUTPUT="SINGLEINSERT";
+
+DECLARE OTotPlayedGameCount INT(11);
+DECLARE OTotPlayedQuesCount INT(11);
+
+INSERT INTO gamescore(gu_id, gs_id, g_id, que_id, answer, useranswer, game_score, answer_status, timeoverstatus, responsetime, balancetime, lastupdate, creation_date, modified_date, puzzle_cycle)
+VALUES(inuid,inSID,inGID,inQNO,inCorrectAnswer,inUserAnswer,inSCORE,inAnswerStaus,inTimeOverStatus,inResponseTime,inBalaceTime,incurdate,incurdatetime,incurdatetime,inpuzzle_cycle);
+
+SET outPlayedQusCount=(SELECT count(gs_id) Completedquestion FROM gamescore as gs where g_id=inGID and gu_id=inuid and puzzle_cycle=inpuzzle_cycle and lastupdate=incurdate);
+
+IF(inBalaceTime=0 and inAnswerStaus!='U' and outPlayedQusCount!=10)THEN
+
+	INSERT INTO gamescore(gu_id, gs_id, g_id, que_id, answer, useranswer, game_score, answer_status, timeoverstatus, responsetime, balancetime, lastupdate, creation_date, modified_date, puzzle_cycle)
+	VALUES(inuid,inSID,inGID,inQNO,inCorrectAnswer,'NotAnswered',0,'U',inTimeOverStatus,inResponseTime,inBalaceTime,incurdate,incurdatetime,incurdatetime,inpuzzle_cycle);
+END IF;
+
+SET OTotPlayedQuesCount=(select count(inQNO) as noofquestionplayed from gamescore where g_id=inGID and gu_id=inuid and puzzle_cycle=inpuzzle_cycle and lastupdate=incurdate);
+
+UPDATE rand_selection set noofquestionplayed=OTotPlayedQuesCount where user_id=inuid and gid=inGID and date(created_date)=incurdate;
+
+SET outPlayedCount=(SELECT CASE when count(gs_id)>=10 THEN 1 WHEN FIND_IN_SET('U',group_concat(answer_status))>=1 THEN 1 ELSE 0 END CompletedSkill FROM gamescore as gs where g_id=inGID and gu_id=inuid and puzzle_cycle=inpuzzle_cycle and lastupdate=incurdate);
+
+IF(outPlayedCount=1) 
+THEN
+	SET Ototal_question=10;
+	
+	SET Oattempt_question=(select count(gu_id)  from gamescore where g_id=inGID and gu_id=inuid and answer_status!='U' and puzzle_cycle=inpuzzle_cycle  and lastupdate=incurdate);
+	
+	SET Oanswer=(select count(answer_status) from gamescore where g_id=inGID and gu_id=inuid and answer_status='correct' and puzzle_cycle=inpuzzle_cycle  and lastupdate=incurdate);
+	
+	SET Ogame_score=(select coalesce(sum(game_score),0) from gamescore where g_id=inGID and gu_id=inuid and puzzle_cycle=inpuzzle_cycle and lastupdate=incurdate);
+	
+	SET Ortime=(select coalesce(sum(CAST(responsetime AS UNSIGNED)),0) from gamescore where g_id=inGID and gu_id=inuid and answer_status!='U' and puzzle_cycle=inpuzzle_cycle  and lastupdate=incurdate);
+	
+	SET Ocrtime=(select coalesce(sum(CAST(responsetime AS UNSIGNED)),0) from gamescore where g_id=inGID and gu_id=inuid and answer_status='correct' and puzzle_cycle=inpuzzle_cycle  and lastupdate=incurdate);
+	
+	SET Owrtime=(select coalesce(sum(CAST(responsetime AS UNSIGNED)),0) from gamescore where g_id=inGID and gu_id=inuid and answer_status='wrong' and puzzle_cycle=inpuzzle_cycle  and lastupdate=incurdate);
+	
+	insert into gamedata (gu_id,gc_id,gs_id,gp_id,g_id,total_question,attempt_question,answer,game_score,gtime,rtime,crtime,wrtime,lastupdate,puzzle_cycle)
+	values(inuid,1,inSID,ingp_id,inGID,Ototal_question,Oattempt_question,Oanswer,Ogame_score,ingtime,Ortime,Ocrtime,Owrtime,incurdate,inpuzzle_cycle);
+	
+	SET OTotPlayedGameCount=(select count(gs_id) as noofgameplayed from gamedata where g_id=inGID and gu_id=inuid and puzzle_cycle=inpuzzle_cycle and lastupdate=incurdate);
+
+	UPDATE rand_selection set noofpuzzleplayed=OTotPlayedGameCount where user_id=inuid and gid=inGID and date(created_date)=incurdate;
+   
+   SET OUTPUT="GAMEINSERT";
+    
+END IF;
+
+select OUTPUT;
+
+
+
+END$$
+DELIMITER ;

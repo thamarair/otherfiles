@@ -1,0 +1,8 @@
+select j.id,rs.gs_id as skill_id,j.name AS skill_name, g.gid, g.gname, g.img_path,g.game_html, j.icon ,noofpuzzleplayed as tot_game_played,noofquestionplayed as tot_ques_attend,(select MAX(game_score) from game_reports where gu_id =  inuserid  AND gc_id = 1 AND gs_id = rs.gs_id AND gp_id = ingp_id AND lastupdate = incurdate) as tot_game_score from rand_selection as rs
+join games as g on g.gid=rs.gid
+JOIN category_skills AS j ON rs.gs_id = j.id 
+WHERE rs.user_id=inuserid and date(rs.created_date)=incurdate and rs.grade_id=ingrade_id AND find_in_set(g.gid,OUTrandomGames)  
+
+
+
+select count(que_id) as noofquestionplayed from gamescore where g_id=inGID and gu_id=inuid and puzzle_cycle=inpuzzle_cycle and lastupdate=incurdate
