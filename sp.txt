@@ -1,0 +1,103 @@
+BEGIN 
+
+SELECT d.id AS doctorid,doctorname,email,mobilenumber,d.hospitalid,gradeid,planid,programid FROM couponmaster  JOIN doctormaster AS d ON d.id=doctorid WHERE couponcode=incouponcode;
+
+
+INSERT INTO users(email, salt1, password, salt2, fname, lname, gender, mobile, dob, status, visible,gp_id,grade_id,address,username,sid, section,academicyear,creation_date,agreetermsandservice,org_pwd,stateid,city,pincode, parentname,hospitalid, doctorid, couponcode,portal_type,startdate,enddate,created_on,isnew,programid)
+			VALUES(inemail,insalt1,inpassword,insalt2,infname,inlname,ingender,inmobile,indob,instatus,invisible,ingp_id,ingrade_id,inaddress,inusername,insid,insection,20,increateddate,1,inorgpwd,instateid,incity,inpincode,inparentname,inhospitalid,indoctorid,incouponcode,"CLP",NOW(),DATE_ADD(CURDATE(), INTERVAL (SELECT VALUE FROM config_master WHERE code="VALIDDAYS" AND status="Y") DAY),NOW(),"N",inprogramid);
+
+
+UPDATE couponmaster SET usedstatus=1 WHERE couponcode=incouponcode;
+
+
+END
+
+DELIMITER $$
+
+CREATE PROCEDURE sp_adduser(IN infname VARCHAR(255),IN inlname VARCHAR(255),IN ingender VARCHAR(10),IN indob VARCHAR(100),IN instatus VARCHAR(100),IN invisible VARCHAR(100),IN inparentname VARCHAR(110),IN inmobile VARCHAR(15),IN inemail VARCHAR(255),IN inshpassword VARCHAR(100),IN insalt1 VARCHAR(20),IN insalt2 VARCHAR(20),IN instate VARCHAR(11),IN incity VARCHAR(10),IN inpincode INT(11),IN inaddress VARCHAR(500),IN inCouponCode VARCHAR(55),IN inpassword VARCHAR(255),IN ingradeid INT(11),IN inplanid INT(11),IN inprogramid INT(11))
+
+CREATE PROCEDURE sp_adduser(IN infname VARCHAR(255),IN inlname VARCHAR(255),IN ingender VARCHAR(10),IN indob VARCHAR(100), IN inparentname VARCHAR(110),IN inmobile VARCHAR(15),IN inemail VARCHAR(255),IN inshpassword VARCHAR(100),IN insalt1 VARCHAR(20),IN insalt2 VARCHAR(20),IN instate VARCHAR(11),IN incity VARCHAR(10),IN inpincode INT(11),IN inaddress VARCHAR(500),IN inCouponCode VARCHAR(55),IN inpassword VARCHAR(255),IN ingradeid INT(11),IN inplanid INT(11),IN inprogramid INT(11))
+
+BEGIN
+
+END$$
+DELIMITER ;
+
+
+CREATE PROCEDURE sp_adduser(IN infname VARCHAR(200),IN inlname VARCHAR(200),IN ingender VARCHAR(10),IN indob VARCHAR(100),IN inparentname VARCHAR(110),IN inmobile VARCHAR(15),IN inemail VARCHAR(255),IN inshpassword VARCHAR(100),IN insalt1 VARCHAR(20),IN insalt2 VARCHAR(20),IN instate VARCHAR(11),IN incity VARCHAR(10),IN inpincode INT(11),IN inaddress VARCHAR(500),IN inCouponCode VARCHAR(55),IN inpassword VARCHAR(255),IN ingradeid INT(11),IN inplanid INT(11),IN inprogramid INT(11)) BEGIN END
+
+
+adduser($firstname,$lastname,$gender,$dob,$parentname,$mobile,$email,$shpassword,$salt1,$salt2,$state,$city,$pincode,$address,$CouponCode,$password,$arrofcoupondetails[0]['hospitalid'],$arrofcoupondetails[0]['doctorid'],$arrofcoupondetails[0]['planid'],$arrofcoupondetails[0]['gradeid'],$arrofcoupondetails[0]['programid'])
+IN id INT(11) NOT NULL AUTO_INCREMENT, 
+
+
+DELIMITER $$
+CREATE  PROCEDURE `checkbandwidthisexist`(IN inschoolid INT(11))
+BEGIN
+
+select count(ID) as isexist from bandwidth_log where school_id=inschoolid and TIMESTAMPDIFF(MINUTE,`updatedtime`,now())<(select TimeInterval from bandwidth_config where ID=1 and status=1) and status=1;
+
+END$$
+DELIMITER ;
+
+
+ 
+
+
+
+
+
+org sp_au
+DELIMITER $$
+CREATE PROCEDURE `sp_adduser`(IN `infname` VARCHAR(200), IN `inlname` VARCHAR(200), IN `ingender` VARCHAR(10), IN `indob` VARCHAR(100), IN `inparentname` VARCHAR(110), IN `inmobile` VARCHAR(15), IN `inemail` VARCHAR(255), IN `inshpassword` VARCHAR(100), IN `insalt1` VARCHAR(20), IN `insalt2` VARCHAR(20), IN `instate` VARCHAR(11), IN `incity` VARCHAR(10), IN `inpincode` INT(11), IN `inaddress` VARCHAR(500), IN `inCouponCode` VARCHAR(55), IN `inpassword` VARCHAR(255), IN `ingradeid` INT(11), IN `inplanid` INT(11), IN `inprogramid` INT(11))
+BEGIN
+
+SELECT d.id AS doctorid,doctorname,email,mobilenumber,d.hospitalid,gradeid,planid,programid FROM couponmaster  JOIN doctormaster AS d ON d.id=doctorid WHERE couponcode=incouponcode;
+
+INSERT INTO users(email, salt1, password, salt2, fname, lname, gender, mobile, dob, status, visible,gp_id,grade_id,address,username,sid, section,academicyear,creation_date,agreetermsandservice,org_pwd,stateid,city,pincode, parentname,hospitalid, doctorid, couponcode,portal_type,startdate,enddate,created_on,isnew,programid)
+			VALUES(inemail,insalt1,inpassword,insalt2,infname,inlname,ingender,inmobile,indob,1,1,ingpid,ingradeid,inaddress,inusername,insid,insection,20,increateddate,1,inorgpwd,instateid,incity,inpincode,inparentname,inhospitalid,indoctorid,incouponcode,"CLP",NOW(),DATE_ADD(CURDATE(), INTERVAL (SELECT VALUE FROM config_master WHERE code="VALIDDAYS" AND status="Y") DAY),NOW(),"N",inprogramid);
+
+UPDATE couponmaster SET usedstatus=1 WHERE couponcode=incouponcode;
+
+
+END$$
+DELIMITER ;
+
+2608
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_adduser`(IN `infname` VARCHAR(200), IN `inlname` VARCHAR(200), IN `ingender` VARCHAR(10), IN `indob` VARCHAR(100), IN `inparentname` VARCHAR(110), IN `inmobile` VARCHAR(15), IN `inemail` VARCHAR(255), IN `inshpassword` VARCHAR(100), IN `insalt1` VARCHAR(20), IN `insalt2` VARCHAR(20), IN `instateid` INT(11), IN `incity` VARCHAR(10), IN `inpincode` INT(11), IN `inaddress` VARCHAR(500), IN `inCouponCode` VARCHAR(55), IN `inpassword` VARCHAR(255), IN `ingradeid` INT(11), IN `inplanid` INT(11), IN `inprogramid` INT(11), IN `insid` INT(11), IN `inorgpwd` VARCHAR(200), IN `inhospitalid` INT(11), IN `indoctorid` INT(11))
+BEGIN
+
+SELECT d.id AS doctorid,doctorname,email,mobilenumber,d.hospitalid,gradeid,planid,programid FROM couponmaster  JOIN doctormaster AS d ON d.id=doctorid WHERE couponcode=incouponcode;
+
+INSERT INTO users(email, salt1, password, salt2, fname, lname, gender, mobile, dob, status, visible,gp_id,grade_id,address,username,sid, section,academicyear,creation_date,agreetermsandservice,org_pwd,stateid,city,pincode, parentname,hospitalid, doctorid, couponcode,portal_type,startdate,enddate,created_on,isnew,programid)
+			VALUES(inemail,insalt1,inpassword,insalt2,infname,inlname,ingender,inmobile,indob,1,1,inplanid,ingradeid,inaddress,inemail,insid,"A",20,NOW(),1,inorgpwd,instateid,incity,inpincode,inparentname,inhospitalid,indoctorid,incouponcode,"CLP",NOW(),DATE_ADD(CURDATE(), INTERVAL (SELECT VALUE FROM config_master WHERE code="VALIDDAYS" AND status="Y") DAY),NOW(),"N",inprogramid);
+
+UPDATE couponmaster SET usedstatus=1 WHERE couponcode=incouponcode;
+
+
+END$$
+DELIMITER ;
+
+
+
+
+public function adduser($firstname,$lastname,$gender,$dob,$parentname,$mobile,$email,$shpassword,$salt1,$salt2,$state,$city,$pincode,$address,$CouponCode,$password,$hospitalid,$doctorid,$planid,$gradeid,$programid)
+		 {
+//CLP DB
+			$query = $this->db->query('INSERT INTO users(email, salt1, password, salt2, fname, lname, gender, mobile, dob, status, visible,gp_id,grade_id,address,username,sid, section,academicyear,creation_date,agreetermsandservice,org_pwd,stateid,city,pincode, parentname,hospitalid, doctorid, couponcode,portal_type,startdate,enddate,created_on,isnew,programid)
+			VALUES("'.$email.'","'.$salt1.'","'.$shpassword.'","'.$salt2.'","'.$firstname.'","'.$lastname.'","'.$gender.'","'.$mobile.'","'.$dob.'",1,1,"'.$planid.'","'.$gradeid.'","'.$address.'","'.$email.'",2,"A",20,"'.date("Y-m-d").'",1,"'.$password.'","'.$state.'","'.$city.'","'.$pincode.'","'.$parentname.'","'.$hospitalid.'","'.$doctorid.'","'.$CouponCode.'","CLP",CURDATE(),DATE_ADD(CURDATE(), INTERVAL (select value from config_master where code="VALIDDAYS" and status="Y") DAY),NOW(),"N","'$programid.'") ');
+		//	echo $this->db->last_query(); exit;
+
+			$clplastid=$this->db->insert_id();
+			$query = $this->db->query("INSERT INTO user_academic_mapping(id, grade_id, gp_id, sid, section, academicid, status, visible)
+			VALUES(".$clplastid.",'".$planid."','".$gradeid."',2,'A',20,1,1)"); */			
+			//echo $this->db->last_query(); exit;
+			
+		
+//ASAP DB
+			/* $query = $this->multipledb->db->query('INSERT INTO users(email, salt1, password, salt2, fname, lname, gender, mobile, dob, status, gp_id,grade_id,address,username,sid,section,academicyear,creation_date,agreetermsandservice,stateid,city,pincode, parentname,hospitalid, doctorid, couponcode,startdate,enddate)
+			VALUES("'.$email.'","'.$salt1.'","'.$shpassword.'","'.$salt2.'","'.$firstname.'","'.$lastname.'","'.$gender.'","'.$mobile.'","'.$dob.'",1,91,11,"'.$address.'","'.$email.'",2,"A",19,"'.date("Y-m-d").'",1,"'.$state.'","'.$city.'","'.$pincode.'","'.$parentname.'","'.$hospitalid.'","'.$doctorid.'","'.$CouponCode.'",CURDATE(),DATE_ADD(CURDATE(), INTERVAL (select value from config_master where code="VALIDDAYS" and status="Y") DAY))'); */
+			
+			return $this->db->insert_id();
+		}
