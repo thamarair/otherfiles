@@ -1,0 +1,154 @@
+DELIMITER //
+CREATE PROCEDURE `GameDataInsert`(IN `inuid` INT(11), IN `inSID` INT(11), IN `inGID` INT(11), IN `inResponseTime` INT(11), IN `inBalaceTime` INT(11), IN `inCorrectAnswer` INT(11), IN `inUserAnswer` VARCHAR(16), IN `inAnswerStaus` VARCHAR(16), IN `inQNO` INT(11), IN `inSCORE` INT(11), IN `inTimeOverStatus` INT(11), IN `inpuzzle_cycle` INT(11), IN `incurdate` DATE, IN `incurdatetime` DATETIME, IN `ingtime` INT(11), IN `ingp_id` INT(11))
+BEGIN
+
+DECLARE outPlayedCount INT(11);
+DECLARE outPlayedQusCount INT(11);
+DECLARE Ototal_question INT(11);
+DECLARE Oattempt_question INT(11);
+DECLARE Oanswer INT(11);
+DECLARE Ogame_score INT(11);
+DECLARE Ogtime INT(11);
+DECLARE Ortime INT(11);
+DECLARE Ocrtime INT(11);
+DECLARE Owrtime INT(11);
+DECLARE OUTPUT Varchar(55);
+
+SET OUTPUT="SINGLEINSERT";
+
+
+INSERT INTO gamescore(gu_id, gs_id, g_id, que_id, answer, useranswer, game_score, answer_status, timeoverstatus, responsetime, balancetime, lastupdate, creation_date, modified_date, puzzle_cycle)
+VALUES(inuid,inSID,inGID,inQNO,inCorrectAnswer,inUserAnswer,inSCORE,inAnswerStaus,inTimeOverStatus,inResponseTime,inBalaceTime,incurdate,incurdatetime,incurdatetime,inpuzzle_cycle);
+
+SET outPlayedQusCount=(SELECT count(gs_id) Completedquestion FROM gamescore as gs where g_id=inGID and gu_id=inuid and puzzle_cycle=inpuzzle_cycle and lastupdate=incurdate);
+
+IF(inBalaceTime=0 and inAnswerStaus!='U' and outPlayedQusCount!=10)THEN
+
+	INSERT INTO gamescore(gu_id, gs_id, g_id, que_id, answer, useranswer, game_score, answer_status, timeoverstatus, responsetime, balancetime, lastupdate, creation_date, modified_date, puzzle_cycle)
+	VALUES(inuid,inSID,inGID,inQNO,inCorrectAnswer,'NotAnswered',0,'U',inTimeOverStatus,inResponseTime,inBalaceTime,incurdate,incurdatetime,incurdatetime,inpuzzle_cycle);
+END IF;
+
+SET outPlayedCount=(SELECT CASE when count(gs_id)>=10 THEN 1 WHEN FIND_IN_SET('U',group_concat(answer_status))>=1 THEN 1 ELSE 0 END CompletedSkill FROM gamescore as gs where g_id=inGID and gu_id=inuid and puzzle_cycle=inpuzzle_cycle and lastupdate=incurdate);
+
+IF(outPlayedCount=1) 
+THEN
+	SET Ototal_question=10;
+	
+	SET Oattempt_question=(select count(gu_id)  from gamescore where g_id=inGID and gu_id=inuid and answer_status!='U' and puzzle_cycle=inpuzzle_cycle  and lastupdate=incurdate);
+	
+	SET Oanswer=(select count(answer_status) from gamescore where g_id=inGID and gu_id=inuid and answer_status='correct' and puzzle_cycle=inpuzzle_cycle  and lastupdate=incurdate);
+	
+	SET Ogame_score=(select coalesce(sum(game_score),0) from gamescore where g_id=inGID and gu_id=inuid and puzzle_cycle=inpuzzle_cycle and lastupdate=incurdate);
+	
+	SET Ortime=(select coalesce(sum(CAST(responsetime AS UNSIGNED)),0) from gamescore where g_id=inGID and gu_id=inuid and answer_status!='U' and puzzle_cycle=inpuzzle_cycle  and lastupdate=incurdate);
+	
+	SET Ocrtime=(select coalesce(sum(CAST(responsetime AS UNSIGNED)),0) from gamescore where g_id=inGID and gu_id=inuid and answer_status='correct' and puzzle_cycle=inpuzzle_cycle  and lastupdate=incurdate);
+	
+	SET Owrtime=(select coalesce(sum(CAST(responsetime AS UNSIGNED)),0) from gamescore where g_id=inGID and gu_id=inuid and answer_status='wrong' and puzzle_cycle=inpuzzle_cycle  and lastupdate=incurdate);
+	
+	insert into gamedata (gu_id,gc_id,gs_id,gp_id,g_id,total_question,attempt_question,answer,game_score,gtime,rtime,crtime,wrtime,lastupdate,puzzle_cycle)
+	values(inuid,1,inSID,ingp_id,inGID,Ototal_question,Oattempt_question,Oanswer,Ogame_score,ingtime,Ortime,Ocrtime,Owrtime,incurdate,inpuzzle_cycle);
+   
+   SET OUTPUT="GAMEINSERT";
+   CALL UpdateTodaySession(inuid,incurdate);
+END IF;
+
+select OUTPUT;
+
+
+
+END //
+DELIMITER ;
+
+-----------------------------------------------
+DELIMITER //
+CREATE PROCEDURE `GameAssignLogic`(IN `inuserid` INT(11), IN `ingp_id` INT(11), IN `ingrade_id` INT(11), IN `insid` INT(11), IN `incurdate` DATE, IN `inuser_current_session` INT(11), IN `insection` VARCHAR(16))
+BEGIN
+
+DECLARE OUTrandomGames varchar(55);
+DECLARE OUTrandomGamesCount INT(11);
+DECLARE OUTassignGames INT(11);
+DECLARE OUT1skill_id INT(11);
+DECLARE OUT1rand_sel INT(11);
+DECLARE OUT2rand_sel INT(11);
+DECLARE v_done INT DEFAULT FALSE;
+DECLARE cursorForProfile CURSOR FOR SELECT id FROM category_skills where category_id=1;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_done = TRUE;
+ 
+
+SET OUTrandomGames=(SELECT group_concat(gid) FROM rand_selection WHERE DATE(created_date)=incurdate AND gp_id = ingp_id AND grade_id = ingrade_id AND school_id = insid and user_id= inuserid ORDER BY gs_id ASC);
+
+SET OUTassignGames=(select count(distinct skill_id) from class_plan_game where plan_id=ingp_id and class_id=ingrade_id and complexity_level=inuser_current_session);
+
+SET OUTrandomGamesCount=(select COALESCE((CHAR_LENGTH(OUTrandomGames) - CHAR_LENGTH(REPLACE(OUTrandomGames, ',','')) + 1),0));
+
+if(OUTrandomGamesCount!=OUTassignGames)THEN
+	
+OPEN cursorForProfile;
+
+read_loop: LOOP
+FETCH cursorForProfile INTO OUT1skill_id;
+IF v_done THEN
+LEAVE read_loop;
+END IF;
+
+SET OUT1rand_sel=(SELECT g.gid FROM class_plan_game AS d 
+JOIN games AS g ON d.game_id = g.gid 
+JOIN category_skills AS j ON g.gs_id = j.id 
+WHERE d.class_id=ingrade_id AND d.plan_id = ingp_id AND g.gc_id = 1 and j.id = OUT1skill_id 
+and g.gid not in (SELECT gid FROM rand_selection WHERE gp_id = ingp_id AND grade_id = ingrade_id AND school_id = insid and user_id=inuserid and gs_id = OUT1skill_id) and complexity_level=inuser_current_session ORDER BY RAND() LIMIT 1);
+
+SET OUT2rand_sel=(select count(OUT1rand_sel));
+
+IF(OUT2rand_sel<=0)THEN
+
+	delete from rand_selection where gc_id=1 and gs_id=OUT1skill_id and gp_id=ingp_id and grade_id=ingrade_id  and school_id = insid and user_id=inuserid ;
+    
+    SET OUT1rand_sel=(SELECT g.gid FROM class_plan_game AS d 
+	JOIN games AS g ON d.game_id = g.gid 
+	JOIN category_skills AS j ON g.gs_id = j.id 
+	WHERE d.class_id=ingrade_id AND d.plan_id = ingp_id AND g.gc_id = 1 and j.id = OUT1skill_id 
+	and g.gid not in (SELECT gid FROM rand_selection WHERE gp_id = ingp_id AND grade_id = ingrade_id AND school_id = insid and 	user_id=inuserid and gs_id = OUT1skill_id) and complexity_level=inuser_current_session ORDER BY RAND() LIMIT 1);
+
+	SET OUT2rand_sel=(select count(OUT1rand_sel));
+
+END IF;
+IF(OUT2rand_sel>0)THEN
+
+INSERT INTO rand_selection SET gc_id = 1, gs_id = OUT1skill_id, gid = OUT1rand_sel, gp_id = ingp_id, grade_id = ingrade_id, section =insection,school_id = insid,user_id=inuserid,created_date = incurdate,complexity_level = inuser_current_session;
+
+END IF;
+
+END LOOP;
+
+CLOSE cursorForProfile; 
+
+
+SET OUTrandomGames=(SELECT group_concat(gid) FROM rand_selection WHERE DATE(created_date)=incurdate AND gp_id = ingp_id AND grade_id = ingrade_id AND school_id = insid and user_id= inuserid ORDER BY gs_id ASC);
+
+
+END IF;
+
+
+SELECT j.id,			
+(select count(*) as tot_game_played from game_reports where gu_id = inuserid  AND gc_id = 1 AND gs_id = d.skill_id AND gp_id = ingp_id AND lastupdate = incurdate) as tot_game_played ,
+
+(select MAX(game_score) from game_reports where gu_id =  inuserid  AND gc_id = 1 AND gs_id = d.skill_id AND gp_id = ingp_id AND lastupdate = incurdate) as tot_game_score ,
+
+(select DISTINCT puzzle_cycle from gamescore where g_id=g.gid and gu_id=inuserid and lastupdate=incurdate order by puzzle_cycle DESC limit 1) current_puzzle_cycle,
+
+(SELECT  CASE  when count(gs_id)>=10 THEN count(id) WHEN FIND_IN_SET('U',group_concat(answer_status))>=1 THEN 'TO' when count(gs_id)<10 THEN count(id) ELSE 0 END CompletedSkill FROM gamescore as gs   where gs.gs_id=d.skill_id and gu_id=inuserid and lastupdate=incurdate and puzzle_cycle=current_puzzle_cycle) as tot_ques_attend, 
+
+d.skill_id, j.name AS skill_name, g.gid, g.gname, g.img_path,g.game_html, j.icon 
+FROM class_plan_game AS d 
+
+JOIN category_skills AS j ON d.skill_id = j.id 
+
+JOIN games AS g ON d.game_id = g.gid	
+
+WHERE d.class_id=ingrade_id AND d.plan_id = ingp_id AND g.gc_id = 1  and find_in_set(g.gid,OUTrandomGames) GROUP BY skill_id,g.gid;
+
+
+ 
+END //
+DELIMITER ;

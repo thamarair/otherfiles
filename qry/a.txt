@@ -1,0 +1,11 @@
+GAME ASSIGNING LOGIC
+Also for every minute the student will be checked to ensure that he/she is active or not and the details are updated(frequently).
+Step 1: Comparing the assigned and available game count of the student for the current day.
+Step 2: If there is a match then Daily Puzzles will be given.
+Step 3: Else if  there is a mismatch in the game count(i.e, 0 == 5) then the following will take place
+Step 3.1: Check whether the puzzle is available for the particular skill or not, based on the current complexity level of the student.
+Step 3.2: If the puzzle is available for the particular skill then it will be assigned (into the rand_selection table) for that skill of that day.
+Step 3.3: If not, then delete the previously assigned puzzles for that skill  and assign new puzzles (in rand_selection table).
+Step 3.4: Then repeat the same procedure for all the skills.
+Step 3.5: Suppose if the assigned game count is less than available game count (i.e, 4 < 5) then delete all the entries of the student in the respective grade (from  rand_selection table).
+Step 3.6: Then repeat from Step 3.1.
