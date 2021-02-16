@@ -1,0 +1,63 @@
+<table id="example" class="display nowrap" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Item 1</th>
+            <th>Item 2</th>
+            <th>Item 3</th>
+            <th>Item 4</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-child-value="hidden 1">
+            <td class="details-control"></td>
+            <td>data 1a</td>
+            <td>data 1b</td>
+            <td>data 1c</td>
+            <td>data 1d</td>
+        </tr>
+        <tr data-child-value="hidden 2">
+            <td class="details-control"></td>
+            <td>data 2a</td>
+            <td>data 2b</td>
+            <td>data 2c</td>
+            <td>data 2d</td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+  function format(value) {
+      return '<div>Hidden Value: ' + value + '</div>';
+  }
+  $(document).ready(function () {
+      var table = $('#example').DataTable({});
+
+      // Add event listener for opening and closing details
+      $('#example').on('click', 'td.details-control', function () {
+          var tr = $(this).closest('tr');
+          var row = table.row(tr);
+
+          if (row.child.isShown()) {
+              // This row is already open - close it
+              row.child.hide();
+              tr.removeClass('shown');
+          } else {
+              // Open this row
+              row.child(format(tr.data('child-value'))).show();
+              tr.addClass('shown');
+          }
+      });
+  });
+</script>
+
+<style>
+@import url('//cdn.datatables.net/1.10.2/css/jquery.dataTables.css');
+ td.details-control {
+    background: url('http://www.datatables.net/examples/resources/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('http://www.datatables.net/examples/resources/details_close.png') no-repeat center center;
+}
+</style>
