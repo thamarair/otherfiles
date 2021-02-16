@@ -1,0 +1,155 @@
+CREATE TABLE `gamescore` (
+  `id` int(11) NOT NULL,
+  `gu_id` int(10) NOT NULL,
+  `gs_id` int(10) NOT NULL,
+  `g_id` int(30) NOT NULL,
+  `que_id` int(11) NOT NULL,
+  `answer` varchar(20) NOT NULL,
+  `useranswer` varchar(55) NOT NULL,
+  `game_score` varchar(50) NOT NULL,
+  `answer_status` varchar(55) NOT NULL,
+  `timeoverstatus` int(11) NOT NULL,
+  `responsetime` int(11) NOT NULL,
+  `balancetime` int(11) NOT NULL,
+  `lastupdate` date NOT NULL,
+  `creation_date` date NOT NULL,
+  `modified_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `puzzle_cycle` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+ALTER TABLE `gamescore`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `gu_id` (`gu_id`),
+  ADD KEY `gs_id` (`gs_id`),
+  ADD KEY `lastupdate` (`lastupdate`),
+  ADD KEY `g_id` (`g_id`);
+ ALTER TABLE `gamescore`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--------------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE `sk_gamescore` (
+  `id` int(11) NOT NULL,
+  `gu_id` int(10) NOT NULL,
+  `gs_id` int(10) NOT NULL,
+  `g_id` int(30) NOT NULL,
+  `que_id` int(11) NOT NULL,
+  `answer` varchar(20) NOT NULL,
+  `useranswer` varchar(55) NOT NULL,
+  `game_score` varchar(50) NOT NULL,
+  `answer_status` varchar(55) NOT NULL,
+  `timeoverstatus` int(11) NOT NULL,
+  `responsetime` int(11) NOT NULL,
+  `balancetime` int(11) NOT NULL,
+  `lastupdate` date NOT NULL,
+  `creation_date` date NOT NULL,
+  `modified_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `puzzle_cycle` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `sk_gamescore`
+
+-- Indexes for table `sk_gamescore`
+--
+ALTER TABLE `sk_gamescore`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `gu_id` (`gu_id`),
+  ADD KEY `gs_id` (`gs_id`),
+  ADD KEY `lastupdate` (`lastupdate`),
+  ADD KEY `g_id` (`g_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `sk_gamescore`
+--
+ALTER TABLE `sk_gamescore`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--------------------------------------------------------------------------------------------------------------------------------
+
+ALTER TABLE `gamedata` ADD `session_id` INT(11) NOT NULL AFTER `Is_schedule`, ADD `puzzle_cycle` INT(11) NOT NULL AFTER `session_id`; 
+--------------------------------------------------------------------------------------------------------------------------------
+ALTER TABLE `sk_gamedata` ADD `session_id` INT(11) NOT NULL AFTER `modified_date`, ADD `puzzle_cycle` INT(11) NOT NULL AFTER `session_id`; 
+--------------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE `cycle_master` (
+  `id` int(11) NOT NULL,
+  `name` varchar(110) NOT NULL,
+  `range_start` int(11) NOT NULL,
+  `range_end` int(11) NOT NULL,
+  `value` varchar(16) NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `cycle_master`
+--
+
+INSERT INTO `cycle_master` (`id`, `name`, `range_start`, `range_end`, `value`, `status`) VALUES
+(1, 'Detailed Assessment', 1, 8, '1-8', 1),
+(2, 'Personalized Training - C1', 9, 16, '9-16', 1),
+(3, 'Personalized Training - C2', 17, 24, '17-24', 1),
+(4, 'Personalized Training - C3', 25, 32, '25-32', 1),
+(5, 'Personalized Training - C4', 33, 40, '33-40', 1),
+(6, 'Personalized Training - C5', 41, 48, '41-48', 1),
+(7, 'Personalized Training - C6', 49, 56, '49-56', 1),
+(8, 'Personalized Training - C7', 57, 64, '57-64', 1),
+(9, 'Personalized Training - C8', 65, 72, '65-72', 1),
+(10, 'Personalized Training - C9', 73, 80, '73-80', 1);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `cycle_master`
+--
+ALTER TABLE `cycle_master`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `cycle_master`
+--
+ALTER TABLE `cycle_master`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT
+-------------------------------------------------------------------------------------------------------------------------------
+ALTER TABLE `sk_user_game_list` ADD `session_start_range` INT(11) NOT NULL AFTER `created_date`, ADD `session_end_range` INT(11) NOT NULL AFTER `session_start_range`; 
+-------------------------------------------------------------------------------------------------------------------------------
+
+HOW TO Calculate Session ID:
+
+select gu_id,lastupdate from (select gu_id,lastupdate,count(DISTINCT gs_id) as playedpuzzles from gamedata as gd join users as u on u.id=gu_id where u.status=1 group by gu_id,lastupdate) as a1 where playedpuzzles=5 group by gu_id,lastupdate order by gu_id asc 
+
+Formula for calculating Session ID
+=COUNTIF($B$2:B2,B2)
+
+example
+https://docs.google.com/spreadsheets/d/1MwOLIqukeAeziNLCos4kDooRp73hG5J8RfDDi1VUsmo/edit?usp=sharing
+Sheet Name : Session_update
+
+Create New table called session_table
+CREATE TABLE IF NOT EXISTS `session_table` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` int(11) NOT NULL,
+  `lastupdate` date NOT NULL,
+  `session_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+import downloaded csv file
+
+Update in Gamedata :===============
+update gamedata as gd join session_table as st on st.userid=gd.gu_id and st.lastupdate=gd.lastupdate set gd.session_id=st.session_id 
+--------------------------------------------------------------------------------------------------------------------------------
+
+SKILL KIT MAPPING
+1. Take sk_games copy and clear alll the data.
+2. import new game details from games table.
+3. Based on this take all related tables bkp and make it clear and do data entry based on new sk_games table
+4. clear sk_rand_selection table
+5. clear sk_user_game_list 

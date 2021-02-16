@@ -1,0 +1,54 @@
+1. Games table entry => Start from 1001
+2. class_plan_game	=> Game id entry from 1001
+3. class_skill_game	=> Game id entry from 1001
+
+4. gamescore => New table [Remove already available table]
+5. gamedata 
+	- session_id
+	- puzzle_cycle
+6. game_reports view
+	- session_id
+	- puzzle_cycle
+7. sk_gamescore => New table [Remove already available table]
+8. sk_gamedata
+	- session_id
+	- puzzle_cycle
+9. sk_game_reports view	
+	- session_id
+	- puzzle_cycle
+10. config check once again
+11. sk_user_game_list => ADD 2 New Column
+12. cycle_master => New Table
+13. 4 SP  
+	- UpdateTodaySession [sa1920 DB]
+	- UpdateSkillkitSession [sa1920 DB]
+	- GameDataInsert [sa1920 DB]
+	- SK_GameDataInsert [sa1920 DB]
+	
+14. skillkit_master new table
+15. Class_plan_game => Add New Column [skillid & complex]
+-----------------------------------------------------------------------------------------------------------
+130 SERVER DB NAME : skillang_sa1920
+Local SERVER DB NAME : schoolsclp_1920_live_1206
+-----------------------------------------------------------------------------------------------------------
+GAME TEAM CHECK LIST :
+1. Game Type=0 into 1
+2. All Variation = true to false
+3. Play Next button	=> Remove or comment it
+4. Game_init & Html_Redirect => URL Change
+5. redirect_org.json => URL Change
+6. Put Result screen code on scoreupdate function
+7. html_redirect() function => comment it
+8. games.php => gamename <==> newgame in our code
+9. Crownie code update in ScoreValidation.js file (2 place in same file)
+10. On Result Screen => Remove full screen option
+
+1. window.parent.document.getElementById("hdnsparkiespoints").value='';
+2. 
+if(window.parent.document.getElementById("hdnsparkiespoints"))
+{
+	window.parent.document.getElementById("hdnsparkiespoints").value=Data;
+}
+
+REF FILE : F:\Sundar-bkp\2019\code\132-Server\Schools-1920\sa1920-clp\1106\assets
+-----------------------------------------------------------------------------------------------------------

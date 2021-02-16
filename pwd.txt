@@ -1,0 +1,573 @@
+"aaSorting": [[2,'asc'], [3,'asc']], 
+
+ padding-top: 10px;
+.card [class*="card-header-"] .card-icon
+.card
+ 
+$query = $this->db->query("select mu.id,email,fname, lname, gender, mobile, mu.status,username,org_pwd,mu.creation_date,startdate, enddate,mu.house_id,
+			(select name from housemaster as em where em.id=mu.house_id) as housename,  
+			(select COALESCE(sum(game_score),0) from gamedata where gu_id=mu.id and gs_id IN(59,60,61,62)) as totscore		  
+			 from users mu	 where event_id='".$event_id."' and mu.status=1 and visible=1 group by mu.id order BY house_id,fname,creation_date desc")
+
+
+
+
+
+38324 
+$x=explode(" ",$arrisUser[0]['gradename']);
+$grade=$this->lang->line("grade");
+$gradenamechange=$x[1] ;
+$response=array(
+'grade'=>$gradenamechange,);
+
+motto
+str_replace("Grade","", $res['grade'])
+<?php 
+						$x=explode(" ",$getgrade[0]['classname']);				  
+						$grade=$this->lang->line("grade")." ".$x[0];
+					//	$grade=echo $cyclenamearray["Personalized Training"]." - ".$x[0];
+						//$gradess=str_replace("Grade","", $grade);
+						//echo str_replace("Grade","", $res['grade']);
+						echo $grade." ".$x[0];?> - <?php echo $myprofile[0]['section'];
+					//	echo $getgrade[0]['classname'];?> - <?php echo $myprofile[0]['section'];
+						?>
+ 
+
+profile clp
+<?php 
+						$x=explode(" ",$getgrade[0]['classname']);				  
+						$grade=$this->lang->line("grade");
+					//	$grade=echo $cyclenamearray["Personalized Training"]." - ".$x[0];
+						//$gradess=str_replace("Grade","", $grade);
+						//echo str_replace("Grade","", $res['grade']);
+						echo $grade." ".$x[1];?> - <?php echo $myprofile[0]['section'];
+					
+						?>
+
+
+setTimeout(function(){ $(".minutes .flip-clock-label").text("<?php echo $this->lang->line("dashboard_minutes"); ?>"); }, 3000);
+//$(".minutes .flip-clock-label").text("<?php echo $this->lang->line("dashboard_minutes"); ?>");
+  window.onload=function(){ 
+  $(".minutes .flip-clock-label").text("<?php echo $this->lang->line("dashboard_minutes"); ?>"); 
+ };  
+ 
+ /* $(window).bind("load", function() { 
+   $(".minutes .flip-clock-label").text("<?php echo $this->lang->line("dashboard_minutes"); ?>");
+}); */ 
+in_mail_findaccexpirydetails,in_crownies_point1,in_wowgained,dashboard_question4,dashboard_thanktofeedback,dashboard_dailydose,dashboard_error,feedback_ques4,Clicktosee,readyforlaunch
+
+print_r (explode(" ",$str));
+echo str_replace("Grade","", $res['grade']);
+
+<span id="currentPgmStatus"><?php echo $this->session->clp_current_status." [".$this->lang->line("profile_s")."-".$cursessid."]"; ?></span>
+
+window.addEventListener("load", function(){
+    $(".minutes .flip-clock-label").text("<?php echo $this->lang->line("dashboard_minutes"); ?>");
+});
+$this->lang->line("in_nextchallenge");
+94776221		
+ACZZw9Pp
+
+TPL and VK
+ Completed school admin in TPL
+Bug fixing in VK
+Discussed Shaarvana Kadugal project
+and prepared ppt for that
+Minutes
+Seconds
+
+ 
+
+
+
+
+9863.tms	69017
+
+http://localhost/myproject/nschool/TPL/tpl_school_admin
+select mu.id,email,fname, lname, gender, mobile, mu.status,username,org_pwd,mu.creation_date,startdate, enddate,mu.house_id, (select name from housemaster as em where em.id=mu.house_id) as housename, (select COALESCE(sum(game_score),'-') from gamedata where gu_id=mu.id and gs_id IN(59,60,61,62) and weekno='2' ) as totscore, (select COALESCE(sum(game_score),'-') from gamedata where gu_id=mu.id and gs_id IN(59,60,61,62) and g_id in ( select gameid from weekly_game_mapping wgm where weekno='2') and weekno='2' ) as score1, (select COALESCE(sum(game_score),'-') from gamedata where gu_id=mu.id and gs_id IN(59,60,61,62) and g_id in ( select gameid from weekly_game_mapping wgm where weekno='2') and weekno='2' ) as score2 from users mu where event_id='29' and mu.status=1 and visible=1 group by mu.id order BY creation_date desc
+
+Currently one child can be
+registered by a parent by a mail id
+Those users are existing users so
+view details is not showing
+97149819	AC0qvx2a
+87781716	AC0RVW05
+95442727	AC0s0hur
+87962888	AC0SAao9
+2309
+96413399	AC0uLxQX
+91835777	AC0Vqezt
+
+91579456	AC0w3Ffz
+96656393	AC0wK2Dh
+95685932	AC0yfwcS
+92527384	AC10IYCp
+
+ 
+
+
+Transliteration(Tamil to English):
+NiRaimozhi maandhar perumai nilaththu
+maRaimozhi kaatti vidum
+
+
+
+
+http://localhost/project/2019/schools/v4/school_assessreports/
+
+
+projectname: TPL
+uname: admin@skillangels.com
+pwd: 12345678
+http://localhost/myproject/nschool/TPL/tpl_org_admin/index.php/home/eventlist
+Brainy Admin(Superadmin and
+Centeradmin)
+
+skillangels clp=>uname:u1g1 pwd:skillangels
+asap=>uname;edst1.aaaaaa/edst13.aaaaaa pwd:123
+
+Language conversion to Gujarati 
+for both ASAP and CLP
+
+Add New Assessment User
+Moved user from ASAP to CLP
+
+Gamesound
+Language conversion to Gujarati
+
+Added users and generated reports for users in 
+Skillangels,Blessedangels,Kinderangels
+
+
+jainadmin,12345678
+
+UPDATE `eventmaster` SET `username` = 'jainaur' WHERE `eventmaster`.`id` = 33;
+UPDATE `eventmaster` SET `username` = 'jainnag' WHERE `eventmaster`.`id` = 32;
+UPDATE `eventmaster` SET `username` = 'jainsha' WHERE `eventmaster`.`id` = 31;
+UPDATE `eventmaster` SET `username` = 'jainkon' WHERE `eventmaster`.`id` = 30;
+ALTER TABLE `school_login_log` ADD `logout_date` DATETIME NOT NULL AFTER `lastupdate`;
+ALTER TABLE `change_password_history` ADD `ip` VARCHAR(50) NOT NULL AFTER `device`;
+
+SELECT count(id) FROM `users` WHERE `event_id`=2 and `house_id`=1	582,g(41),y(50)
+
+select u.id as user,u.fname as fname,u.lname as lname,COALESCE(SUM(gd.game_score),0) as score,(select name from housemaster where id=house_id) as name,(select eventname from eventmaster where id=event_id) as schoolname from users as u left join gamedata as gd on gd.gu_id=u.id where event_id='2' and u.status=1 and visible=1 group by u.id
+
+select mu.id,email,fname, lname, gender, mobile, mu.status,username,org_pwd,mu.creation_date,startdate, enddate,mu.house_id, (select name from housemaster as em where em.id=mu.house_id) as housename, (select COALESCE(sum(game_score),0) from gamedata where gu_id=mu.id and gs_id IN(59,60,61,62)) as totscore from users mu where event_id='2' and mu.status=1 and visible=1 group by mu.id order BY creation_date desc
+
+SELECT weekno,week_startdate,week_enddate,CASE WHEN curdate() Between week_startdate and week_enddate THEN weekno else 0 END as CurrentWeekno FROM school_week_plan WHERE eventid='3' and status=1
+
+SELECT count(totaluser) as totaluser,COALESCE(SUM(score),0) as score,h1.id as house_id,name from 
+			(select u.id as totaluser,sum(gd.game_score) as score,house_id from users as u 
+			left join gamedata as gd on gd.gu_id=u.id where event_id=2 and u.status=1 and visible=1  group by u.id) as a1 right join housemaster as h1 on h1.id=house_id group by h1.id
+  
+<?php echo $this->lang->line("logout"); ?>
+$data['getlanguage'] = $this->Assessment_model->get_language();
+
+
+INSERT INTO `language_master` (`ID`, `name`, `status`, `language_key`) VALUES (NULL, 'Gujarati', 'Y', 'gujarati');
+
+ALTER TABLE `users` ADD `language_id` INT(11) NOT NULL DEFAULT '101' AFTER `org_username`;
+ALTER TABLE `lang_master` ADD `name` VARCHAR(400) NOT NULL DEFAULT 'English' AFTER `id`;
+
+UPDATE `lang_master` SET `id` = '101' WHERE `lang_master`.`id` = 1;
+UPDATE `lang_master` SET `id` = '102' WHERE `lang_master`.`id` = 2;
+UPDATE `lang_master` SET `id` = '103' WHERE `lang_master`.`id` = 3;
+UPDATE `lang_master` SET `id` = '104' WHERE `lang_master`.`id` = 4;
+
+ALTER TABLE `users` ADD `lang_id` INT(11) NOT NULL AFTER `enddate`;
+ALTER TABLE `language_master` CHANGE `name` `name` VARCHAR(400) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'English';
+
+<?php  if(1==$row['ID']){ echo 'selected="selected"';} ?> myTag="<?php echo $row['language']; ?>" 
+
+<option <?php  if(1==$row['id']){ echo 'selected="selected"';}  ?> myTag="<?php echo $row['product_name']; ?>" value="<?php echo $row['id']; ?>"><?php echo $row['product_name']; ?></option>
+index in all
+vk=>doctor
+ctrl=(ssadmin)home,
+view=home,userlist,userlistajax,index
+
+Back button is not needed 
+Dashboard menu is enough
+
+sk_blessedangels
+ALTER TABLE `users` ADD `startdate` DATE NOT NULL AFTER `current_session`;
+ALTER TABLE `users` ADD `enddate` DATE NOT NULL AFTER `startdate`;
+Online Payment
+1 Parent have to register for 2 Child using same mail id - 1:1 / 1:n
+
+
+71817,38332
+60451
+71572
+EDSIXIN 067
+kinderangels=>https://kinderangels.com/index.php
+uname:lkg pwd:ka@
+user_sparkies_history,gamedata
+
+'.$this->lang->line("in_skillangels").'
+<?php echo $this->lang->line("dashboard_locked"); ?>
+pro_play
+pro_soundplay
+
+173,270,335,417,624,1630,2303,2903,3143,3169,3628
+'Grade','GAME_END',in_norecrod
+1855,2867
+
+
+http://localhost/myproject/BlissfulAngels/region/index.php/home/dashboard
+
+http://localhost/project/2019/schools/v4/
+
+if (typeof Highcharts === 'object') {
+  highchartsBellCurve(Highcharts); // Execute the bell curve module
+}
+model->used doctor's instead of brainy 	totalrec_userlist,userslist. ctrluserslist,userlist_PaginationData
+
+skillwisechart_asap_clp
+ <?php foreach($getmonthlyscore as $row){ 
+					echo "'".$row['monthname']."',";
+		}
+	?> 
+pc1=>38320,65180,68112,65687
+
+rmvd= ctrller =>licenseused,distributedlicensetoacademy
+getacademyname,getacademyname_sc,distributedlicensetoacademy_sc,insertacademy,updateacademy,
+updateacademy_sc,academyedit,academylist,insertacademy_sc
+
+.$this->config->item('skilllogic').
+6125525884 ec3763bd45b8d0beeaca65a98767f0a0c67f60bd 30453393
+BEGIN
+	DECLARE userid varchar(500);
+	DECLARE lid int(100);
+    DECLARE ousername varchar(255);
+    DECLARE otype ENUM('Y','N');      
+    
+    IF((incheckboxchk = 1) && (inbrainydirectusername!='')) THEN
+  	 	SET ousername = inbrainydirectusername;
+   		SET otype = 'Y';
+         
+          INSERT INTO users(salt1,password,salt2,fname, lname,status,grade_id,username,sid,section,academicyear,creation_date,agreetermsandservice,academic_center_id,isapp,isnewuser,gp_id,is_direct_brainyuser)VALUES (insalt1,inpwdhash,insalt2,infname,inlname,1,ingradename,ousername,2,'A',19,now(),1,inacademyname,inisapp,'Y',inplanid,otype);
+          
+          SELECT ousername as userid;
+     
+    ELSE
+   		  SET ousername='';
+    	  SET otype = 'N';   
+         
+          INSERT INTO users(salt1,password,salt2,fname, lname,status,grade_id,username,sid,section,academicyear,creation_date,agreetermsandservice,academic_center_id,isapp,isnewuser,gp_id,is_direct_brainyuser)VALUES (insalt1,inpwdhash,insalt2,infname,inlname,1,ingradename,ousername,2,'A',19,now(),1,inacademyname,inisapp,'Y',inplanid,otype);
+         
+        SET lid=last_insert_id();
+	   	SET userid=concat('brainy','.',lid);
+		UPDATE users set username=userid WHERE id=lid;        
+        SELECT userid;       
+      END IF;
+END
+blssang=BA_code=blessedangel_1920
+http://localhost/asap1920/
+
+92385413	
+
+99993461    	ACwSdMyH
+99994482	ACC8D3eX
+99995611	ACoRDujR
+99998754	ACiUgrUp
+
+78659238	ACmXMDRl
+78578841	ACv58fFI
+78547148	ACMUfR61
+78524139	ACJ6lahr
+79376423	ACBAKSoD
+79375883	ACgco763	
+78823885	ACpcVLxt
+78774474	AC2fJLrE
+78749436	ACcXQjKd
+79377753	AC75CvaD
+79379354	AClrdESf	
+97655912	ACStO5Lo
+97447484	ACAamTJP
+
+97376793	AC9h26hE
+ALTER TABLE `users` ADD `programid` INT(11) NOT NULL AFTER `isnew`;
+
+(select program_name from program_master where id=u.programid) as programname,(select gradename from program_grade_master where gradeid=u.grade_id and programid=u.programid) as gradename
+
+<script>
+$.fn.dataTable.ext.errMode = 'none'; 
+</script>
+
+ACDNPRBQ	ACTEaW8Y	
+89321434	AC0a1ZnZ
+88981992	AC0b7RGM
+96647725	AC0BgBzT
+	
+92283447	AC0CNilc
+
+style="color:red;text-shadow: none;font-size: 20px;clear:both;display: block;"
+
+ACQOITJX	ACsnYjB6
+
+78524139	ACJ6lahr
+ACKLAVCF	AC5DkuBU
+ACCVRUZL	ACbHDq6N
+
+78473254	ACcXI7d8
+78492529	ACUy6niK
+
+97677254	ACQyPh71
+97445631	ACupr7mo
+97442534	ACbRFZ4B
+97441352	ACc8mjVt	
+99988191	ACDvkuOr	useregtn386
+97377844	ACv75HEk
+97378626	ACxnB4VM
+97389754	ACmN2JWR
+97365958	AC0LjJxG
+97763395	ACMXQ18K
+97571266	ACY56g1v
+97561239	ACc5Ba4q
+97543414	AC9aJlyE
+
+93168233	AC0ePfEP
+
+
+97365132	AComEnbO
+97453924	AC5OhYb7
+97763395	ACMXQ18K
+97561239	ACc5Ba4q
+97543414	AC9aJlyE	
+97453924	AC5OhYb7
+97349829	ACjvY1Xl
+97579962	AC9pAr2I	
+97582966	ACxZBOMl
+	
+97757486	ACyZVCxR
+97754694	AC5Ud1VC
+97361825	ACgEsbhg	
+97746997	AC9H3rtc
+97751154 	ACWV0zOt
+97355447	ACW2bpqD
+97354158	AC4X20SG
+97356344	ACdC2s9P
+96922148	AC02v4UM
+89452739	AC03e7mE
+93143222	AC03X6yU
+93137271	AC09wNUT
+
+ALTER TABLE `schools` ADD `new_features` ENUM('Y','N') NOT NULL DEFAULT 'N' AFTER `maildays`;
+
+
+<img alt="www.blissfulangels.org" src="'.base_url().'assets/images/home/Bris01.png" style="float: right;width:170px;">
+<a href="mailto:support@blissfulangels.org"  style="color:#ee1b5b;text-decoration: none;" >support@blissfulangels.org</a>
+91968331	AC0FY395
+93333831	AC0hCr1G
+91893691	AC0hQfzO
+91196947	AC0jG2jx
+94468472	AC0LB64M
+91916392	AC0P471w
+94971364	AC0Q8QCH
+AC0LeHpG	89539642
+	
+Worked in language conversion
+in Skillangels project.
+
+Project Name: VK
+Bug fixing
+Wrote php test
+
+Worked in VK 
+skillangels
+ Language conversion(Gujarati) in ASAP.
+Developed school admin site.
+
+1 hour permission in morning and
+half day leave in evening	
+92425394	AC0W8Lzl	
+96656393	AC0wK2Dh
+95685932	AC0yfwcS	
+92527384	AC10IYCp
+
+
+
+	
+60549=b
+6869=k
+92283447	AC0CNilc
+96647725	AC0BgBzT
+88981992	AC0b7RGM	
+89321434	AC0a1ZnZ
+
+
+
+
+
+
+
+doc=tham,nazrindoly@gmail.com
+usrname=sai5@skillangels.com,demo1@skillangels.com(Userone),tham@skilangels.com(doc)
+`
+Congratulations !!! You have Gifted your Child an Experience to the "World of Thinking"
+Guidelines :
+
+1.To start the Engagement Program go to www.skillangels.com
+2.Click on the User Login and enter the username and password sent to your registered email Id
+3.You will engage with your child in our online puzzle based platform daily and for about 40 minutes across all days in a week
+4.Every week the child will get unique puzzles in Memory, Visual Processing, Focus & Attention, Problem Solving & Linguistics
+5.The child can re-play puzzles in any skills for a maximum of 5 times provided
+	a. Puzzles under all skills are completed at least once
+	b. The screen time does not exceed 40 minutes during the week
+6.Every 6th week, there will be an assessment with one round of puzzles across all skills
+7.You will be able to see your child activity and scores in the reports page
+8.Your child will get trophies & badges as recognition of their good performance, which will be visible in the childs profile
+9.Your child will be able to play for 365 days from the date of registration
+
+97747914	ACPxCz4R
+97529971	ACVIXVWS
+97464172	AC0hFY2w
+97456762	AChkNQVG
+97455194	ACBdBHax
+97455127	ACrvV3tZ
+AC0o6dsN	95437123
+
+
+thamarair
+thamaraibarathi@gmail.com
+thamaraiii
+thamarai97.r@gmail.com
+
+
+
+
+
+	
+
+	
+
+
+$(tthis).attr('data-href')	
+u ram@skillangels.com
+
+/* programid,(select program_name from program_master where id=c.programid ) as programname,gradeid, (select gradename from program_grade_master where 	gradeid=c.gradeid and programid=c.programid ) as gradename,paymentmode */
+
+data-planid="<?php echo $res['planid']; ?>" =>customattr
+var planid = $('#ddlgrade(name in <select>) option:selected').data('planid');
+call customattr like this in ajax => radiobtn
+
+D:\xampp\htdocs\project\2019\schools\v4\assets\swf\clp\assets\EnglishAssets	=> sound
+
+https://demo.skillangels.com/sa1920/index.php/home/profile#View	=>sound
+blissfulangels => sathya,skillangels
+
+public function insert_userdata($salt1,$pwdhash,$salt2,$fname,$lname,$gradename,$academyname,$plan_id)
+	{ 
+	$query = $this->multipledb->db->query("call concat_username_id('".$salt1."','".$pwdhash."','".$salt2."','".$fname."','".$lname."',1,'".$gradename."',2,'A',19,now(),1,'".$academyname."','N','Y','".$plan_id."')"); 
+	//	echo $this->multipledb->db->last_query(); exit;
+		return $query->result_array();
+	} 
+
+
+region => ethiraj
+brainy superadmin	=>	 admin,Br@iny
+brainy centeradmin	=>	anandnagar,BR@INY
+bcanew	=>	http://localhost/myproject/sk_brainy_centeradmin/CenterAdmin
+D:\xampp\htdocs\myproject\sk_brainy_admin\Sadmin\application\controllers
+D:\xampp\htdocs\myproject\sk_brainy_centeradmin\CenterAdmin
+D:\xampp\htdocs\myproject\asap1920 => singleinsert
+ASAP	=>http://localhost/myproject/nschool/lang/asap/	=>edst1.aaaaaa,123
+
+
+ajax_dash_clp cad	assign_license_ajax sa academycenterlistdate
+m=>rgb(218,4,4)
+vp=fill="rgb(255,192,0)"
+fa=rgb(146,208,80)
+ps=rgb(255,102,0)
+l=rgb(0,176,240)
+D:\xampp\htdocs\myproject\sk_brainy_admin\Sadmin\assets\images\report_card
+
+
+if (element.attr("type") === "radio") {
+        error.insertAfter(element.parent().parent().parent());
+    } add .parent() to display the msg crtly aligned in validate()
+//	echo "<pre>";print_r($_SESSION);exit;				 
+				// $fname=$data['query'][0]->fname;
+				//$fname=$this->session->fname;
+
+
+
+	kgs@skillangels.com
+	skillangels
+intervetionreport_clp
+schools http://localhost/project/2019/schools/v4/
+baold=>http://localhost/myproject/superadmin/sadmin/
+kgs school
+https://schools.skillangels.com/schools/index.php/home/userview/2712705.kgs
+https://schools.skillangels.com/schools/index.php/home/userview/2718554.kgs
+
+dpsd school
+https://schools.skillangels.com/schools/index.php/home/userview/d6760.dpsd 
+https://schools.skillangels.com/schools/index.php/home/userview/d9607.dpsd
+
+ALTER TABLE `users` ADD `user_game_sound` VARCHAR(500) NOT NULL DEFAULT 'sound1' AFTER `org_username`;
+D:\xampp\htdocs\project\2019\schools\v4\application\views	http://localhost/project/2019/schools/v4/
+if($this->session->gamesound==$row['game_sound'])
+$row['game_sound'] this nams is as same as this mainly=>view
+ value="<?php echo $row['game_sound']; ?>" rel="<?php echo $row['game_sound']; ?> 
+
+135 =>sadmin(qry),,218,455,492,639,1089,1146,
+admin=> 38,542,
+ok=>632,874,898
+92176766		
+AC10xtD7
+
+4827.ck
+
+
+http://localhost/myproject/nschool/gensmartdemo_12022019(1)/gamelist.php
+
+Function Names
+getDailyPlanner
+getDetailedAssessment
+getPersonalisedTraining
+getProfile
+editProfile
+logout
+
+child key
+  userg7
+  userg8
+
+SELECT grade_id,concat(r020," / ",rp020) as r20,concat(r2040," / ",rp2040) as r2040 FROM `tbl_sem1_dasi_skillscores` WHERE `sid` = 138 AND `skillid` = 59 group by grade_id
+SELECT grade_id,concat(r020," / ",rp020) as r20,concat(r2040," / ",rp2040) as r2040,concat(r4060," / ",rp4060) as r4060,concat(r6080," / ",rp6080) as r6080,concat(r80100," / ",rp80100) as r80100 FROM `tbl_sem1_dasi_skillscores` WHERE `sid` = 138 AND `skillid` = 59 and `grade_id`=5 group by grade_id
+
+$noofgradeinschools = mysqli_query($con,"SELECT grade_id,concat(r020," / ",rp020) as r20,concat(r2040," / ",rp2040) as r2040,concat(r4060," / ",rp4060) as r4060,concat(r6080," / ",rp6080) as r6080,concat(r80100," / ",rp80100) as r80100 FROM `tbl_sem1_dasi_skillscores` WHERE `sid` = 138 AND `skillid` = 59 and `grade_id`=5 group by grade_id");
+while($row = mysqli_fetch_assoc($noofgradeinschools))
+{
+	$arrofgrade[] = $row[];
+}
+foreach($arrofgrade as $row)
+{}
+ALTER TABLE `tbl_sem1_dasi_skillscores` ADD `grade_name` VARCHAR(100) NOT NULL AFTER `grade_id`;
+UPDATE `tbl_sem1_dasi_skillscores` SET grade_name = "Grade IV" WHERE `grade_id`=6
+ALTER TABLE `tbl_sem1_dasi_medianscore` ADD `grade_name` VARCHAR(55) NOT NULL AFTER `grade_id`;
+$header->addImage($headerlogo, array('width' => 570, 'height'=> 700,'positioning' => \PhpOffice\PhpWord\Style\Image::POSITION_ABSOLUTE,
+    'posHorizontal' => \PhpOffice\PhpWord\Style\Image::POSITION_ABSOLUTE,
+    'posVertical' => \PhpOffice\PhpWord\Style\Image::POSITION_ABSOLUTE,
+    'marginLeft' => round(\PhpOffice\PhpWord\Shared\Converter::cmToPixel(17)),
+    'marginTop' => round(\PhpOffice\PhpWord\Shared\Converter::cmToPixel(-0.5)), 'wrappingStyle'=> 'behind'));
+
+UPDATE `tbl_sem1_dasi_medianscore` SET grade_name = "Grade I" WHERE `grade_id`=3;
+UPDATE `tbl_sem1_dasi_medianscore` SET grade_name = "Grade II" WHERE `grade_id`=4;
+UPDATE `tbl_sem1_dasi_medianscore` SET grade_name = "Grade III" WHERE `grade_id`=5;
+UPDATE `tbl_sem1_dasi_medianscore` SET grade_name = "Grade IV" WHERE `grade_id`=6;
+UPDATE `tbl_sem1_dasi_medianscore` SET grade_name = "Grade V" WHERE `grade_id`=7;
+UPDATE `tbl_sem1_dasi_medianscore` SET grade_name = "Grade VI" WHERE `grade_id`=8;
+UPDATE `tbl_sem1_dasi_medianscore` SET grade_name = "Grade VII" WHERE `grade_id`=9;
+UPDATE `tbl_sem1_dasi_medianscore` SET grade_name = "Grade VIII" WHERE `grade_id`=10;
+UPDATE `tbl_sem1_dasi_medianscore` SET grade_name = "Grade IX" WHERE `grade_id`=12;
+UPDATE `tbl_sem1_dasi_medianscore` SET grade_name = "Grade X" WHERE `grade_id`=13;
+UPDATE `tbl_sem1_dasi_medianscore` SET grade_name = "Grade XI" WHERE `grade_id`=14;
+UPDATE `tbl_sem1_dasi_medianscore` SET grade_name = "Grade XII" WHERE `grade_id`=15;
+http://localhost/project/2019/schools/v4/school_assessreports/templates/asap_completed_user_overallreport.php
+ALTER TABLE `tbl_sem1_annexure` ADD `grade_name` VARCHAR(55) NOT NULL AFTER `grade_id`;
+SELECT DISTINCT(grade_name),section FROM tbl_sem1_annexure WHERE sid="156"  
+
+strtoupper
+$arrofsection = mysqli_query($con,'SELECT  section,sess_comp_75above FROM tbl_sem1_program_utilization WHERE sid="'.$schoolId.'" grade_id = "'.$arrofgname[$arrofgradename['gid']]['section'].'" ');

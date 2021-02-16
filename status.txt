@@ -1,0 +1,22 @@
+Created two tables in clp database and wrote query to fetch data from it.
+Checked User key and name for NCC.
+
+Made changes in Assessment Report  styles
+Calculated percentage for the pine view school
+Checked Skill toppers and BSPI toppers report for Pine view school,dpsd school and Sivakasi Lions school.
+Created View Jobprofile menu 
+Calculated percantage for St.Joseph school
+Played games in skillangels.
+
+Jobprofile side navigation button
+Prepared document
+Made changes in games file
+
+Changed game link and image in skillangels game suite
+Made changes in Assessment Report Template
+Calculated percentage for GRN school
+
+Displayed a popup message for invalid ip
+Calculated percentage.
+Displayed popup after logged in by displaying ability and skill's  sector,values and description for skillangels
+learnt to display when button is clicked  and also learnt in_array,array_search in php.

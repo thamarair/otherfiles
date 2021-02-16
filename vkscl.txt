@@ -1,0 +1,15 @@
+vk school
+sa-asap-sid=172
+INSERT INTO `schools` (`id`, `school_name`, `school_address`, `phone`, `email`, `school_code`, `zone`, `district`, `state`, `country`, `city`, `active`, `type`, `flag`, `asap_type`, `starton`, `status`, `createdby`, `creation_date`, `modifiedby`, `modified_date`, `emailcc`, `emailcc1`, `isemailneed`, `maildays`, `hotsstatus`) VALUES (NULL, 'VK Demo', 'Chennai', '1234567890', 'vk@skillangels.com', 'vk', 'Chennai', 'Chennai', 'Tamil Nadu', 'India', 'Chennai', '1', 'CBSE', '1', 'U', '', '1', '', '0000-00-00', '', '2019-04-12 16:25:36', '', '', 'N', NULL, 'D');
+
+sa-clp=sid=170
+INSERT INTO `schools` (`id`, `school_name`, `school_address`, `phone`, `email`, `school_code`, `zone`, `district`, `state`, `country`, `city`, `active`, `type`, `flag`, `status`, `academic_id`, `createdby`, `creation_date`, `modifiedby`, `modified_date`, `visible`, `start_date`, `session_division`, `emailcc`, `emailcc1`, `timer_value`, `isemailneed`, `maildays`) VALUES (NULL, 'VK Demo', 'Chennai', '1234567890', 'vk@skillangels.com', 'vk', 'Chennai', 'Chennai', 'Tamil Nadu', 'India', 'Chennai', '1', 'CBSE', '1', '1', '20', '', '2019-08-22', '', '2019-08-22 09:40:14', '1', '2019-08-22', '1', '', NULL, '2400', 'N', NULL);
+
+ba=sid=3
+INSERT INTO `schools` (`id`, `school_name`, `school_address`, `phone`, `email`, `school_code`, `zone`, `district`, `state`, `country`, `city`, `active`, `type`, `flag`, `status`, `academic_id`, `createdby`, `creation_date`, `modifiedby`, `modified_date`, `visible`, `start_date`, `session_division`, `emailcc`, `timer_value`, `isemailneed`) VALUES (NULL, 'VK Demo', 'Chennai', '1234567890', 'vk@skillangels.com', 'vk', 'Chennai', 'Chennai', 'Tamil Nadu', 'India', 'Chennai', '1', 'CBSE', '1', '1', '20', '', '2019-08-22', '', '2019-08-22 06:14:46', '1', '2019-08-22', '1', '', '18000', 'N');
+
+ba_kinder=sid=126
+INSERT INTO `schools` (`id`, `school_name`, `school_address`, `phone`, `email`, `school_code`, `zone`, `district`, `state`, `country`, `city`, `active`, `type`, `flag`, `status`, `academic_id`, `createdby`, `creation_date`, `modifiedby`, `modified_date`, `visible`, `start_date`, `emailcc`, `emailcc1`) VALUES (NULL, 'VK Demo', '', '1234567890', 'vk@kinderangels.com', 'vk', 'Chennai', 'Chennai', 'Tamil Nadu', 'India', 'Chennai', '1', 'CBSE', '1', '0', '20', '', '2019-08-22', '', '2019-08-22 15:20:14', '0', '2019-08-22', '', '');
+
+ka=sid=126
+INSERT INTO `schools` (`id`, `school_name`, `school_address`, `phone`, `email`, `school_code`, `zone`, `district`, `state`, `country`, `city`, `active`, `type`, `flag`, `status`, `academic_id`, `createdby`, `creation_date`, `modifiedby`, `modified_date`, `visible`, `start_date`, `emailcc`, `emailcc1`) VALUES (NULL, 'VK Demo', 'Chennai', '1234567890', 'vk@skillangels.com', 'vk', 'Chennai', 'Chennai', 'Tamil Nadu', 'India', 'Chennai', '1', 'CBSE', '1', '1', '20', '', '2019-08-22', '', '2019-08-22 00:26:39', '1', '2019-08-22', '', '');

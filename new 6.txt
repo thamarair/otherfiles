@@ -1,0 +1,1595 @@
+<?php
+ob_start();
+error_reporting(E_ALL); ini_set('display_errors', 1);
+include('../../dbassess.php');
+session_start();
+
+date_default_timezone_set("Asia/Calcutta");  
+ 
+$adminid=$_SESSION['aid'];
+ini_set('memory_limit','64M');
+ini_set('max_execution_time', 3000); //300 seconds = 5 minutes
+require_once("../doc/vendor/autoload.php"); 
+// Creating the new document...
+$phpWord = new \PhpOffice\PhpWord\PhpWord();
+
+
+
+  
+
+// Adding an empty Section to the document...
+$sectionStyle =array( 'orientation' => 'portrait','marginLeft' => 1500, 'marginRight' => 1000,'marginTop' => 600, 'marginBottom' => 600,"headerHeight"=>0,"footerHeight"=>50);
+$section = $phpWord->addSection($sectionStyle);
+
+$headerlogo='../images/docs/asapheader.jpg';
+ /* $footerlogo='../images/footerlogo.jpg';  */
+
+$schoollogo='../images/footerlogo.jpg';
+$asaplogo='../images/asap.jpg';
+$skillslogo='../images/Skills.jpg';
+$starlogo='../images/docs/star.jpg';
+$annexurelogo='../images/docs/annexure.jpg';
+
+$header = $section->addHeader();
+$header->addImage($headerlogo, array('width' => 570, 'height'=> 100, 'marginTop'=> 0, 'marginBottom'=> 0,'marginLeft'=> 0, 'marginRight'=> 0,'wrappingStyle'=> 'behind', 'align'=> 'center'));
+
+$footers = $section->createFooter();
+$textrun = $footers->addTextRun();
+$section->getStyle()->setPageNumberingStart(1);
+
+
+$textrun->addText('www.skillangels.com|' , array('width' => 550, 'height'=> 40, 'marginTop'=> 0, 'marginBottom'=> 0,'marginLeft'=> 0, 'marginRight'=> 0, 'wrappingStyle'=> 'behind', 'bgColor'=>'943734','align'=> 'both')); 
+$textrun->addText(htmlspecialchars('support@skillangels.com'),array("bold"=>false,"color"=>"943734","name"=>"Calibri","size"=>"12",'align'=> 'both'));
+
+ $footers->addPreserveText(htmlspecialchars('Page {PAGE} of {NUMPAGES}.'),array('align'=> 'both','bgColor'=>'943734')); 
+
+ /* $textrun->addField(htmlspecialchars('PAGE  ', array('align'=> 'right')));
+$textrun->addText(' of ');
+$textrun->addField(htmlspecialchars('NUMPAGES', array('align'=> 'right')));  */
+
+
+
+
+
+ 
+/* $section->addImage($schoollogo, array('width' => 150, 'height'=> 100, 'marginTop'=> -1, 'marginLeft'=> -1, 'wrappingStyle'=> 'behind', 'align'=> 'center'));  */
+ 
+ // Define table style arrays
+$styleTable = array('borderSize'=>2, 'borderColor'=>'000', 'cellMargin'=>10);
+$styleFirstRow = array('borderBottomSize'=>2, 'borderBottomColor'=>'000', 'bgColor'=>'000');
+// Define cell style arrays
+$styleCell = array('valign'=>'center');
+$styleCellBTLR = array('valign'=>'center', 'textDirection'=>'');
+// Define font style for first row
+$fontStyle1 = array('bold'=>true, 'align'=>'center',"size"=>"11","name"=>"Calibri");
+$fontStyle2 = array('bold'=>false, 'align'=>'center',"size"=>"11","name"=>"Calibri");
+
+$phpWord->addNumberingStyle(
+    'multilevel',
+    array(
+        'type'   => 'multilevel',
+        'levels' => array(
+            array('format' => 'decimal', 'text' => '%1.', 'left' => 360, 'hanging' => 360, 'tabPos' => 360,"lineHeight"=>"1"),
+            array('format' => 'decimal', 'text' => '%1.%2.', 'left' => 720, 'hanging' => 720, 'tabPos' => 720,"lineHeight"=>"1"),
+             array('format' => 'decimal', 'text' => '%1.%2.%3.', 'left' => 720, 'hanging' => 720, 'tabPos' => 720,"lineHeight"=>"1"),
+             array('format' => 'decimal', 'text' => '%1.%2.%3.%4.', 'left' => 720, 'hanging' => 720, 'tabPos' => 720,"lineHeight"=>"1"),
+             array('format' => 'decimal', 'text' => '%1.%2.%3.%4.%5.', 'left' => 720, 'hanging' => 720, 'tabPos' => 720,"lineHeight"=>"1"),
+        ),
+    )
+);
+
+  $phpWord->addFontStyle('myOwnlistcolorStyle', array('color' => '498CF1')); 
+ 
+  $phpWord->addFontStyle('myOwnlistcolorStyle_dummy', array('color' => '000',"size"=>"12","name"=>"Calibri")); 
+ 
+
+ 
+
+//$listfontstyle=array("bold"=>false,"color"=>"498CF1","name"=>"Calibri","size"=>"12","underline"=>"single");
+$listfontstyle=array("bold"=>false,"color"=>"943734","name"=>"Calibri","size"=>"12","underline"=>"single");
+
+/* $listfont=array("bold"=>false,"color"=>"943734","name"=>"Calibri","size"=>"14"); */
+
+ $listfont=array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"); 
+
+
+
+
+$hstyle=array("bold"=>true,"color"=>"0e57c5","name"=>"Calibri","size"=>"14");
+$hstyle1=array("bold"=>true,"color"=>"366091","name"=>"Calibri","size"=>"14");
+$pstyle= array('align'=>'center', 'spaceAfter'=>"","lineHeight"=>"1.15");
+$pstyleJustify= array('align'=>'both', 'spaceAfter'=>"","lineHeight"=>"1.15");
+$pstyleLeft= array('align'=>'left', 'spaceAfter'=>"","lineHeight"=>"1.15");
+$pstyle1= array('align'=>'left', 'spaceAfter'=>"","lineHeight"=>"1");
+$pstyle2= array('align'=>'center', 'spaceAfter'=>"","lineHeight"=>"1");
+
+// School Name 
+$arrschools= mysqli_query($con,"select school_name,Concat(year(startdate),'-',year(enddate)) as academicYear,hotsstatus from schools as s join academic_year as a on a.id=19 where s.id=".$_SESSION['schoolid']." ");
+
+$arrschools1= mysqli_query($con,"select MIN(lastupdate) as startdate,MAX(lastupdate) as lastdate,u.sid from users u join game_reports gr ON u.id=gr.gu_id where u.sid=".$_SESSION['schoolid']."");
+
+while($objschools1 = mysqli_fetch_assoc($arrschools1))
+{
+	$schools1[]= $objschools1;
+}
+//echo $schools1[0]['startdate']; exit;
+
+
+$asapdate =  date('d', strtotime($schools1[0]['startdate']));
+$asapmonth = date("F", strtotime($schools1[0]['startdate']));
+$asapstartdate = $asapmonth.' '.$asapdate;
+
+$asapedate =  date('d', strtotime($schools1[0]['lastdate']));
+$asapemonth = date("F", strtotime($schools1[0]['lastdate']));
+$asapenddate = $asapemonth.' '.$asapedate;
+
+
+while($objschools = mysqli_fetch_assoc($arrschools))
+{
+	$schools[]= $objschools;
+}
+
+
+$totstdnts= mysqli_query($con,"select count(*) as tot from asap_completed_users where sid=".$_SESSION['schoolid']." and status=1");
+while($objtot = mysqli_fetch_assoc($totstdnts))
+{
+	$restotstdnts[]= $objtot;
+}
+
+
+$arroftotalUsers= mysqli_query($con,"select count(*) as tot from users where sid=".$_SESSION['schoolid']." and status=1");
+while($objTotalUsers= mysqli_fetch_assoc($arroftotalUsers))
+{
+	$School_Total_Users[]= $objTotalUsers;
+} 
+$arrofAttendedtotalUsers= mysqli_query($con,"SELECT count(DISTINCT  gu_id) as AttendedUsersCount from game_reports gd JOIN users u ON gd.gu_id=u.id where u.sid='".$_SESSION['schoolid']."' and u.status=1 and gs_id!=0");
+while($objAttendedtotalUsers= mysqli_fetch_assoc($arrofAttendedtotalUsers))
+{
+	$AttendedtotalUsers[]= $objAttendedtotalUsers;
+}
+ 
+$bspirange = mysqli_query($con,"select count(lessthantwenty) as '<=20', count(twentytoforty) as '20-40', count(fortytosixty) as '40-60', count(sixtytoeighty) as '60-80', count(greatereithy) as '>80' from (SELECT AVG(game_score) as finalscore, case when (SUM(game_score)/5) <=20 then '<20' END as lessthantwenty, case when (SUM(game_score)/5) >20 and (SUM(game_score)/5) <=40 then '20-40' end as twentytoforty, case when (SUM(game_score)/5) >40 and (SUM(game_score)/5) <=60 then '40-60' END as fortytosixty, case  when (SUM(game_score)/5) >60 and (SUM(game_score)/5) <=80 then '60-80' end as sixtytoeighty, case when (SUM(game_score)/5) >80 then '>80' end as greatereithy 			from game_reports gd JOIN asap_completed_users u ON gd.gu_id=u.id where u.sid='".$_SESSION['schoolid']."' and u.status=1 and gs_id!=0 group BY gu_id) x");
+
+		while($objbspirange = mysqli_fetch_assoc($bspirange)){
+
+	$bspirangeres[]= $objbspirange;
+
+}
+
+if(!isset($bspirangeres[0]['<=20'])){ $bspirangeless_two = "0";} else{ $bspirangeless_two = $bspirangeres[0]['<=20'];}
+if(!isset($bspirangeres[0]['20-40'])){ $bspirangeless_twotofour = "0";}else{ $bspirangeless_twotofour = $bspirangeres[0]['20-40'];}
+if(!isset($bspirangeres[0]['40-60'])){ $bspirangeless_fourtosix = "0";}else{  $bspirangeless_fourtosix = $bspirangeres[0]['40-60'];}
+if(!isset($bspirangeres[0]['60-80'])){ $bspirangeless_sixtoeig = "0";}else{  $bspirangeless_sixtoeig = $bspirangeres[0]['60-80'];} 
+if(!isset($bspirangeres[0]['>80'])){ $bspirangeless_ge = "0";}else{  $bspirangeless_ge = $bspirangeres[0]['>80'];}
+
+$totalcount = $bspirangeless_two+$bspirangeless_twotofour+$bspirangeless_fourtosix+$bspirangeless_sixtoeig+$bspirangeless_ge;
+
+$TotalStudent_enrolled= $School_Total_Users[0]['tot'];
+$TotalStudent_participated= $AttendedtotalUsers[0]['AttendedUsersCount'];
+$TotalStudent_completed= $totalcount;
+
+if($TotalStudent_participated==$TotalStudent_completed)
+{
+	$Absentees=$TotalStudent_enrolled-$totalcount;
+}
+else
+{
+	$Absentees=$TotalStudent_enrolled-$TotalStudent_participated;
+}
+
+$section->addText(htmlspecialchars($schools[0]['school_name']),$hstyle1,$pstyle);
+
+
+$textrun = $section->addTextRun($pstyle);
+$textrun->addText(htmlspecialchars('SkillAngels'),array("bold"=>true,"color"=>"00b0f0","name"=>"Calibri","size"=>"16"));
+$textrun->addText(htmlspecialchars('TM'),array("bold"=>true,"color"=>"00b0f0","name"=>"Calibri","size"=>"10",'superScript' => true));
+$textrun->addText(htmlspecialchars(' - Cognitive Learning Program - Assessment Report'),array("bold"=>true,"color"=>"00b0f0","name"=>"Calibri","size"=>"16"));
+
+/* $section->addText(htmlspecialchars('SkillAngels<sup>TM</sup> - Cognitive Learning Program - Assessment Report'),array("bold"=>true,"color"=>"00b0f0","name"=>"Calibri","size"=>"16","super"=>true,"sub"=>true),$pstyle); */
+
+
+
+
+$section->addText('Academic Year: 2019-20',array("bold"=>true,"color"=>"ff0000","name"=>"Calibri","size"=>"12"),$pstyle);
+
+$section->addImage($asaplogo, array('width' => 250, 'height'=> 250, 'marginTop'=> -1, 'marginLeft'=> -1, 'wrappingStyle'=> 'behind', 'align'=> 'center'));
+
+$section->addText(htmlspecialchars('Prepared By'),array("bold"=>false,"color"=>"ff0000","name"=>"Calibri","size"=>"12"),array('align'=>'right',"lineHeight"=>"1.15"));
+$section->addText(htmlspecialchars('Data Analytics and Research Team'),array("bold"=>true,"color"=>"002060","name"=>"Calibri","size"=>"12"),array('align'=>'right',"lineHeight"=>"1.15"));
+
+$textrun = $section->addTextRun(array('align'=>'right','spaceAfter'=>100,"lineHeight"=>"1.15"));
+$textrun->addText(htmlspecialchars('Edsix BrainLab'),array("bold"=>true,"color"=>"002060","name"=>"Calibri","size"=>"12"),array('align'=>'right',"lineHeight"=>"1.15"));
+$textrun->addText(htmlspecialchars('TM'),array("bold"=>true,"color"=>"002060","name"=>"Calibri","size"=>"10",'superScript' => true),array('align'=>'right',"lineHeight"=>"1.15"));
+$textrun->addText(htmlspecialchars(' Pvt Ltd'),array("bold"=>true,"color"=>"002060","name"=>"Calibri","size"=>"12"),array('align'=>'right',"lineHeight"=>"1.15"));
+
+$section->addText(htmlspecialchars('Supported by IIT Madras RTBI'),array("bold"=>true,"color"=>"002060","name"=>"Calibri","size"=>"12"),array('align'=>'right',"lineHeight"=>"1.15"));
+$section->addText(htmlspecialchars('And by IIM Ahmedabad’s CIIE and Village Capital, U.S.A'),array("bold"=>true,"color"=>"002060","name"=>"Calibri","size"=>"12"),array('align'=>'right',"lineHeight"=>"1.15"));
+$section->addText(htmlspecialchars('support@skillangels.com'),array("bold"=>false,"color"=>"0070c0","name"=>"Calibri","size"=>"12"),array('align'=>'right',"lineHeight"=>"1.15"));
+
+	$section->addPageBreak();	
+ 
+
+$section->addText(htmlspecialchars(htmlspecialchars($schools[0]['school_name']).' - Assessment Report'),array("bold"=>true,"color"=>"366091","name"=>"Open Sans","size"=>"14"),array('align'=>'left'));
+ 
+ 
+$section->addText(htmlspecialchars('Introduction'),array("bold"=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'left'));
+$textrun = $section->addTextRun($pstyleJustify);
+$pa1="It is commonly accepted that the era we live in today is one of flux. Over the course of the ";
+$textrun->addText(htmlspecialchars($pa1),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"12"),array('align'=>'both'));
+
+
+$textrun->addText(htmlspecialchars('21'),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"12"));
+$textrun->addText(htmlspecialchars('st'),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"12",'superScript' => true));
+  
+ $pa2=" century, everything seems to be changing – the way we consume information, the skills expected at our workplaces, the rate of change in technology, the benchmarks of development; the list goes on. What we knew to be the state of the world a mere few years ago can no longer be taken for granted. It is in this context that the roles of our classrooms have changed as well. Today, the responsibility of education lies in going beyond academics to prepare our children for this ever-changing reality they are inheriting. It lies in enabling these children with the skills they need to be able to adapt to their environment, mould according to circumstances and rise up to the challenge. It is in this context that cognitive skills are gaining traction as the key to successful education in the";
+ 
+ $textrun->addText(htmlspecialchars($pa2),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"12"),array('align'=>'both'));
+ 
+ 
+$textrun->addText(htmlspecialchars('21'),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"12"));
+$textrun->addText(htmlspecialchars('st'),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"12",'superScript' => true));
+$textrun->addText(htmlspecialchars(' century.'),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"12"));
+ 
+ 
+ $p="Cognitive skills are the ability to receive new information, understand it, recall it, and then apply it as appropriate, often in new circumstances. It is the knowledge relevant in the age of Artificial Intelligence, Machine Learning, and the leaps of technological advancement.";
+ 
+$section->addText(htmlspecialchars($p),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"12"),array('align'=>'both',"spaceAfter"=>"1","lineHeight"=>"1"));
+$section->addTextBreak(1);
+ 
+$textrun = $section->addTextRun($pstyleLeft);
+$pa1="SkillAngels";
+$textrun->addText(htmlspecialchars($pa1),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"12"),array('align'=>'both')); 
+$textrun->addText(htmlspecialchars('TM'),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"10",'superScript' => true));
+ 
+ $p1=" is an online cognitive skills assessment and learning program designed for a generation of digital natives. A digital platform with real-time reporting of data and built-in artificial intelligence to personalize the platform, ";
+ 
+ $textrun->addText(htmlspecialchars($p1),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"12"),array('align'=>'both',"spaceAfter"=>"4","lineHeight"=>"1"));
+ $section->addTextBreak(1);
+ 
+ 
+$textrun->addText(htmlspecialchars($pa1),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"12"),array('align'=>'both')); 
+$textrun->addText(htmlspecialchars('TM'),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"12",'superScript' => true));
+
+ $p1a=" provides evidence-based intervention to enhance cognitive skills. Further, the platform uses powerful in-built analytics to access the child’s innate skills and provides predictive analyses of the expected skill level at the end of the year. At ";
+ 
+ $textrun->addText(htmlspecialchars($p1a),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"12"),array('align'=>'both',"spaceAfter"=>"4","lineHeight"=>"1"));
+ 
+ $textrun->addText(htmlspecialchars($pa1),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"12"),array('align'=>'both')); 
+$textrun->addText(htmlspecialchars('TM'),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"10",'superScript' => true));
+
+ $p2a=", we have envisioned this platform to be at the crossroads of activity-based learning and cutting-edge technology, making it simultaneously effective and powerful. ";
+ 
+ $textrun->addText(htmlspecialchars($p2a),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"12"),array('align'=>'both'));
+ 
+ 
+ $p2="For the student, it is a set of engaging games that keeps them involved, attentive and willing to participate. For the teacher, it is a readymade tool to make classrooms more effective and engaging. For the school, it is a platform that enables high quality, relevant education to the children in every classroom. Combined with the promise of creating the leaders and innovators needed for a better tomorrow, the platform offers a win-win solution to every actor involved in the classroom.";
+ 
+  $section->addText(htmlspecialchars($p2),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"12"),array('align'=>'both'));
+  $section->addTextBreak(1);	
+$section->addPageBreak();
+$section->addText(htmlspecialchars('SKILLS ASSESSED:'),array("bold"=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'left'));
+
+$textrun = $section->addTextRun($pstyleLeft);
+$sk="SkillAngels";
+$textrun->addText(htmlspecialchars("The ".$sk),array("bold"=>false,"color"=>"000","name"=>"Calibri (Headings)","size"=>"12"),array('align'=>'left')); 
+$textrun->addText(htmlspecialchars('TM'),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"10",'superScript' => true));
+ 
+ $textrun->addText(" program assesses and enhances five major skill domains. They are:",array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12","italic"=>false),array('align'=>'left',"spaceAfter"=>"6","lineHeight"=>"1.5"));
+ 
+ $textrun->addTextBreak(1);
+ /*$section->addPageBreak();	*/
+
+$styleTable = array('borderSize'=>2, 'borderColor'=>'000', 'cellMargin'=>50);
+$styleFirstRow = array('bgColor'=>'','borderSize'=>2, 'borderColor'=>'000', 'cellMargin'=>150,'spaceBefore'=>6,'marginTop'=>1);	
+
+$styleCell = array('valign'=>'center');
+$styleCellBTLR = array('valign'=>'center', 'textDirection'=>'');
+$fontStyle1 = array('bold'=>true, 'align'=>'center',"size"=>"11","name"=>"Calibri");
+$fontStyle2 = array('bold'=>false, 'align'=>'center',"size"=>"11","name"=>"Calibri");
+// Add table style
+$phpWord->addTableStyle('asapmeasure', $styleTable, $styleFirstRow);
+ 
+$table = $section->addTable('asapmeasure',array('width' => 50 * 50, 'unit' => 'pct', 'align' => 'center'));
+// Add row
+$table->addRow(null, array('tblHeader' => true, 'cantSplit' => true));
+
+// Define font style for first row
+$fs1 = array('bold'=>true, 'align'=>'center',"size"=>"10","name"=>"Calibri");
+$fs2 = array('bold'=>false, 'align'=>'center',"size"=>"10","name"=>"Calibri");
+
+$fs3 = array('bold'=>false,'underline'=>'single', 'align'=>'center',"size"=>"10","name"=>"Calibri");
+$fs4 = array('bold'=>true, 'align'=>'both',"size"=>"12","name"=>"Calibri");
+$fs12 = array('bold'=>false, 'align'=>'both',"size"=>"12","name"=>"Calibri");
+// Add cells
+$table->addCell(2500, $styleCell)->addText('Skill Domain', $fs4,array('align'=>'both'));
+$table->addCell(8000, $styleCell)->addText('Sub-skills', $fs4,array('align'=>'both'));
+
+$tab1=array();
+// Add more rows / cells
+ 
+$table->addRow(null, array('tblHeader' => false, 'cantSplit' => true));
+$table->addCell(2500,array("bgcolor"=>"da0404"))->addText("Memory", $fs12,array('align'=>'both'));	
+
+$cell = $table->addCell(8000);
+ $cellRun = $cell->addTextRun($pstyleJustify); 
+ $cellRun ->addText(htmlspecialchars('Working memory:'),array("bold"=>false,"color"=>"","underline"=>"single","name"=>"Calibri","size"=>"12"));
+ $cellRun ->addText(' The ability to remember information such as words, numbers, pictures, and procedures, and recall them immediately.',$fs12);  
+
+
+$table->addRow();
+$table->addCell(2500,array("bgcolor"=>"ffc000"))->addText("Visual Processing", $fs12,array('align'=>'both'));	
+$cell = $table->addCell(8000);
+ $cellRun = $cell->addTextRun($pstyleJustify); 
+ $cellRun ->addText(htmlspecialchars('Perceptual speed:'),array("bold"=>false,"color"=>"","underline"=>"single","name"=>"Calibri","size"=>"12")); 
+ $cellRun ->addText(' The ability to quickly and accurately compare similarities and differences among sets of letters, numbers, objects, pictures, or patterns.',$fs12);  $cellRun->addTextBreak(1);
+ $cellRun ->addText(htmlspecialchars('Spatial orientation:'),array("bold"=>false,"color"=>"","underline"=>"single","name"=>"Calibri","size"=>"12"));
+
+$cellRun ->addText(' The ability to know your location in relation to the environment or to know where other objects are in relation to you.',$fs12);  $cellRun->addTextBreak(1);
+$cellRun ->addText(htmlspecialchars('Visualization:'),array("bold"=>false,"color"=>"","underline"=>"single","name"=>"Calibri","size"=>"12"));
+$cellRun ->addText(' The ability to imagine how something will look after it is moved around or when its parts are moved or rearranged.',$fs12);  
+
+$table->addRow();
+$table->addCell(2500,array("bgcolor"=>"92d050"))->addText("Focus and Attention", $fs12,array('align'=>'both'));	
+$cell = $table->addCell(8000);
+ $cellRun = $cell->addTextRun($pstyleJustify); 
+ $cellRun ->addText(htmlspecialchars('Selective attention:'),array("bold"=>false,"color"=>"","underline"=>"single","name"=>"Calibri","size"=>"12"));
+ $cellRun ->addText(' The ability to concentrate on specific objects / images over a period of time without being distracted.',$fs12);  
+
+$table->addRow();
+$table->addCell(2500,array("bgcolor"=>"ff6600"))->addText("Problem Solving", $fs12,array('align'=>'both'));	
+$cell = $table->addCell(8000);
+ $cellRun = $cell->addTextRun($pstyleJustify); 
+ $cellRun ->addText(htmlspecialchars('Nonverbal abstract reasoning:'),array("bold"=>false,"color"=>"","underline"=>"single","name"=>"Calibri","size"=>"12"));
+ $cellRun ->addText(" The ability to understand and analyse visual information, and use that information to solve problems.",$fs12);   $cellRun->addTextBreak(1);
+  $cellRun ->addText(htmlspecialchars('Fluid and analytical reasoning:'),array("bold"=>false,"color"=>"","underline"=>"single","name"=>"Calibri","size"=>"12"));
+ $cellRun ->addText(" The ability to infer relations and spot patterns in new problems.",$fs12);  
+
+$table->addRow();
+$table->addCell(2500,array("bgcolor"=>"00b0f0"))->addText("Linguistics", $fs12,array('align'=>'both'));	
+$cell = $table->addCell(8000);
+ $cellRun = $cell->addTextRun($pstyleJustify); 
+ $cellRun ->addText(htmlspecialchars('Verbal abstract reasoning:'),array("bold"=>false,"color"=>"","underline"=>"single","name"=>"Calibri","size"=>"12"));
+ $cellRun ->addText(' The ability to understand and analyse written information, and use that information to solve problems.',$fs12); $cellRun->addTextBreak(1);
+ $cellRun ->addText(htmlspecialchars('Vocabulary:'),array("bold"=>false,"color"=>"","underline"=>"single","name"=>"Calibri","size"=>"12"));
+ $cellRun ->addText(' The knowledge and ability to recall words and their meanings.',$fs12);  
+ 
+ 
+/* $section->addPageBreak();	*/
+ $lifontstyle=array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"); 
+
+/* $lifontstyle=array("bold"=>false,"color"=>"943734","name"=>"Calibri","size"=>"14"); */
+/* $listfontstyle=array("bold"=>true,"color"=>"498CF1","name"=>"Calibri","size"=>"12","underline"=>"single"); */
+$listfontstyle=array("bold"=>true,"color"=>"943734","name"=>"Calibri","size"=>"14","underline"=>"single");
+
+/* $listfontstyle_dummy=array("bold"=>true,"color"=>"000","name"=>"Calibri","size"=>"12","underline"=>"single"); */
+$listfontstyle_dummy=array("bold"=>true,"color"=>"943734","name"=>"Calibri","size"=>"12","underline"=>"single");
+
+  $listfont12=array("bold"=>true,"color"=>"943734","name"=>"Calibri","size"=>"14");  //brown clr
+
+   $listfont=array("bold"=>true,"color"=>"366091","name"=>"Calibri","size"=>"12","underline"=>"single");  
+
+ 
+$section->addTextBreak(1);
+
+$section->addText(htmlspecialchars('Assessment process:'),array("bold"=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'left'));
+//$section->addTextBreak(1);
+$textrun = $section->addTextRun($pstyleJustify);
+$pa1="SkillAngels";
+$textrun->addText(htmlspecialchars("The ".$pa1),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both')); 
+$textrun->addText(htmlspecialchars('TM'),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"10",'superScript' => true));
+
+$p6=" initial assessment is conducted in one sitting for each participating student. The student is offered a battery of five puzzle sets, one in each of the skill domains. These are puzzles that have been identified as the best indicator of a student’s skill level relative to his/her grade. Each puzzle set has 10 questions.";
+
+$textrun->addText($p6,array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both',"spaceAfter"=>"6","lineHeight"=>"1"));
+ 
+$textrun->addTextBreak(1);	
+
+$p7="Students are scored on the basis of both speed and accuracy. A student who answers all the questions correctly, but takes a lot of time will score less than a student who makes mistakes, but answers questions quickly. Students will need to flex their brains to score well!.";
+
+$section->addText($p7,array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both',"spaceAfter"=>"6","lineHeight"=>"1"));
+
+/*	$section->addTextBreak(1);	*/
+
+	$section->addTextBreak(1);	
+
+ $textrun=$section->addTextRun($pstyleJustify);
+ $textrun->addText("Students will receive scores in each skill, as well as a ",array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"));
+ $textrun->addText(" Brain Skill Power Index (BSPI)",array("bold"=>true,"color"=>"000","name"=>"Calibri","size"=>"12","italic"=>false),array('align'=>'both'));
+ $textrun->addText((". The BSPI is the average of the five skill scores from the assessment, and may be treated as a quick overview of the student’s cognitive skills."),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12",'align'=>'both'));
+ 
+$section->addTextBreak(1);
+
+$section->addText(htmlspecialchars('Initial Assessment at '.$schools[0]['school_name'].''),array("bold"=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'left'));
+
+$section->addText('The Initial assessment phase was conducted at '.$schools[0]['school_name'].' between '.$asapstartdate.' and '.$asapenddate.'',array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'left'));
+ 
+
+$phpWord->addTableStyle('schoolcount', $styleTable);
+$table = $section->addTable('schoolcount',array('width' => 50 * 50, 'unit' => 'pct', 'align' => 'center'));
+$table->addRow();
+$table->addCell(8000, $styleCell)->addText('No. of students enrolled in the SkillAngels program',array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"));
+$table->addCell(2000, $styleCell)->addText($TotalStudent_enrolled,array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"));
+if($TotalStudent_participated==$TotalStudent_completed)
+{
+	$table->addRow();
+	$table->addCell(8000, $styleCell)->addText('No. of students who completed the Initial Assessment',array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri")); 
+	
+	$table->addCell(2000, $styleCell)->addText($totalcount.'*',array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"));
+
+	$table->addRow();
+	$table->addCell(8000, $styleCell)->addText('No. of Absentees', array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri")); 
+	$table->addCell(2000, $styleCell)->addText($Absentees, array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri")); 
+}
+else
+{
+	$table->addRow();
+	$table->addCell(8000, $styleCell)->addText('No. of Absentees', array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri")); 
+	$table->addCell(2000, $styleCell)->addText($Absentees, array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri")); 
+	
+	$table->addRow();
+	$table->addCell(8000, $styleCell)->addText('No. of students who completed the Initial Assessment',array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri")); 
+	$table->addCell(2000, $styleCell)->addText($TotalStudent_participated.'*',array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri")); 
+
+	$table->addRow();
+	$table->addCell(8000, $styleCell)->addText('No. of Students who completed the Assessment',array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri")); 
+	$table->addCell(2000, $styleCell)->addText($TotalStudent_completed.'*#',array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri")); 
+
+	$section->addText('* No. of students who completed the Initial Assessment as on '.date("d.m.Y"),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'left'));
+	
+	$section->addText('# This report is based on the scores of students who completed assessment in all 5 skills.',array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'left'));
+}
+
+
+$section->addTextBreak(1);
+
+$section->addText('The results below have been calculated based on the '.$TotalStudent_completed.' students who completed the assessment.',array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'left'));
+$section->addTextBreak(2);
+
+$section->addImage($skillslogo, array('width' => 500, 'height'=> 100, 'marginTop'=> -1, 'marginLeft'=> -1, 'wrappingStyle'=> 'behind', 'align'=> 'center'));
+ 
+$section->addTextBreak(2);
+$phpWord->addTableStyle('schoolcount', $styleTable);
+$table = $section->addTable('schoolcount',array('width' => 50 * 50, 'unit' => 'pct', 'align' => 'center')); 
+
+$section->addPageBreak();	
+
+ 
+/*---------------------- Dynamic data Start -----------------------------------------------------*/
+
+$phpWord->addNumberingStyle(
+    'headingNumbering',
+    array('type'   => 'multilevel',
+          'levels' => array(
+              array('pStyle' => 'Heading1', 'format' => 'decimal', 'text' => '%1.'),
+              array('pStyle' => 'Heading2', 'format' => 'decimal', 'text' => '%1.%2'),
+              array('pStyle' => 'Heading3', 'format' => 'decimal', 'text' => '%1.%2.%3')
+          ),
+    )
+);
+
+$styleTable = array('borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>50);
+//$styleTable9 = array('borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>150,'spaceBefore'=>6,'marginTop'=>1);
+$styleFirstRow1 = array('bgColor'=>'e5b9b7','borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>150,'spaceBefore'=>6,'marginTop'=>1);		//changing clr e5b9b7
+// Define cell style arrays
+$styleCell = array('valign'=>'center');
+$styleCellBTLR = array('valign'=>'center', 'textDirection'=>'');
+// Define font style for first row
+$fontStyle1 = array('bold'=>true, 'align'=>'center',"size"=>"11","name"=>"Calibri");
+$fontStyle2 = array('bold'=>false, 'align'=>'center',"size"=>"11","name"=>"Calibri");
+// Add table style
+$phpWord->addTableStyle('Grade wise BSPI Toppers', $styleTable, $styleFirstRow1);
+
+
+
+$phpWord->addTitleStyle(1, $listfont12, array('numStyle' => 'headingNumbering', 'numLevel' => 0,'bold'=>true,'color'=>'943734','name'=>'Calibri','size'=>'4','underline'=>'single'));
+$phpWord->addTitleStyle(2, $listfont, array('numStyle' => 'headingNumbering', 'numLevel' => 1));
+$phpWord->addTitleStyle(3, $listfont12, array('numStyle' => 'headingNumbering', 'numLevel' => 2));
+
+/* $section->addTitle(htmlspecialchars('Assessment toppers'), 1); */
+$section->addTitle(htmlspecialchars('Assessment toppers:'),1,array("bold"=>true,"color"=>"943734","name"=>"Calibri","size"=>"14"),array('align'=>'left'));
+$section->addTitle(htmlspecialchars('BSPI Toppers by Grade & Section'), 2);
+
+$section->addText('The table below recognizes the students who have exhibited the best overall performance in each class. This has been computed by comparing the BSPI of students within each section of each grade.',array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both'));
+
+ 
+
+// Add table style
+$phpWord->addTableStyle('Grade wise BSPI Toppers', $styleTable, $styleFirstRow);
+// Add table
+$table = $section->addTable('Grade wise BSPI Toppers',array('width' => 50 * 50, 'unit' => 'pct', 'align' => 'center'));
+// Add row
+$table->addRow(null, array('tblHeader' => true, 'cantSplit' => true));
+// Add cells
+$table->addCell(3000, $styleCell)->addText(htmlspecialchars('Grade & Section'), array('bold'=>true, 'align'=>'left',"size"=>"12","name"=>"Calibri"),array('align' => 'left'));
+$table->addCell(4500, $styleCell)->addText('Student Name', array('bold'=>true, 'align'=>'left',"size"=>"12","name"=>"Calibri"),array('align' => 'left'));
+$table->addCell(3000, $styleCell)->addText('BSPI', array('bold'=>true, 'align'=>'left',"size"=>"12","name"=>"Calibri"),array('align' => 'left'));
+$tab1=array();
+
+$school_id = $_SESSION['schoolid'];
+
+
+$ograde = mysqli_query($con,"select DISTINCT(class_id) from skl_class_section where school_id=".$_SESSION['schoolid']."");
+while($oclass = mysqli_fetch_assoc($ograde))
+{
+	$rgrade[] = $oclass['class_id'];
+}
+$acrosssections = 'No';					
+if($acrosssections == "Yes")
+{
+	$sections[] = "All";
+}
+foreach($rgrade as $class)
+{
+	if($acrosssections == "No")
+	{
+		unset($sections);
+		$overallsections = mysqli_query($con,"SELECT distinct(section) FROM skl_class_section where school_id='$school_id' and class_id = '$class'");
+		while($sectionrec = mysqli_fetch_assoc($overallsections))
+		{
+			$sections[] = $sectionrec['section'];
+		}
+	}
+	foreach($sections as $section1)
+	{
+		$aTop1=array();
+ 
+		 
+		$query = "select  (select classname from class cls where cls.id=".$class." ) as grade_name, concat(fname,' ',lname) as name, sum(game_score)/5 as score, gu_id, section from game_reports gr join asap_completed_users usr on gu_id=usr.id where gs_id in (59,60,61,62,63) and usr.grade_id IN (".$class.") and usr.sid = ".$school_id."   AND usr.section = '".$section1."' group by gu_id order by score desc";
+	
+		$overallskillTop = mysqli_query($con,$query);
+
+		while($skillTop = mysqli_fetch_assoc($overallskillTop))
+		{
+			$aTop1[$skillTop['grade_name']][] = array(
+			'name' => $skillTop['name'],
+			'grade_name' => $skillTop['grade_name'],
+			'section' => $skillTop['section'],
+			'score' => $skillTop['score']
+			);
+		}
+		//echo "<pre>";print_r($aTop1);
+		foreach (array_keys($aTop1) as $key)
+		{
+			$res = sort_max($aTop1[$key],"score");
+			$top = 1;
+			$aTopRec = array();
+			$curscore = 0;						
+			for ($needle=0; $needle < $top; $needle++)
+			{ 
+				//$aTopRec[] = $res[$needle];
+				$curscore ='';
+				if(is_array($res[$needle]))
+				{
+					$aTopRec[] = $res[$needle];
+					$curscore = $res[$needle]['score'];
+				}
+				if(is_array($res[$needle+1]))
+				{
+					if($curscore == $res[$needle+1]['score'])
+					{
+						$top++;
+					}
+				}
+			}
+			$needle = 0;
+			foreach ($aTopRec as $value) 
+			{
+				$stname = strtoupper($value["name"]);
+				$rscore = round($value["score"], 2);
+				$grade=$value["grade_name"]." - ".$value["section"];
+				$table->addRow(null, array('tblHeader' => false, 'cantSplit' => true));
+				$table->addCell(3000)->addText(htmlspecialchars(str_replace("Grade ","",$grade)),array("size"=>"12","name"=>"Calibri"),array('align' => 'left'));
+				$table->addCell(4500)->addText(htmlspecialchars($stname),array("size"=>"12","name"=>"Calibri"),array('align' => 'left'));
+				$table->addCell(3000)->addText(htmlspecialchars($rscore),array("size"=>"12","name"=>"Calibri"),array('align' => 'left')); 
+			}
+		}
+	}
+}
+
+$section->addTextBreak(1);
+$styleTable = array('borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>50);
+//$styleTable = array('borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>150,'spaceBefore'=>6,'marginTop'=>1);
+if($schools[0]['hotsstatus']=='E')
+{
+	$section->addTitle(htmlspecialchars('Grade wise HOTS Olympiad Toppers:'), 2); 
+	// Add table style
+	$phpWord->addTableStyle('Grade wise HOTS Olympiad Toppers', $styleTable, $styleFirstRow);
+	// Add table
+	$table = $section->addTable('Grade wise HOTS Olympiad Toppers',array('width' => 50 * 50, 'unit' => 'pct', 'align' => 'center'));
+	// Add row
+	$table->addRow(null, array('tblHeader' => true, 'cantSplit' => true));
+	// Add cells
+	$table->addCell(3000, $styleCell)->addText('Grade', array('bold'=>true, 'align'=>'center',"size"=>"11","name"=>"Calibri"),array('align'=>'center'));
+	$table->addCell(4500, $styleCell)->addText('Student Name', array('bold'=>true, 'align'=>'center',"size"=>"11","name"=>"Calibri"));
+	$table->addCell(3000, $styleCell)->addText('HOTS Olympiad %', array('bold'=>true, 'align'=>'center',"size"=>"11","name"=>"Calibri"),array('align' => 'center'));
+	$tab1=array();
+	
+	$HTop = array();
+	$HGradeScore = array("8"=>"60","9"=>"70","10"=>"80","12"=>"90","13"=>"100","14"=>"110","15"=>"120");
+	
+	$school_id = $_SESSION['schoolid'];
+	$overallsections = mysqli_query($con,"SELECT class_id,section,classname FROM skl_class_section join class as c on c.id=class_id where school_id='$school_id'  order by class_id,section asc");
+	
+	$arrofHotsToppers = mysqli_query($con,"select a1.grade_id,a1.section,GROUP_concat(name SEPARATOR ', ') as name,score from (SELECT concat(fname,'',lname) as name,username,grade_id,section,sid,CAST(game_score AS DECIMAL) as score FROM bt_gamedata as bt join asap_completed_users as u on u.id=gu_id join schools as s on s.id=u.sid WHERE u.status=1 and s.active=1 and s.flag and s.status=1 and s.hotsstatus='E' order by CAST(game_score AS DECIMAL) DESC) as a1 where score in(select score from userhotsmaxscore as umax where umax.grade_id=a1.grade_id and umax.section=a1.section and umax.sid='".$school_id."') group by a1.grade_id,a1.section order by grade_id asc,section asc");
+	while($HotsToppers = mysqli_fetch_assoc($arrofHotsToppers))
+	{
+		$HTop[$HotsToppers['grade_id']."-".$HotsToppers['section']][] = array(
+										'name' => $HotsToppers['name'],
+										'score' =>$HotsToppers['score']
+										);
+	}
+	while($value = mysqli_fetch_assoc($overallsections))
+	{ 
+/* 		echo "<pre>";print_r($HGradeScore);
+		echo $HGradeScore[$value['class_id']];exit; */
+		if(isset($HTop[$value['class_id']."-".$value['section']][0]['name']))
+		{
+			$name=$HTop[$value['class_id']."-".$value['section']][0]['name'];
+			$score=$HTop[$value['class_id']."-".$value['section']][0]['score'];
+			if(isset($HGradeScore[$value['class_id']]))
+			{
+				$ScorePercentage=round((($score/$HGradeScore[$value['class_id']])*100),2);
+			}
+			else
+			{
+				$ScorePercentage='-';
+			}
+		}
+		else
+		{
+			$name='-';$ScorePercentage='-';
+		}
+		$grade=$value["classname"]." - ".$value["section"];
+		$table->addRow(null, array('tblHeader' => false, 'cantSplit' => true));		
+		$table->addCell(3000)->addText(htmlspecialchars($grade),array("size"=>"11","name"=>"Calibri"),array('align'=>'center')); 		
+		$table->addCell(4500)->addText(htmlspecialchars($name),array("size"=>"11","name"=>"Calibri")); 		
+		$table->addCell(3000)->addText($ScorePercentage,array("size"=>"11","name"=>"Calibri"),array('align' => 'center'));
+	}
+	$section->addPageBreak();
+	$section->addTextBreak();
+}
+
+/* $section->addListItem("Grade wise Skill Toppers:",1,$listfontstyle,'multilevel'); */
+
+
+$section->addTitle(htmlspecialchars('Skill Toppers by Grade & Section'), 2);
+
+$section->addText('In addition to the BSPI, which is a cumulative average of scores across five cognitive skills, the table below recognizes the students who have shown proficiency in individual skills in each class.',array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both'));
+
+
+$styleTable = array('borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>50);
+ 
+$styleFirstRow2 = array('bgColor'=>'e5b9b7','borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>150,'spaceBefore'=>6,'marginTop'=>1);	 
+$styleCell = array('valign'=>'center');
+$styleCellBTLR = array('valign'=>'center', 'textDirection'=>'');
+$fontStyle1 = array('bold'=>true, 'align'=>'center',"size"=>"11","name"=>"Calibri");
+$fontStyle2 = array('bold'=>false, 'align'=>'center',"size"=>"11","name"=>"Calibri");
+// Add table style
+$phpWord->addTableStyle('Grade wise Skill Toppers', $styleTable, $styleFirstRow2);
+
+
+
+
+// Add table style
+$phpWord->addTableStyle('Grade wise Skill Toppers', $styleTable, $styleFirstRow);
+// Add table
+$table = $section->addTable('Grade wise Skill Toppers',array('width' => 50 * 50, 'unit' => 'pct', 'align' => 'center'));
+// Add row
+$table->addRow(null, array('tblHeader' => true, 'cantSplit' => true));
+// Add cells
+$gwfontStyle1=array('bold'=>true,"size"=>"10.5","name"=>"Calibri");
+$gwfontStyle2=array('bold'=>false,"size"=>"10.5","name"=>"Calibri");
+$gwfontStyle8=array('bold'=>false,"size"=>"12","name"=>"Calibri");
+$gwfontStyle7=array('bold'=>true,"size"=>"12","name"=>"Calibri");
+
+$table->addCell(800, $styleCell)->addText('Grade', $gwfontStyle7,array('align'=>'left'));
+$table->addCell(800, $styleCell)->addText('Section', $gwfontStyle7,array('align'=>'left'));
+$table->addCell(1600, $styleCell)->addText('Memory', $gwfontStyle7);
+$table->addCell(1700, $styleCell)->addText('Visual Processing', $gwfontStyle7);
+$table->addCell(2100, $styleCell)->addText('Focus And Attention', $gwfontStyle7);
+$table->addCell(1700, $styleCell)->addText('Problem Solving', $gwfontStyle7);
+$table->addCell(1700, $styleCell)->addText('Linguistics', $gwfontStyle7);
+$tab1=array();
+
+
+$qryacademicYear=mysqli_query($con,"select startdate,enddate from academic_year order by id desc limit 1");
+while($objacademicYear = mysqli_fetch_assoc($qryacademicYear))
+{
+	$academicYear[]=$objacademicYear;
+}
+		
+$school_id = $_SESSION['schoolid'];
+ $overallsections = mysqli_query($con,"SELECT class_id,section,classname FROM skl_class_section join class as c on c.id=class_id where school_id='$school_id'  order by class_id,section asc");
+ while($sectionrec = mysqli_fetch_assoc($overallsections))
+ {
+	$sectionsr[] = $sectionrec;
+ }
+		 
+$query = "SELECT grade_name, skill_name, MAX(score) as score,gs_id, grade_id,section From 
+(SELECT cls.classname as grade_name, cs.name as skill_name, fname, lname, avg(gr.game_score) as score, gr.id as id, gr.gu_id, gs_id, grade_id, section, lastupdate, g_id FROM game_reports gr 
+
+inner join asap_completed_users usr ON usr.id = gr.gu_id 
+
+inner join class cls ON cls.id = usr.grade_id 
+
+inner join category_skills cs ON cs.id = gr.gs_id 
+
+WHERE   cs.id IN (59,60,61,62,63) AND usr.sid = '".$school_id."' AND (gr.lastupdate between '".$academicYear[0]['startdate']."' and '".$academicYear[0]['enddate']."')   group by grade_id, section, gu_id, g_id, DATE_FORMAT(lastupdate, '%Y-%m') ) as c 
+
+group by grade_id, section,gs_id order by score dESC ";
+		
+		
+		$overallskillTop = mysqli_query($con,$query);
+		$aTop = array();
+		//echo "$aTop";
+		
+		while($skillTop = mysqli_fetch_assoc($overallskillTop))
+		{
+			 $query1 = "select  group_concat(concat(fname,' ',lname) SEPARATOR ', ')  as fname, game_score as score, gs_id from game_reports gr join asap_completed_users usr on gu_id=usr.id where usr.grade_id IN (".$skillTop['grade_id'].") and usr.sid = ".$school_id." and game_score IN('".$skillTop['score']."') and gs_id='".$skillTop['gs_id']."'  AND usr.section = '".$skillTop['section']."'";
+			 
+			$topuserlist = mysqli_query($con,$query1);
+				while($topuser = mysqli_fetch_assoc($topuserlist))
+				{
+					
+					$aTop[$skillTop['grade_id']."-".$skillTop['section']."-".$topuser['gs_id']][] = array(
+										'name' => $topuser['fname'],
+										'score' => round($topuser['score'], 2)
+										);
+				}
+		}
+		
+	foreach($sectionsr as $section1)
+	{   
+		$table->addRow(null, array('tblHeader' => false, 'cantSplit' => true));
+		$table->addCell(800)->addText(str_replace("Grade ","",$section1['classname']),$gwfontStyle8,array('align'=>'left'));
+		$table->addCell(800)->addText($section1['section'],$gwfontStyle8,array('align'=>'left'));
+		$table->addCell(1600)->addText($aTop[$section1['class_id']."-".$section1['section']."-59"][0]['name']." - ".$aTop[$section1['class_id']."-".$section1['section']."-59"][0]['score'],$gwfontStyle8); 
+		
+		$table->addCell(1700)->addText($aTop[$section1['class_id']."-".$section1['section']."-60"][0]['name']." - ".$aTop[$section1['class_id']."-".$section1['section']."-60"][0]['score'],$gwfontStyle8); 
+		$table->addCell(2100)->addText($aTop[$section1['class_id']."-".$section1['section']."-61"][0]['name']." - ".$aTop[$section1['class_id']."-".$section1['section']."-61"][0]['score'],$gwfontStyle8); 
+		$table->addCell(1700)->addText($aTop[$section1['class_id']."-".$section1['section']."-62"][0]['name']." - ".$aTop[$section1['class_id']."-".$section1['section']."-62"][0]['score'],$gwfontStyle8); 
+		$table->addCell(1700)->addText($aTop[$section1['class_id']."-".$section1['section']."-63"][0]['name']." - ".$aTop[$section1['class_id']."-".$section1['section']."-63"][0]['score'],$gwfontStyle8); 
+	
+	}
+
+$section->addPageBreak();
+ 
+$section->addTextBreak(1);		
+
+/* $section->addListItem("Skill Strength – Grade wise Prominent Skill",1,$listfontstyle,'multilevel'); */
+$section->addTitle(htmlspecialchars('Recall versus Critical thinking'), 2);
+
+$textrun = $section->addTextRun($pstyleJustify);
+$pa1="SkillAngels";
+$textrun->addText(htmlspecialchars("While the ".$pa1),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both')); 
+$textrun->addText(htmlspecialchars('TM'),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"10",'superScript' => true));
+
+$p16=" program assesses and strengthens a child’s ability in five skill domains, these domains can be clubbed into two categories of cognitive abilities – Recall and Critical thinking. Recall skills are the ones associated with the ability to shut out distractions and gather information quickly (i.e. Memory and Focus & Attention). Whereas Critical Thinking skills involve the ability to manipulate text, illustrations and solve puzzles in new ways (i.e. Visual Processing, Problem Solving and Linguistics).";
+ 
+$textrun->addText(htmlspecialchars($p16),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both'));
+
+$textrun->addTextBreak(2);
+
+$p17="Children need to be strong in both categories to make the most of any new information or concepts they learn. If they are weak in either of the categories, they will need support to strengthen the skill domains within that category.";
+ 
+$textrun->addText(htmlspecialchars($p17),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both'));
+
+$textrun->addTextBreak();
+
+$section->addText('The number of students in each sector of the scatterplot is listed below.',array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both'));
+ 
+ $styleTable = array('borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>50);
+//$styleTable = array('borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>150,'spaceBefore'=>6,'marginTop'=>1);
+$styleFirstRow = array('bgColor'=>'e5b9b7');
+// Define cell style arrays
+$styleCell = array('valign'=>'center');
+$styleCellBTLR = array('valign'=>'center', 'textDirection'=>'');
+// Define font style for first row
+ $fontStyle1 = array('bold'=>true, 'align'=>'center',"size"=>"11","name"=>"Calibri");
+$fontStyle2 = array('bold'=>false, 'align'=>'center',"size"=>"11","name"=>"Calibri"); 
+// Add table style
+$phpWord->addTableStyle('scattertable', $styleTable, $styleFirstRow);
+// Add table
+	 
+$table = $section->addTable('scattertable',array('width' => 50 * 50, 'unit' => 'pct', 'align' => 'center'));
+// Add row
+$table->addRow(null, array('tblHeader' => true, 'cantSplit' => true));
+
+// Define font style for first row
+$fs1 = array('bold'=>true, 'align'=>'both',"size"=>"12","name"=>"Calibri");
+$fs7 = array('bold'=>true, 'align'=>'both',"size"=>"12","name"=>"Calibri");
+$fs8 = array('bold'=>false, 'align'=>'both',"size"=>"12","name"=>"Calibri");
+$fs2 = array('bold'=>false, 'align'=>'both',"size"=>"12","name"=>"Calibri");
+
+// Add cells
+$table->addCell(3000, $styleCell)->addText('Category', $fs7,array('align'=>'both'));
+$table->addCell(3000, $styleCell)->addText('Marker', $fs7,array('align'=>'both'));
+$table->addCell(2000, $styleCell)->addText('Count', $fs7,array('align'=>'both'));
+$table->addCell(2000, $styleCell)->addText('Percentage', $fs7,array('align'=>'both'));
+
+$tab1=array();
+// Add more rows / cells
+
+
+$recall_ct = mysqli_query($con,"SELECT count(*) as strong_rct from vi_user_recall_ct_score urct join vi_school_recall_ct_avgscore srct on urct.sid=srct.sid where urct.sid=".$_SESSION['schoolid']." and urct.Recall>=srct.recall and urct.Critical_thinking>=srct.ct");
+ 				while($arrrecall_ct = mysqli_fetch_assoc($recall_ct))
+				{
+					
+					 $strong_rct= $arrrecall_ct['strong_rct'];
+				} 
+				
+$stng_recall = mysqli_query($con,"SELECT count(*) as strong_recall from vi_user_recall_ct_score urct join vi_school_recall_ct_avgscore srct on urct.sid=srct.sid where urct.sid=".$_SESSION['schoolid']." and urct.Recall>=srct.recall and urct.Critical_thinking<srct.ct");
+ 				while($arrrecall = mysqli_fetch_assoc($stng_recall))
+				{
+					
+					 $strong_recall= $arrrecall['strong_recall'];
+				} 
+   
+$stng_ct = mysqli_query($con,"SELECT count(*) as strong_ct from vi_user_recall_ct_score urct join vi_school_recall_ct_avgscore srct on urct.sid=srct.sid where urct.sid=".$_SESSION['schoolid']." and urct.Recall<srct.recall and urct.Critical_thinking>=srct.ct");
+ 				while($arrsct = mysqli_fetch_assoc($stng_ct))
+				{
+					
+					 $strong_ct= $arrsct['strong_ct'];
+				} 
+
+ $wk_rct = mysqli_query($con,"SELECT count(*) as weak_rct from vi_user_recall_ct_score urct join vi_school_recall_ct_avgscore srct on urct.sid=srct.sid where urct.sid=".$_SESSION['schoolid']." and urct.Recall<srct.recall and urct.Critical_thinking<srct.ct");
+ 				while($arrwrct = mysqli_fetch_assoc($wk_rct))
+				{
+					
+					 $weak_rct= $arrwrct['weak_rct'];
+				}  
+
+				
+ 
+$table->addRow(null, array('tblHeader' => false, 'cantSplit' => true));
+
+$table->addCell(8000)->addText("Those who have both strong recall and critical thinking skills", $fs8,array('align'=>'both'));
+$table->addCell(3000)->addText("Green triangles", $fs8,array('align'=>'both'));
+$table->addCell(1000)->addText($strong_rct, $fs8,array('align'=>'both'));
+$table->addCell(1000)->addText(round((($strong_rct/$TotalStudent_completed)*100),2), $fs8,array('align'=>'both'));
+
+$table->addRow();
+
+$table->addCell(8000)->addText("Those who have strong recall skills", $fs8,array('align'=>'both'));
+$table->addCell(3000)->addText("Red squares", $fs8,array('align'=>'both'));
+$table->addCell(1000)->addText($strong_recall, $fs8,array('align'=>'both'));
+$table->addCell(1000)->addText(round((($strong_recall/$TotalStudent_completed)*100),2), $fs8,array('align'=>'both'));
+
+
+$table->addRow();
+
+$table->addCell(8000)->addText("Those who have strong critical thinking skills", $fs8,array('align'=>'both'));
+$table->addCell(3000)->addText("Purple X’s", $fs8,array('align'=>'both'));
+$table->addCell(1000)->addText($strong_ct, $fs8,array('align'=>'both'));
+$table->addCell(1000)->addText(round((($strong_ct/$TotalStudent_completed)*100),2), $fs8,array('align'=>'both'));
+
+
+$table->addRow();
+
+$table->addCell(8000)->addText("Those who need strengthening in both categories of skills", $fs8,array('align'=>'both'));
+$table->addCell(3000)->addText("Blue diamonds", $fs8,array('align'=>'both'));
+$table->addCell(1000)->addText($weak_rct, $fs8,array('align'=>'both'));
+$table->addCell(1000)->addText(round((($weak_rct/$TotalStudent_completed)*100),2), $fs8,array('align'=>'both'));
+
+
+ 
+							/*			graph		*/
+							
+$chartType ='scatter';
+$categories = array(htmlspecialchars(' <= 20 '), htmlspecialchars('> 20 and <= 40'), htmlspecialchars('> 40 and <= 60'),htmlspecialchars('> 60 and <= 80'), htmlspecialchars('> 80'));
+$series1 = array(94,43,54,65);
+$series2 = array(23,33,44,95);
+$series3 = array(19,38,56,88);
+$series4 = array(0,25,41,69);
+$showXGridLines = false;
+$showYGridLines = true;
+$showAxisLabels = true;
+
+/*	$section->addText(ucfirst('BSPI analysis'), $chartfontstyle,$chartparastyle);	*/
+$chart = $section->addChart($chartType, $categories, $series1);
+//$chart = $section->addChart($chartType, $categories, $series1,$style);
+$chart->addSeries($categories,$series2);
+$chart->addSeries($categories,$series3);
+$chart->addSeries($categories,$series4);
+$chart->getStyle()->setWidth(6000000)->setHeight(3000000);
+$chart->getStyle()->setShowGridX($showXGridLines);
+$chart->getStyle()->setShowGridY($showYGridLines);
+$chart->getStyle()->setShowAxisLabels($showAxisLabels);
+
+$fontStyle10 = array('bold'=>false, 'align'=>'center',"size"=>"10","name"=>"Calibri");
+//$fontStyle11 = array('bold'=>false, 'align'=>'center',"size"=>"11","name"=>"Calibri");
+$fontStyle12 = array('bold'=>false, 'align'=>'center',"size"=>"10","name"=>"Calibri");
+
+$textrun = $section->addTextRun($pstyleJustify);
+$p3a="As is evidenced by the chart, there is evident merit in encouraging children to engage with critical thinking and recall as an overarching attitude. Those who could benefit from strengthening and individual interaction in these areas may need to participate more actively with the ";
+ 
+$textrun->addText(htmlspecialchars($p3a),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both'));
+
+
+$p3a1="SkillAngels";
+$textrun->addText(htmlspecialchars($p3a1),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both')); 
+$textrun->addText(htmlspecialchars('TM'),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12",'superScript' => true));
+$textrun->addText(htmlspecialchars(' CLP through the academic year.'),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both')); 
+
+$section->addPageBreak(); 
+
+$styleTable = array('borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>50);
+//$styleTable = array('borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>150,'spaceBefore'=>6,'marginTop'=>1);
+$styleFirstRow4 = array('bgColor'=>'e5b9b7');		//changing clr e5b9b7
+// Define cell style arrays
+$styleCell = array('valign'=>'center');
+$styleCellBTLR = array('valign'=>'center', 'textDirection'=>'');
+// Define font style for first row
+/* $fontStyle1 = array('bold'=>true, 'align'=>'center',"size"=>"11","name"=>"Calibri");
+$fontStyle2 = array('bold'=>false, 'align'=>'center',"size"=>"11","name"=>"Calibri"); */
+// Add table style
+$phpWord->addTableStyle('BSPI Analysis', $styleTable, $styleFirstRow4); 
+ 
+$section->addTitle(htmlspecialchars('Score analysis'), 1); 
+$section->addTitle(htmlspecialchars('BSPI Analysis'), 2);
+
+$p4a="The table below seeks to throw light on the performance of students based on their overall BSPI. It shows both the absolute number of students in each slab as well as the percentage of students per slab as a total of the population, allowing schools to understand where the mean of the institution lies. Given that the BSPI is computed as an average of five skills, the analysis also provides the low and high boundaries of each skill. Based on the score category and performance, our recommendation will be tailor-made to catalyse the improvement of their cognitive skill scores.";
+ 
+$section->addText(htmlspecialchars($p4a),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both'));
+
+
+$styleTable = array('borderSize'=>2, 'borderColor'=>'000', 'cellMargin'=>1);
+$phpWord->addTableStyle('BSPI Analysis', $styleTable);
+$table = $section->addTable('BSPI Analysis',array('width' => 50 * 50, 'unit' => 'pct', 'align' => 'center'));
+$table->addRow(null, array('tblHeader' => false, 'cantSplit' => true));
+$table->addCell(1800, $styleCell)->addText('BSPI Score Range', array('bold'=>true,"size"=>"12","name"=>"Calibri"),array('align' => 'center'));
+$table->addCell(5300, $styleCell)->addText('Description', array('bold'=>true,"size"=>"12","name"=>"Calibri"),array('align' => 'center'));
+$table->addCell(2400, $styleCell)->addText('Number of students in Assessment 2019-20', array('bold'=>true,"size"=>"12","name"=>"Calibri"),array('align' => 'center')); 
+$table->addCell(1400, $styleCell)->addText('Percentage', array('bold'=>true,"size"=>"12","name"=>"Calibri"),array('align' => 'center')); 
+$tab1=array();
+
+
+ 
+		$table->addRow();
+		$table->addCell(1800,array("bgcolor"=>"ef4747"))->addText(htmlspecialchars(' <= 20 '),array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri","bgcolor"=>"ef4747"),array('align'=>'center'));
+		$table->addCell(5300,array("bgcolor"=>"ef4747"))->addText('Rigorous and immediate intervention needed. But don’t feel low. Kids can certainly improve!',array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri","bgcolor"=>"ef4747"),array('indent'=>0.1,'align' => 'center'));
+		$table->addCell(2400,array("bgcolor"=>"ef4747"))->addText($bspirangeless_two,array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri","bgcolor"=>"ef4747"),array('align' => 'center')); 
+		$table->addCell(1400,array("bgcolor"=>"ef4747"))->addText(round((($bspirangeless_two/$totalcount)*100),2),array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri","bgcolor"=>"ef4747"),array('align' => 'center')); 
+		
+		$table->addRow();
+		$table->addCell(1800,array("bgcolor"=>"eb7961"))->addText(htmlspecialchars(' > 20 and <= 40 '),array('align'=>'center',"size"=>"12","name"=>"Calibri","bgcolor"=>"eb7961"),array('align'=>'center'));
+		$table->addCell(5300,array("bgcolor"=>"eb7961"))->addText('Needs Immediate Intervention. Mistakes are the stepping stones to success. You can surely do it!',array('align'=>'center',"size"=>"12","name"=>"Calibri","bgcolor"=>"eb7961"),array('indent'=>0.1,'align' => 'center'));
+		$table->addCell(2400,array("bgcolor"=>"eb7961"))->addText($bspirangeless_twotofour,array("size"=>"12","name"=>"Calibri","bgcolor"=>"eb7961"),array('align' => 'center')); 
+		$table->addCell(1400,array("bgcolor"=>"eb7961"))->addText(round((($bspirangeless_twotofour/$totalcount)*100),2),array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri","bgcolor"=>"eb7961"),array('align' => 'center')); 
+
+		
+		$table->addRow();
+		$table->addCell(1800,array("bgcolor"=>"fbad17"))->addText(htmlspecialchars(' > 40 and <= 60 '),array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri","bgcolor"=>"fbad17"),array('align'=>'center'));
+		$table->addCell(5300,array("bgcolor"=>"fbad17"))->addText('Intervention will enhance curriculum performance. Everyone has a caliber; a bit of push can cause wonders!',array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri","bgcolor"=>"fbad17"),array('indent'=>0.1,'align' => 'center'));
+		$table->addCell(2400,array("bgcolor"=>"fbad17"))->addText($bspirangeless_fourtosix,array('bold'=>false,"size"=>"12","name"=>"Calibri","bgcolor"=>"fbad17"),array('align' => 'center')); 
+		$table->addCell(1400,array("bgcolor"=>"fbad17"))->addText(round((($bspirangeless_fourtosix/$totalcount)*100),2),array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri","bgcolor"=>"fbad17"),array('align' => 'center')); 
+		
+		$table->addRow();
+		$table->addCell(1800,array("bgcolor"=>"fec250"))->addText(htmlspecialchars(' > 60 and <= 80 '),array('bold'=>false,"size"=>"12","name"=>"Calibri","bgcolor"=>"fec250"),array('align'=>'center'));
+		$table->addCell(5300,array("bgcolor"=>"fec250"))->addText('You definitely have a spark. Some determination and you will be there!',array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri","bgcolor"=>"fec250"),array('indent'=>0.1,'align' => 'center'));
+		$table->addCell(2400,array("bgcolor"=>"fec250"))->addText($bspirangeless_sixtoeig,array('bold'=>false,"size"=>"12","name"=>"Calibri","bgcolor"=>"fec250"),array('align' => 'center')); 
+		$table->addCell(1400,array("bgcolor"=>"fec250"))->addText(round((($bspirangeless_sixtoeig/$totalcount)*100),2),array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri","bgcolor"=>"fec250"),array('align' => 'center')); 
+		
+		$table->addRow();
+		$table->addCell(1800,array("bgcolor"=>"9acc59"))->addText(htmlspecialchars(' > 80 '),array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri","bgcolor"=>"9acc59"),array('align'=>'center'));
+		$table->addCell(5300,array("bgcolor"=>"9acc59"))->addText('Prodigy! This is fantastic. Keep it up and take it further!',array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri","bgcolor"=>"9acc59"),array('indent'=>0.1,'align' => 'center'));
+		$table->addCell(2400,array("bgcolor"=>"9acc59"))->addText($bspirangeless_ge,array('bold'=>false,"size"=>"12","name"=>"Calibri","bgcolor"=>"9acc59"),array('align' => 'center')); 
+		$table->addCell(1400,array("bgcolor"=>"9acc59"))->addText(round((($bspirangeless_ge/$totalcount)*100),2),array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri","bgcolor"=>"9acc59"),array('align' => 'center')); 
+		
+		$table->addRow();
+		 
+
+		$table->addCell(1800)->addText(htmlspecialchars(''),$fontStyle2);
+		$table->addCell(5300)->addText('Total Students ',array('bold'=>true,"size"=>"12","name"=>"Calibri"),array('align' => 'right','spaceAfter' => '1'));
+		$table->addCell(2400)->addText($totalcount,array('bold'=>true, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align' => 'center')); 
+		$table->addCell(1400)->addText("100",array('bold'=>true, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align' => 'center')); 
+
+$section->addTextBreak(1);
+
+$note="Note that this is only an initial assessment of students’ performance. With practice, students will become adept at solving puzzles and their BSPI will improve.";	
+
+$section->addText(htmlspecialchars($note),array("color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both'));
+
+$section->addPageBreak(); 
+
+
+
+
+$section->addText("Summary report of BSPI analysis:",array('bold'=>true,"color"=>"366091","name"=>"Calibri","size"=>"14"),array('align'=>'left',"lineHeight"=>"1"));
+
+//changes made
+$chartfontstyle=array("bold"=>true,"color"=>"366091","name"=>"Calibri","size"=>"12");
+$chartparastyle= array('align'=>'center', 'spaceAfter'=>100);
+ 
+ $style=array("width"=>6000000,"height"=>3000000,"setShowAxisLabels"=>true,"setDataLabelOptions"=>array('A', 'B', 'C', 'D', 'E'),"dataLabelOptions"=>array("showCatName"=>false,"showLegendKey"=>true,"showSerName"=>false),"Colors"=>array("ef4747","eb7961","fbad17","fec250","9acc59"));
+ 
+$chartType ='column';
+$categories = array(htmlspecialchars(' <= 20 '), htmlspecialchars('> 20 and <= 40'), htmlspecialchars('> 40 and <= 60'),htmlspecialchars('> 60 and <= 80'), htmlspecialchars('> 80'));
+$series1 = array($bspirangeless_two,$bspirangeless_twotofour,$bspirangeless_fourtosix,$bspirangeless_sixtoeig,$bspirangeless_ge);
+$showXGridLines = false;
+$showYGridLines = false;
+$showAxisLabels = true;
+
+$section->addText(ucfirst('BSPI analysis'), $chartfontstyle,$chartparastyle);	
+$chart = $section->addChart($chartType, $categories, $series1,$style);
+$chart->getStyle()->setWidth(6000000)->setHeight(3000000);
+$chart->getStyle()->setShowGridX($showXGridLines);
+$chart->getStyle()->setShowGridY($showYGridLines);
+$chart->getStyle()->setShowAxisLabels($showAxisLabels);
+
+
+ $get_bspi_rows = mysqli_query($con,"select round(avg(avgscore),2) as avgscore, gs_id,lastupdate,gu_id,section,gradeid  from (select avg(avgscore) as avgscore, gs_id,lastupdate,gu_id,section,gradeid  from ( select sum(avgscore)/5 as avgscore, gs_id,lastupdate,gu_id,section,gradeid  from (select avg(avgscore) as avgscore, gs_id,lastupdate,gu_id,section,gradeid from  (SELECT (AVG(`game_score`)) as avgscore,gs_id , lastupdate,gu_id,(select section from users where users.id=gu_id) as section ,(select grade_id from users where users.id=gu_id) as gradeid  FROM `game_reports` WHERE gu_id in (select users.id as user_id from users where sid=".$_SESSION['schoolid']." and status=1  and iscompleted='Y' and grade_id in (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15)  ) and gs_id in (59,60,61,62,63)  and  lastupdate between (select startdate from academic_year order by id desc limit 1) and (select enddate from academic_year order by id desc limit 1)   group by gs_id, gu_id , lastupdate) as a1 group by gu_id,gs_id) as a2 group by gu_id) as a3 group by section,gradeid) as a4");
+while($get_res = mysqli_fetch_assoc($get_bspi_rows)){
+	
+		$overallbspi = $get_res['avgscore'];
+		
+	
+	}
+	 
+
+$section->addTitle(htmlspecialchars('Class averages'), 2);
+ 
+$textrun = $section->addTextRun($pstyleJustify); 
+$textrun->addText(htmlspecialchars("Average BSPI across all grades is "),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both')); 
+$textrun->addText(htmlspecialchars($overallbspi),array("bold"=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both'));
+
+$section->addText('The table below shows the average BSPI for each grade and section. It also compares those scores to the school-wide average. When comparing class averages, the overall school average is taken as 100%, allowing for comparisons of individual skill strengths against the BSPI. Thus, in this case, '.$overallbspi.' will be seen as 100%, with scores per skill or per class that exceed this number translating to a percentage greater than 100% and vice versa. This allows the school to easily identify which classes need more assistance and guidance, thereby allowing targeted interventions to be planned and executed.',array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both'));
+ 
+$styleTable = array('borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>1);
+// Add table style
+$phpWord->addTableStyle('classscore', $styleTable);
+
+$get_class_sec_rows = mysqli_query($con,"SELECT DISTINCT section  FROM skl_class_section  where school_id=".$_SESSION['schoolid']." ");
+
+while($get_classscore = mysqli_fetch_assoc($get_class_sec_rows))
+{
+	$class_section[] = $get_classscore;
+}
+
+
+$arrofavgbspi_gradesectionwise = mysqli_query($con,"select round(avg(score),2)  as score,grade_id,section from
+(SELECT avg(game_score) as score,count(gs_id) as playedcount,gu_id,grade_id,section FROM game_reports as gr join users as u on u.id=gu_id WHERE gs_id in (59,60,61,62,63) and status=1 and sid=".$_SESSION['schoolid']." group by gu_id) as a1 where playedcount=5 group by grade_id,section");
+
+while($avgbspi = mysqli_fetch_assoc($arrofavgbspi_gradesectionwise))
+{
+	$arrofbspi[$avgbspi['grade_id']."-".$avgbspi['section']] = $avgbspi['score'];
+}
+
+$noofgradeinschools = mysqli_query($con,"select round(avg(score),2)  as score,grade_id,section,(select classname from class where id=grade_id) as gradename from
+(SELECT avg(game_score) as score,count(gs_id) as playedcount,gu_id,grade_id,section FROM game_reports as gr join users as u on u.id=gu_id WHERE gs_id in (59,60,61,62,63) and status=1 and sid=".$_SESSION['schoolid']." group by gu_id) as a1 where playedcount=5 group by grade_id");
+
+while($avgbspi = mysqli_fetch_assoc($arrofavgbspi_gradesectionwise))
+{
+	$arrofbspi[$avgbspi['grade_id']."-".$avgbspi['section']] = $avgbspi['score'];
+}
+
+while($row = mysqli_fetch_assoc($noofgradeinschools))
+{
+	$arrofgrade[] = $row;
+}
+ /* echo "<pre>";print_r($class_section);
+ echo "<pre>";print_r($arrofbspi);
+ echo "<pre>";print_r($arrofgrade);exit; */
+// Add table
+$table = $section->addTable('classscore',array('width' => 50 * 50, 'unit' => 'pct', 'align' => 'center'));
+// Add row
+$table->addRow(null, array('tblHeader' => true, 'cantSplit' => true));
+ 
+	
+
+$cellRowSpan = array('vMerge' => 'restart');
+$cellRowContinue = array('vMerge' => 'continue');
+$cellColSpan = array('gridSpan' => count($class_section));
+
+/* $table->addRow();
+$table->addCell(2000)->addText("Grade");
+$table->addCell(2000)->addText("Whole grade average BSPI / Percentage");
+$table->addCell(4000)->addText("Section");
+$table->addRow();
+$table->addCell(null, $cellRowContinue);
+$table->addCell(null, $cellRowContinue);	 */
+
+$table->addCell(null, $cellRowContinue);
+$table->addCell(null, $cellRowContinue); 
+foreach($class_section as $section1)
+{
+	$table->addCell(2000)->addText($section1['section'],array('bold'=>TRUE,"size"=>"12","name"=>"Calibri"),array('align' => 'center'));
+}  
+//$table->addCell(null, $cellRowContinue);
+
+$table->addRow();
+$table->addCell(null, $cellRowContinue);
+$table->addCell(null, $cellRowContinue);
+foreach($class_section as $section1)
+{
+	$table->addCell(2000)->addText("BSPI / Percentage",array('bold'=>TRUE,"size"=>"12","name"=>"Calibri"),array('align' => 'center'));
+}
+$table->addCell(null, $cellRowContinue);
+
+/* $table->addRow(); 
+$table->addCell(800)->addText(str_replace("Grade ","",'Grade I'));
+$table->addCell(800)->addText(str_replace("Grade ","",'SSSS')); */
+ 
+foreach($arrofgrade as $row)
+{
+	$classavg_percentage='';
+	$sectionavg_percentage='';
+	$classavg_percentage=round((($row['score']/$overallbspi)*100));
+	$table->addRow(); 
+	$table->addCell(800)->addText(str_replace("Grade ","",$row['gradename']),array('bold'=>false,"size"=>"10","name"=>"Calibri"),array('align' => 'center'));
+	$table->addCell(800)->addText($row['score']." / ".$classavg_percentage."",array('bold'=>false,"size"=>"12","name"=>"Calibri"),array('align' => 'center'));
+	foreach($class_section as $section1)
+	{
+		$sectionavg_percentage=round((($arrofbspi[$row['grade_id']."-".$section1['section']]/$overallbspi)*100));
+		$table->addCell(800)->addText($arrofbspi[$row['grade_id']."-".$section1['section']]." / ".$sectionavg_percentage." ",array('bold'=>false,"size"=>"12","name"=>"Calibri"),array('align' => 'center'));
+	}
+}
+
+										
+$section->addTextBreak(1);
+$section->addTextBreak(1);
+
+ 
+  $styleTable = array('borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>50,);
+//$styleTable = array('borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>150,'spaceBefore'=>6,'marginTop'=>1);
+$styleFirstRow = array('bgColor'=>'e5b9b7');
+// Define cell style arrays
+$styleCell9 = array('valign'=>'center','bgColor'=>'9acc59');
+$styleCell10 = array('valign'=>'center','bgColor'=>'e5b9b7');
+$styleCellBTLR = array('valign'=>'center', 'textDirection'=>'');
+// Define font style for first row
+ $fontStyle1 = array('bold'=>true, 'align'=>'center',"size"=>"11","name"=>"Calibri");
+$fontStyle2 = array('bold'=>false, 'align'=>'center',"size"=>"11","name"=>"Calibri"); 
+// Add table style
+$phpWord->addTableStyle('scattertabless', $styleTable);
+// Add table
+$noSpace = array('spaceAfter' => 0,'align'=>'both');	
+	
+$table = $section->addTable('scattertabless',array('width' => 50 * 50, 'unit' => 'pct', 'align' => 'center'));
+// Add row
+$table->addRow(null, array('tblHeader' => false, 'cantSplit' => true));//changing tblheader
+
+// Define font style for first row
+//$fs1 = array('bold'=>true, 'align'=>'center',"size"=>"10","name"=>"Calibri");
+//$fs7 = array('bold'=>true, 'align'=>'center',"size"=>"10","name"=>"Calibri");
+$fs8 = array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri");
+$fs24 = array('bold'=>false, 'align'=>'center',"size"=>"10","name"=>"Calibri");
+$fs2 = array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri");
+
+// Add cells
+//$table->addCell(3000, $styleCell)->addText('Category', $fs7);
+//$table->addCell(3000, $styleCell)->addText('Marker', $fs7);
+//$table->addCell(2000, $styleCell)->addText('Count', $fs7);  
+   
+//$table->addRow();
+//$table->addRow();
+$table->addCell(3000,$styleCell9,$styleCell)->addText(" ", $fs8,$noSpace); 
+$table->addCell(8000)->addText(" More than 105% of school average", $fs2,$noSpace);
+ $table->addRow();
+ $table->addCell(3000)->addText("",$fs8,$noSpace); 
+$table->addCell(8000)->addText("Between 95% and 105% of the school average",$fs2,$noSpace);  
+ $table->addRow();
+$table->addCell(3000,$styleCell10)->addText(" ", $fs24,$noSpace); 
+$table->addCell(8000)->addText(" Less than 95% of school average", $fs2,$noSpace);  
+ 
+$section->addPageBreak();
+
+ 
+
+$section->addText("The following table shows the detailed BSPI score analysis by class.",array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'left'));
+$styleTable = array('borderSize'=>2, 'borderColor'=>'000', 'cellMargin'=>80);
+//$styleTable = array('borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>150,'spaceBefore'=>6,'marginTop'=>1);
+// Add table style
+$phpWord->addTableStyle('Grade Wise BSPI Analysis', $styleTable, $styleFirstRow);
+// Add table
+$table = $section->addTable('Grade Wise BSPI Analysis',array('width' => 50 * 50, 'unit' => 'pct', 'align' => 'center'));
+// Add row
+$table->addRow(null, array('tblHeader' => true, 'cantSplit' => true));
+// Add cells
+$table->addCell(800, $styleCell)->addText('S.No.', array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center'));
+$table->addCell(800, $styleCell)->addText('Grade', array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center'));
+$table->addCell(800, $styleCell)->addText('Section', array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center'));
+$table->addCell(900, $styleCell)->addText(htmlspecialchars(' <= 20 '), array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center'));
+$table->addCell(1800, $styleCell)->addText(htmlspecialchars(' > 20 and <= 40 '), array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center')); 
+$table->addCell(1800, $styleCell)->addText(htmlspecialchars(' > 40 and <= 60 '), array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center')); 
+$table->addCell(1800, $styleCell)->addText(htmlspecialchars(' > 60 and <= 80 '), array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center')); 
+$table->addCell(900, $styleCell)->addText(htmlspecialchars(' > 80 '), array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center')); 
+$table->addCell(1100, $styleCell)->addText(htmlspecialchars(' Total '), array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center')); 
+$tab1=array();
+
+$bspidata = mysqli_query($con,"select bspirange, count(bspirange) as val, gradeid,section, gradename from ( select CASE  WHEN  sum(avgscore)/5>80 THEN 'E' WHEN  sum(avgscore)/5 >60 AND sum(avgscore)/5  <=80 THEN 'G' WHEN  sum(avgscore)/5 > 40 AND sum(avgscore)/5  <=60 THEN 'A' WHEN  sum(avgscore)/5 > 20 AND sum(avgscore)/5  <=40 THEN 'AB' WHEN  sum(avgscore)/5<=20 THEN 'NI' END as bspirange, sum(avgscore)/5 as avgscore, gs_id,gu_id,gradeid,section,gradename from (select avg(avgscore) as avgscore, gs_id,lastupdate,gu_id,gradeid,section, (select classname from class where id in (gradeid)) as gradename from (SELECT (AVG(`game_score`)) as avgscore,gs_id , lastupdate,gu_id, section, grade_id as gradeid FROM `game_reports` gr join asap_completed_users u on gr.gu_id=u.id WHERE  sid=".$_SESSION['schoolid']." and status=1 and gs_id in (59,60,61,62,63)   group by gs_id, gu_id , lastupdate) as a1 group by gu_id ,gs_id) as a2 group by gu_id,gradeid,section) y1 group by gradeid,section, bspirange");
+		
+while($bspires = mysqli_fetch_assoc($bspidata))
+{
+	$bspi[$bspires['gradename']][$bspires['section']][$bspires['bspirange']]= $bspires['val'];
+}
+$rowno=0; 	 $totallesst=0; $totaltwetofor=0; $totalfortosix=0; $totalsixtoeig=0; $totalmoreeighty=0; $stotal=0;
+	foreach($bspi as $key1=>$val1)
+	{
+
+		foreach($val1 as $key2=>$val2)
+		{
+			$total=0;
+
+			if (isset($val2['NI'])) { $lesst =  $val2['NI'];$total+=$val2['NI']; } else { $lesst = 0; }
+			if (isset($val2['AB'])) { $twetofor =  $val2['AB'];$total+=$val2['AB']; } else { $twetofor =  0; }
+			if (isset($val2['A'])) { $fortosix =  $val2['A'];$total+=$val2['A']; } else { $fortosix = 0; }
+			if (isset($val2['G'])) { $sixtoeig =  $val2['G']; $total+=$val2['G'];} else { $sixtoeig = 0; }
+			if (isset($val2['E'])) { $moreeighty =  $val2['E'];$total+=$val2['E']; } else { $moreeighty = 0; }
+
+			$rowno++;
+
+			$totallesst+=$lesst;
+			$totaltwetofor+=$twetofor;
+			$totalfortosix+=$fortosix;
+			$totalsixtoeig+=$sixtoeig;
+			$totalmoreeighty+=$moreeighty;
+			$stotal+=$total; 
+			 
+			  
+			$table->addRow(null, array('tblHeader' => false, 'cantSplit' => true));
+			$table->addCell(800)->addText($rowno,array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+			$table->addCell(800)->addText(str_replace("Grade ","",$key1),array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+			$table->addCell(800)->addText($key2,array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+			$table->addCell(900)->addText($lesst,array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+			$table->addCell(1800)->addText($twetofor,array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+			$table->addCell(1800)->addText($fortosix,array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+			$table->addCell(1800)->addText($sixtoeig,array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+			$table->addCell(900)->addText($moreeighty,array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+			$table->addCell(1100)->addText($total,array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+		  
+		}
+
+	}
+	
+	$table->addRow(null, array('tblHeader' => false, 'cantSplit' => true));
+	$table->addCell(800)->addText('Total',array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center'));
+	$table->addCell(800)->addText('',array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center'));
+	$table->addCell(800)->addText('',array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center'));
+	$table->addCell(900)->addText($totallesst,array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center'));
+	$table->addCell(1800)->addText($totaltwetofor,array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center'));
+	$table->addCell(1800)->addText($totalfortosix,array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center'));
+	$table->addCell(1800)->addText($totalsixtoeig,array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center'));
+	$table->addCell(900)->addText($totalmoreeighty,array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center'));
+	$table->addCell(1100)->addText($stotal,array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'center'));
+  $section->addTextBreak(1);
+									//cls avg
+									
+
+
+									
+									
+$styleTable = array('borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>50);	
+//$styleTable = array('borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>150,'spaceBefore'=>6,'marginTop'=>1);
+$styleFirstRow4 = array('bgColor'=>'');		//changing clr e5b9b7
+// Define cell style arrays
+$styleCell = array('valign'=>'center');
+$styleCellBTLR = array('valign'=>'center', 'textDirection'=>'');
+// Define font style for first row
+/* $fontStyle1 = array('bold'=>true, 'align'=>'center',"size"=>"11","name"=>"Calibri");
+$fontStyle2 = array('bold'=>false, 'align'=>'center',"size"=>"11","name"=>"Calibri"); */
+// Add table style
+$phpWord->addTableStyle('BSPI Analysis', $styleTable, $styleFirstRow4); 	
+
+//$section->addListItem("Score analysis",0,$listfont,'multilevel'); 
+
+    
+   
+   
+   								///cls avg
+ $section->addPageBreak();	
+//$section->addTextBreak(1); 
+$styleTable = array('borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>50);
+//$styleTable = array('borderSize'=>1, 'borderColor'=>'000', 'cellMargin'=>150,'spaceBefore'=>6,'marginTop'=>1);
+$styleFirstRow = array('bgColor'=>'e5b9b7');
+$section->addText(htmlspecialchars("The students with <= 20 BSPI scores and scores by skill are as follows"),array('bold'=>true,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'left'));
+
+// Add table style
+$phpWord->addTableStyle('Less than 20 BSPI', $styleTable, $styleFirstRow);
+// Add table
+$table = $section->addTable('Less than 20 BSPI',array('width' => 50 * 50, 'unit' => 'pct', 'align' => 'center'));
+// Add row
+$table->addRow(null, array('tblHeader' => true, 'cantSplit' => true));
+// Add cells
+$table->addCell(1000, $styleCell)->addText('S.No.', array('bold'=>true, 'align'=>'center',"size"=>"12","name"=>"Calibri"));
+$table->addCell(2000, $styleCell)->addText('Name', array('bold'=>true, 'align'=>'center',"size"=>"12","name"=>"Calibri"));
+$table->addCell(1000, $styleCell)->addText('Class', array('bold'=>true, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+$table->addCell(1000, $styleCell)->addText('Section', array('bold'=>true, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+$table->addCell(1100, $styleCell)->addText('Memory', array('bold'=>true, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center')); 
+$table->addCell(1100, $styleCell)->addText('Visual Processing', array('bold'=>true, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center')); 
+$table->addCell(1100, $styleCell)->addText('Focus and Attention', array('bold'=>true, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center')); 
+$table->addCell(1100, $styleCell)->addText('Problem Solving', array('bold'=>true, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center')); 
+$table->addCell(1100, $styleCell)->addText('Linguistics', array('bold'=>true, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center')); 
+$table->addCell(1100, $styleCell)->addText('BSPI', array('bold'=>true, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center')); 
+$tab1=array();
+
+
+
+ $inference = mysqli_query($con,"select * from (select id, sid, (select school_name from schools where id = ".$_SESSION['schoolid'].") as schoolname, fname,lname, section, grade_id,(select classname from class where id=grade_id) as gradename, s1.skillscore_M as skillscorem, skillscore_V as skillscorev,skillscore_F as skillscoref,skillscore_P as skillscorep,skillscore_L as skillscorel,a3.finalscore as avgbspiset1,CASE
+WHEN LEAST(s1.skillscore_M, skillscore_V, skillscore_F, skillscore_P, skillscore_L) = s1.skillscore_M THEN 'Memory'
+WHEN LEAST(s1.skillscore_M, skillscore_V, skillscore_F, skillscore_P, skillscore_L) = skillscore_V THEN 'Visual Processing'
+WHEN LEAST(s1.skillscore_M, skillscore_V, skillscore_F, skillscore_P, skillscore_L) = skillscore_F THEN 'Focus & Attention'
+WHEN LEAST(s1.skillscore_M, skillscore_V, skillscore_F, skillscore_P, skillscore_L) = skillscore_P THEN 'Problem Solving'
+WHEN LEAST(s1.skillscore_M, skillscore_V, skillscore_F, skillscore_P, skillscore_L) = skillscore_L THEN 'Linguistics'
+
+END as needimprovement from asap_completed_users mu
+
+left join 
+ (SELECT SUM(score)/5 as finalscore,MIN(score) as impr, gu_id, (SELECT sid from asap_completed_users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id in (59,60,61,62,63) and gu_id in (select id from asap_completed_users where sid = ".$_SESSION['schoolid'].") group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id ) a2 group by gu_id) a3   on a3.gu_id=mu.id 
+ 
+ left join
+(select (AVG(score)) as skillscore_M, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =59 and gu_id in (select id from asap_completed_users where sid = ".$_SESSION['schoolid'].") group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s1 on s1.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore_V, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =60 and gu_id in (select id from asap_completed_users where sid = ".$_SESSION['schoolid'].") group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s2 on s2.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore_F, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =61 and gu_id in (select id from asap_completed_users where sid = ".$_SESSION['schoolid'].") group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s3 on s3.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore_P, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =62 and gu_id in (select id from asap_completed_users where sid = ".$_SESSION['schoolid'].") group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s4 on s4.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore_L, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =63 and gu_id in (select id from asap_completed_users where sid = ".$_SESSION['schoolid'].") group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s5 on s5.gu_id=mu.id where sid=".$_SESSION['schoolid']." and status=1 ORDER BY avgbspiset1 DESC) z where avgbspiset1 <=20");
+		
+while($objinferenceres = mysqli_fetch_assoc($inference))
+{
+	$inferenceres[]= $objinferenceres;
+}
+$rowno=0;
+foreach($inferenceres as $res) 
+{
+	if($res['skillscorem']==''){$res['skillscorem']='-';}
+	if($res['skillscorev']==''){$res['skillscorev']='-';}
+	if($res['skillscoref']==''){$res['skillscoref']='-';}
+	if($res['skillscorep']==''){$res['skillscorep']='-';}
+	if($res['skillscorel']==''){$res['skillscorel']='-';}
+	
+	$rowno++;
+	$table->addRow(null, array('tblHeader' => false, 'cantSplit' => true));
+	$table->addCell(1000)->addText($rowno,array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"));
+	$table->addCell(2000)->addText($res['fname']." ".$res['lname'],array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"));
+	$table->addCell(1000)->addText(str_replace("Grade ","",$res['gradename']),array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+	$table->addCell(1000)->addText($res['section'],array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+	$table->addCell(1100)->addText($res['skillscorem'],array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+	$table->addCell(1100)->addText($res['skillscorev'],array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+	$table->addCell(1100)->addText($res['skillscoref'],array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+	$table->addCell(1100)->addText($res['skillscorep'],array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+	$table->addCell(1100)->addText($res['skillscorel'],array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center'));
+	$table->addCell(1100)->addText($res['avgbspiset1'],array('bold'=>false, 'align'=>'center',"size"=>"12","name"=>"Calibri"),array('align'=>'center')); 
+}
+$section->addTextBreak(2);
+
+ $textrun=$section->addTextRun(array('align'=>'both',"spaceAfter"=>"6","lineHeight"=>"1.5"));
+ 
+ $pg5="The above students ";
+ $pg6="need immediate intervention.";
+ $pg7=" While they do better in some skills than others, practice in all the 5 skills would be necessary.";
+ 
+ $textrun->addText($pg5,array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'justify',"spaceAfter"=>"6","lineHeight"=>"1.5"));
+ $textrun->addText($pg6,array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12","italic"=>true),array('align'=>'justify',"spaceAfter"=>"6","lineHeight"=>"1.5"));
+ $textrun->addText($pg7,array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'justify',"spaceAfter"=>"6","lineHeight"=>"1.5"));
+
+ 
+$section->addTextBreak(2);
+   
+//$section->addImage($starlogo, array('width' => 550, 'height'=> 125, 'marginTop'=> 0, 'marginLeft'=> 0, 'wrappingStyle'=> 'behind', 'align'=> 'center'));
+
+$section->addPageBreak();
+/*-------------- Skill Analysis Chart Report Start ------------------*/
+$qrymemcount= mysqli_query($con,"select  count(lessthantwenty) as '<=20', count(twentytoforty) as '20-40', count(fortytosixty) as '40-60', count(sixtytoeighty) as '60-80', count(greatereithy) as '>80' from (SELECT AVG(game_score) as finalscore, 
+
+				case when (AVG(game_score)) <=20 then '<20' END as lessthantwenty,
+				case when (AVG(game_score)) >20 and (AVG(game_score)) <=40 then '20-40' end as twentytoforty, 
+				case when (AVG(game_score)) >40 and (AVG(game_score)) <=60 then '40-60' END as fortytosixty, 
+				case  when (AVG(game_score)) >60 and (AVG(game_score)) <=80 then '60-80' end as sixtytoeighty, 
+				case when (AVG(game_score)) >80 then '>80' end as greatereithy 
+
+				from game_reports gd JOIN asap_completed_users u ON gd.gu_id=u.id where gd.lastupdate between (select startdate from academic_year where id=19) and (select enddate from academic_year where id=19) and u.sid=".$_SESSION['schoolid']." and u.status=1 and u.academicyear=19 and gs_id=59 group BY gu_id) x");
+		while($objmemcount = mysqli_fetch_assoc($qrymemcount))
+		{
+			
+			$mecount[]= $objmemcount;
+			
+		}
+		
+		$qryvpcount= mysqli_query($con,"select  count(lessthantwenty) as '<=20', count(twentytoforty) as '20-40', count(fortytosixty) as '40-60', count(sixtytoeighty) as '60-80', count(greatereithy) as '>80' from (SELECT AVG(game_score) as finalscore, 
+
+				case when (AVG(game_score)) <=20 then '<20' END as lessthantwenty,
+				case when (AVG(game_score)) >20 and (AVG(game_score)) <=40 then '20-40' end as twentytoforty, 
+				case when (AVG(game_score)) >40 and (AVG(game_score)) <=60 then '40-60' END as fortytosixty, 
+				case  when (AVG(game_score)) >60 and (AVG(game_score)) <=80 then '60-80' end as sixtytoeighty, 
+				case when (AVG(game_score)) >80 then '>80' end as greatereithy 
+
+				from game_reports gd JOIN asap_completed_users u ON gd.gu_id=u.id where gd.lastupdate between (select startdate from academic_year where id=19) and (select enddate from academic_year where id=19) and u.sid=".$_SESSION['schoolid']." and u.status=1 and u.academicyear=19 and gs_id=60 group BY gu_id) x");
+		while($objvpcount = mysqli_fetch_assoc($qryvpcount))
+		{
+			
+			$vpcount[]= $objvpcount;
+			
+		}
+		
+		$qryfacount= mysqli_query($con,"select  count(lessthantwenty) as '<=20', count(twentytoforty) as '20-40', count(fortytosixty) as '40-60', count(sixtytoeighty) as '60-80', count(greatereithy) as '>80' from (SELECT AVG(game_score) as finalscore, 
+
+				case when (AVG(game_score)) <=20 then '<20' END as lessthantwenty,
+				case when (AVG(game_score)) >20 and (AVG(game_score)) <=40 then '20-40' end as twentytoforty, 
+				case when (AVG(game_score)) >40 and (AVG(game_score)) <=60 then '40-60' END as fortytosixty, 
+				case  when (AVG(game_score)) >60 and (AVG(game_score)) <=80 then '60-80' end as sixtytoeighty, 
+				case when (AVG(game_score)) >80 then '>80' end as greatereithy 
+
+				from game_reports gd JOIN asap_completed_users u ON gd.gu_id=u.id where gd.lastupdate between (select startdate from academic_year where id=19) and (select enddate from academic_year where id=19) and u.sid=".$_SESSION['schoolid']." and u.status=1 and u.academicyear=19 and gs_id=61 group BY gu_id) x");
+		while($objfacount = mysqli_fetch_assoc($qryfacount))
+		{
+			
+			$facount[]= $objfacount;
+			
+		}
+		
+		$qrypscount= mysqli_query($con,"select  count(lessthantwenty) as '<=20', count(twentytoforty) as '20-40', count(fortytosixty) as '40-60', count(sixtytoeighty) as '60-80', count(greatereithy) as '>80' from (SELECT AVG(game_score) as finalscore, 
+
+				case when (AVG(game_score)) <=20 then '<20' END as lessthantwenty,
+				case when (AVG(game_score)) >20 and (AVG(game_score)) <=40 then '20-40' end as twentytoforty, 
+				case when (AVG(game_score)) >40 and (AVG(game_score)) <=60 then '40-60' END as fortytosixty, 
+				case  when (AVG(game_score)) >60 and (AVG(game_score)) <=80 then '60-80' end as sixtytoeighty, 
+				case when (AVG(game_score)) >80 then '>80' end as greatereithy 
+
+				from game_reports gd JOIN asap_completed_users u ON gd.gu_id=u.id where gd.lastupdate between (select startdate from academic_year where id=19) and (select enddate from academic_year where id=19) and u.sid=".$_SESSION['schoolid']." and u.status=1 and u.academicyear=19 and gs_id=62 group BY gu_id) x");
+		while($objpscount = mysqli_fetch_assoc($qrypscount))
+		{
+			
+			$pscount[]= $objpscount;
+			
+		}
+		
+		
+		$qrylicount= mysqli_query($con,"select  count(lessthantwenty) as '<=20', count(twentytoforty) as '20-40', count(fortytosixty) as '40-60', count(sixtytoeighty) as '60-80', count(greatereithy) as '>80' from (SELECT AVG(game_score) as finalscore, 
+
+				case when (AVG(game_score)) <=20 then '<20' END as lessthantwenty,
+				case when (AVG(game_score)) >20 and (AVG(game_score)) <=40 then '20-40' end as twentytoforty, 
+				case when (AVG(game_score)) >40 and (AVG(game_score)) <=60 then '40-60' END as fortytosixty, 
+				case  when (AVG(game_score)) >60 and (AVG(game_score)) <=80 then '60-80' end as sixtytoeighty, 
+				case when (AVG(game_score)) >80 then '>80' end as greatereithy 
+
+				from game_reports gd JOIN asap_completed_users u ON gd.gu_id=u.id where gd.lastupdate between (select startdate from academic_year where id=19) and (select enddate from academic_year where id=19) and u.sid=".$_SESSION['schoolid']." and u.status=1 and u.academicyear=19 and gs_id=63 group BY gu_id) x");
+		while($objlicount = mysqli_fetch_assoc($qrylicount))
+		{
+			
+			$licount[]= $objlicount;
+			
+		}
+ 
+
+/*  $section->addListItem("Skill Analysis:",1,$listfontstyle,'multilevel'); */
+$section->addTitle(htmlspecialchars('Skill Analysis:'), 2);
+
+ $p14="The graphs below show the performance of all students in each of the skill domains that were tested in this assessment.";
+ 
+ //$section->addText(htmlspecialchars(" Annexure document contains the individual score of each student."),array('bold'=>false,"color"=>"000","name"=>"Calibri","size"=>"10"),array('align'=>'both'));
+ 
+ $section->addText($p14,array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12","italic"=>false),array('align'=>'both'));
+ 
+ /* $section->addText($p7,array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12","italic"=>false),array('align'=>'left',"spaceAfter"=>"6","lineHeight"=>"1.5")); */
+ 
+ $section->addTextBreak();
+
+// Add table style
+$styleSkills=array("width"=>6000000,"height"=>3000000,"setShowAxisLabels"=>true,"setDataLabelOptions"=>array('A', 'B', 'C', 'D', 'E'),"dataLabelOptions"=>array("showCatName"=>false,"showLegendKey"=>true,"showSerName"=>false),"Colors"=>array("ef4747","eb7961","fbad17","fec250","9acc59"));
+ 
+$chartType ='column';
+$categories = array(htmlspecialchars(' <= 20 '), htmlspecialchars('> 20 and <= 40'), htmlspecialchars('> 40 and <= 60'),htmlspecialchars('> 60 and <= 80'), htmlspecialchars('> 80'));
+$seriesME = array($mecount[0]['<=20'],$mecount[0]['20-40'],$mecount[0]['40-60'],$mecount[0]['60-80'],$mecount[0]['>80']);
+$seriesVP = array($vpcount[0]['<=20'],$vpcount[0]['20-40'],$vpcount[0]['40-60'],$vpcount[0]['60-80'],$vpcount[0]['>80']);
+$seriesFA = array($facount[0]['<=20'],$facount[0]['20-40'],$facount[0]['40-60'],$facount[0]['60-80'],$facount[0]['>80']);
+$seriesPS = array($pscount[0]['<=20'],$pscount[0]['20-40'],$pscount[0]['40-60'],$pscount[0]['60-80'],$pscount[0]['>80']);
+$seriesLI = array($licount[0]['<=20'],$licount[0]['20-40'],$licount[0]['40-60'],$licount[0]['60-80'],$licount[0]['>80']);
+$showXGridLines = false;
+$showYGridLines = false;
+$showAxisLabels = true;
+
+
+
+$section->addText(ucfirst('Memory'), array("bold"=>true,"color"=>"366091","name"=>"Open Sans","size"=>"12"),$chartparastyle);
+$chart = $section->addChart($chartType, $categories, $seriesME,$styleSkills);
+$chart->getStyle()->setWidth(6000000)->setHeight(3000000);
+$chart->getStyle()->setShowGridX($showXGridLines);
+$chart->getStyle()->setShowGridY($showYGridLines);
+$chart->getStyle()->setShowAxisLabels($showAxisLabels);
+ 
+$section->addTextBreak();
+
+
+$section->addText(ucfirst('Visual Processing'), array("bold"=>true,"color"=>"366091","name"=>"Open Sans","size"=>"12"),$chartparastyle);
+$chart = $section->addChart($chartType, $categories, $seriesVP,$styleSkills);
+$chart->getStyle()->setWidth(6000000)->setHeight(3000000);
+$chart->getStyle()->setShowGridX($showXGridLines);
+$chart->getStyle()->setShowGridY($showYGridLines);
+$chart->getStyle()->setShowAxisLabels($showAxisLabels);
+ 
+$section->addPageBreak();
+
+$section->addText(ucfirst('Focus and Attention'), array("bold"=>true,"color"=>"366091","name"=>"Open Sans","size"=>"12"),$chartparastyle);
+$chart = $section->addChart($chartType, $categories, $seriesFA,$styleSkills);
+$chart->getStyle()->setWidth(6000000)->setHeight(3000000);
+$chart->getStyle()->setShowGridX($showXGridLines);
+$chart->getStyle()->setShowGridY($showYGridLines);
+$chart->getStyle()->setShowAxisLabels($showAxisLabels);
+ 
+$section->addTextBreak(2);
+
+
+$section->addText(ucfirst('Problem Solving'), $chartfontstyle,$chartparastyle);
+$chart = $section->addChart($chartType, $categories, $seriesPS,$styleSkills);
+$chart->getStyle()->setWidth(6000000)->setHeight(3000000);
+$chart->getStyle()->setShowGridX($showXGridLines);
+$chart->getStyle()->setShowGridY($showYGridLines);
+$chart->getStyle()->setShowAxisLabels($showAxisLabels);
+ 
+$section->addTextBreak();$section->addPageBreak();
+
+$section->addText(ucfirst('Linguistics'), array("bold"=>true,"color"=>"366091","name"=>"Open Sans","size"=>"12"),$chartparastyle);
+$chart = $section->addChart($chartType, $categories, $seriesLI,$styleSkills);
+$chart->getStyle()->setWidth(6000000)->setHeight(3000000);
+$chart->getStyle()->setShowGridX($showXGridLines);
+$chart->getStyle()->setShowGridY($showYGridLines);
+$chart->getStyle()->setShowAxisLabels($showAxisLabels);
+ 
+/*  $section->addTextBreak(2);  */
+ $section->addPageBreak();
+ 
+ 
+ $section->addText(htmlspecialchars("Conclusion:"),array('bold'=>true,"color"=>"943734","name"=>"Calibri","size"=>"14","underline"=>"single"),array('align'=>'left'));
+ 
+ 
+$section->addText(htmlspecialchars("Our schools and classrooms are built to empower children to become the best possible versions of themselves. While this endeavour involves academic engagement, it also increasingly involves attitudes and skills that are best learnt outside the textbook. It is for this reason that many schools are now seeking means to expand the horizons of the classrooms, making the space one of holistic learning and growth. "),array('bold'=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both'));
+$textrun = $section->addTextRun($pstyleJustify);
+$textrun->addText(htmlspecialchars("As is evident from this initial assessment report, there are some students of your institution who perform exceedingly well across skill types. Some others, however, stand to benefit significantly from targeted intervention like our platform. Through. "),array('bold'=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both'));
+
+$p3a1="SkillAngels";
+$textrun->addText(htmlspecialchars($p3a1),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both')); 
+$textrun->addText(htmlspecialchars('TM'),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"10",'superScript' => true));
+
+$textrun->addText(htmlspecialchars(' , we seek to empower your children with the cognitive skills they will need to be successful adults and leaders of our future communities. As a school, you will be able to track and monitor progress through the Admin Dashboard and we assure you transparent and regular communication through the course of the academic year. The annexure of this document provides a detailed report on each individual child’s scores as well as how these scores compare against the school’s average.'),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both'));
+$textrun->addTextBreak(1);
+
+$textrun->addText(htmlspecialchars('We believe that together, we can give your students the tools they need to face the today’s fast-changing world. '),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both'));
+
+$p3a1="SkillAngels";
+$textrun->addText(htmlspecialchars($p3a1),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both')); 
+$textrun->addText(htmlspecialchars('TM'),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"10",'superScript' => true));
+
+$textrun->addText(htmlspecialchars(' promises to help them learn to think, think to learn, and learn to learn. Together, we can help them grow.'),array("bold"=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both'));
+
+ $section->addTextBreak(2);
+
+$section->addText(htmlspecialchars("Annexure:"),array('bold'=>true,"color"=>"943734","name"=>"Calibri","size"=>"14","underline"=>"single"),array('align'=>'left'));
+ 
+ 
+$section->addText(htmlspecialchars(" Annexure document contains the individual score of each student."),array('bold'=>false,"color"=>"000","name"=>"Calibri","size"=>"12"),array('align'=>'both'));
+ 
+ $section->addTextBreak(2);
+ 
+ $section->addImage($annexurelogo, array('width' => 400, 'height'=> 150, 'marginTop'=> 0, 'marginBottom'=> 0,'marginLeft'=> 0, 'marginRight'=> 0,'wrappingStyle'=> 'behind', 'align'=> 'center'));
+
+function sort_max($a,$subkey) 
+{
+	foreach($a as $k=>$v) {
+	$b[$k] = strtolower($v[$subkey]);
+	}
+	arsort($b);
+	foreach($b as $key=>$val) {
+	$c[] = $a[$key];
+	}
+	return $c;
+}
+	
+ // Saving the document as OOXML file...
+$objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+$filename="../doc/".$_SESSION['afname']." - SkillAngels - Assessment Report 2019-20.doc";
+
+$objWriter->save($filename);
+
+header("Location:".$filename);exit;
+  
+
+?>
+

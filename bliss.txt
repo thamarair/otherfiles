@@ -1,0 +1,27 @@
+INSERT INTO `program_grade_master` (`id`, `gradeid`, `planid`, `gradename`, `programid`, `status`) VALUES (NULL, '3', '1', 'Grade I', '1', '1'), (NULL, '4', '2', 'Grade II', '1', '1');
+INSERT INTO `program_grade_master` (`id`, `gradeid`, `planid`, `gradename`, `programid`, `status`) VALUES (NULL, '5', '3', 'Grade III', '1', '1'), (NULL, '6', '4', 'Grade IV', '1', '1');
+INSERT INTO `program_grade_master` (`id`, `gradeid`, `planid`, `gradename`, `programid`, `status`) VALUES (NULL, '8', '6', 'Grade VI', '1', '1'), (NULL, '9', '7', 'Grade VII', '1', '1');
+INSERT INTO `program_grade_master` (`id`, `gradeid`, `planid`, `gradename`, `programid`, `status`) VALUES (NULL, '10', '8', 'Grade VIII', '1', '1'), (NULL, '12', '92', 'Grade IX', '1', '1');
+INSERT INTO `program_grade_master` (`id`, `gradeid`, `planid`, `gradename`, `programid`, `status`) VALUES (NULL, '13', '93', 'Grade X', '1', '1'), (NULL, '14', '94', 'Grade XI', '1', '1');
+SELECT oc.occupationid,oc.occupation,sl.subsector FROM jp_occupations oc join jp_sectorlist sl on oc.subsectorid=sl.subsectorid WHERE oc.Status=1 and assigned_status='A' order by occupation asc
+ALTER TABLE `couponmaster` ADD `gid` INT(11) NOT NULL AFTER `qrcode`, ADD `programid` INT(11) NOT NULL AFTER `gid`, ADD `paymentmode` ENUM('C','OP') NOT NULL COMMENT 'C => Cash,OP => Online Payment' AFTER `programid`;
+
+INSERT INTO users(email, salt1, password, salt2, fname, lname, gender, mobile, dob, status, visible,gp_id,grade_id,address,username,sid, section,academicyear,creation_date,agreetermsandservice,org_pwd,stateid,city,pincode, parentname,hospitalid, doctorid, couponcode,portal_type,startdate,enddate,created_on,isnew) VALUES("rana@skillangels.com","976919290","79e19d5de47ec97db62b61b9fc0908c7cebf55bc","354192280","rana","r","M","8765432190","06-12-2015",1,1,"","","taramani","rana@skillangels.com",2,"A",20,"2019-08-20",1,"skillangels","1823","chennai","600005","ravi","1","269","ACC8D3eX","CLP",CURDATE(),DATE_ADD(CURDATE(), INTERVAL (select value from config_master where code="VALIDDAYS" and status="Y") DAY),NOW(),"N") 
+
+
+
+SELECT d.id as doctorid,doctorname,email,mobilenumber,d.hospitalid,pgm.planid,c.gradeid,c.programid  FROM couponmaster c join doctormaster as d on d.id=doctorid join program_grade_master pgm on c.gradeid=pgm.gradeid and pgm.programid=c.programid WHERE couponcode='ACC8D3eX'
+
+
+//	$query = $this->db->query('select gradename,(select id from program_master where status=1)  from skl_class_plan where programid="'.$programname.'"');
+	
+	/* 	public function gradelist($sname)
+    {		 
+		$query = $this->db->query('select gradename,(select id from class where id=class_id) as classname from skl_class_plan where school_id="'.$sname.'"');		
+		//echo $this->db->last_query(); exit;
+		return $query->result_array();
+    }  */
+	
+
+ALTER TABLE `couponmaster` ADD `planid` INT(11) NOT NULL AFTER `gradeid`;	
+		

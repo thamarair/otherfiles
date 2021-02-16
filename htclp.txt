@@ -1,0 +1,1 @@
+select startdate,enddate,level from braintest_mapping where sid='2' and gradeid='5' and level=1 and status=1
