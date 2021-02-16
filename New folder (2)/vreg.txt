@@ -1,0 +1,499 @@
+
+
+
+<div class="content" id="regpage">
+        <div class="container-fluid">
+          <div class="row">
+		  <div class="col-md-4" style="text-align:center;"> 
+		<!--	<div class="leftsidepanel">  
+            <img src="<?php //echo base_url(); ?>assets/images/logo/SchoolPreneurs.jpg" alt="SchoolPreneurs" class="imgwd" />  
+				<h2>Registration</h2>
+				<!--<div class="" style="width:80px;margin:0px auto;line-height:15px;">
+					<img src="<\\?php echo base_url(); ?>assets/images/logo/TiEChennaiLogo.png" alt="TiE Chennai Logo" class="imgwd" width="50px;"/>  
+					<div style="font-size:13px;color:#fff;">Co-presenting partner</div>
+				</div>-->
+			</div> 
+		  </div>
+            <div class="col-md-8" style="padding:0px;">
+              <div class="card" style="margin:0px;"> 
+			  <h4 class="card-category text-center" style="color: green;font-weight: 600;" id="successmsg"></h4>
+				<div class="card-body" id="regdiv">
+					<div class="registrationarea">
+						<div id="mainContDisp" class="container playGames"> 
+							<form name="frmRegister" id="frmRegister"  class="" method="post" enctype="multipart/form-data" accept-charset="utf-8">
+									<h4 class="card-category text-center">Update your details</h4>
+									
+							 <div class="row" style="padding: 20px;border-radius: 20px;border: 2px solid #de5db5;box-shadow: 5px 5px 5px #ccc;">
+
+								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+									<!--<div class="row">
+										<div class="">
+											  <span style="float:left;"><label class="bmd-label-floating groupHeading">Personal Details</label></span>
+										</div>
+									</div>-->
+									<div class="row">
+										<div class="col-lg-2 col-md-2">
+											<div class="form-group bmd-form-group"> 
+												<label id="sname" name="sname">School Name</label>
+
+												<div class="input-group">
+      
+											<select  name="school_name" id="school_name" class="form-control selectpicker" disabled="disabled">
+											<option value="" >Select your School Name</option>
+											<?php foreach($school_name as $res) {
+											?>
+											<option <?php if($res['id']==$useredit[0]['sid'] )
+											{ ?>selected="selected"<?php } ?> value="<?php echo $res['id']; ?>"><?php echo $res['school_name']; ?></option>
+													<?php  } ?>
+											</select>
+											</div>
+											</div> 
+										</div>
+										<div class="col-lg-2 col-md-2">
+											<div class="form-group bmd-form-group">
+												<label name="grade" >Grade</label>
+												 <!-- <div class="col-md-2 selectContainer">-->
+													<div class="input-group">
+      
+											<input type="text" name="grade" id="grade" value="<?php echo $useredit[0]['classname']; ?>" readonly>
+											</div>
+											</div>
+											</div> 
+											<div class="col-lg-2 col-md-2">
+											<div class="form-group bmd-form-group">
+												<label name="section">Section<span style="color:red">*</span></label>
+												 <!-- <div class="col-md-2 selectContainer">-->
+													<div class="input-group">
+      
+											<select name="section" id="section"class="form-control selectpicker">
+											<option value="<?php echo $useredit[0]['section']; ?>">Select your section</option>
+											<?php foreach($usersection as $sec) {
+				?>
+				<option <?php if($sec['section']==$useredit[0]['section'] )
+											{ ?>selected="selected"<?php } ?> value="<?php echo $sec['section']; ?>"><?php echo $sec['section']; ?></option>
+		<?php	} ?>
+																			
+											</select>
+											</div>
+											</div>
+											</div> 
+										</div>
+										
+									</div> 
+									<div class="row">
+										<div class="col-lg-2 col-md-2">
+											<div class="form-group bmd-form-group"  > 
+												<label class="" for="txtFname">First name<span style="color:red">*</span></label>
+												<input type="text" maxlength="60" class="form-control alphaOnly" name="txtFname" value="<?php echo $useredit[0]['fname']; ?>"  id="txtFname">
+												<input type="hidden" value="<?php echo $useredit[0]['id']; ?>" name="userid">
+											</div> 
+										</div>
+										<div class="col-lg-2">
+											<div class="form-group bmd-form-group">
+												<label class="" for="txtLname">Last name</label>
+												<input type="text" maxlength="60"  class="form-control alphaOnly" name="txtLname" value="<?php echo $useredit[0]['lname']; ?>" id="txtLname">
+											</div> 
+										</div>
+										
+										<?php	if($useredit[0]['IS_ASAP']== 'Y'){$portaltype = 'ASAP';} else{$portaltype = 'CLP';} ?>
+												
+										<div class="col-lg-2">
+											<div class="form-group bmd-form-group">
+												<label class="" for="txtpgm">Program</label>
+												<input type="text" maxlength="60"  class="form-control alphaOnly" name="txtpgm" value="<?php echo $portaltype; ?>" id="txtpgm" readonly>
+											</div> 
+										</div>
+										</div>
+										
+										
+										
+										
+										<div class="row">
+										<div class="col-lg-2 col-md-4">
+											<div class="form-group bmd-form-group">
+												<label class="" for="txtUsername">Username</label>
+												<input type="text"name="txtUsername" value="<?php echo $useredit[0]['username']; ?>" id="txtUsername" readonly>
+											</div>
+											<label id='errUsername' class="error"></label>
+										</div>  
+										<div class="col-lg-2 col-md-4">
+											<div class="form-group bmd-form-group">
+												<label class="" for="txtPassword">Password<span style="color:red">*</span></label>
+												<input type="text" name="txtPassword" value="<?php echo $useredit[0]['org_pwd']; ?>" id="txtPassword"  maxlength="20">
+											</div>
+										</div>  
+									</div>  
+									</div>
+								</div>
+							</div> 
+									<div class="">
+										<div style="text-align:center;clear:both;">	
+											<div style="padding-bottom:5px;">   
+												<label class=""  style="color:red"  class="error" id="errcommon"></label>
+											</div>
+											<input type="button" id="btnupdate" name="btnupdate"style="float:none;" class="btn btn-primary" value="Update" >
+											<!--<input onSubmit="this.form.reset()" type="reset" id="frmreset" class="btn default">-->
+										</div>
+									</div>
+							</form>
+						</div> 
+					</div>
+				<div style="display:none;" id="iddivLoading" class="loading"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+ <style>
+ .ddtool{top: -88px !important;}
+ @media only screen and (min-device-width : 300px) and (max-device-width : 667px) 
+ { 
+ 
+	.divider {border-bottom: 1px solid; padding: 0px !important;margin: 20px 0;  }
+ 
+ }
+ .divider { border-bottom: 1px solid; padding: 0px 20px; color: #999;width: 100%;margin: 20px 0px; }
+ .divider1 { padding: 0px 20px; }
+ .navbar {margin: 20px 0px 0px 0px;}
+ #errUsername{color: red;font-size: 15px;float: inherit;margin: 0;display: block;}
+ #errcoupcode{color: red;font-size: 15px;float: inherit;margin: 0;display: block;}
+.btn-primary{background:linear-gradient(180deg, #e8519e, #c77ff2)}
+ .switch-light{width: 50%;margin: 0 auto;}
+ .well{background-color:rgb(239, 14, 74);color: #fff;}
+.txtclr h3{color:#106790;}
+.loading {
+  position: fixed;
+  z-index: 999;
+/*   height: 2em;
+  width: 2em; */
+  overflow: show;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: #5a5757 url(<?php echo base_url(); ?>assets/images/ajax-page-loader.gif) center center no-repeat;
+  background-size: 5%;
+  opacity: 0.6;
+}
+.homePlayGames {
+    border: 1px solid #eeeeee;
+    background: #fafafa;
+    
+    padding: 20px 15px 30px 25px;
+	margin-bottom: 20px;
+}
+.green{background-color:#5cb85c;color:#fff;font-size:18px;text-align:center;padding:5px;}
+.red{background-color:#da6d6d;color:#fff;font-size:18px;text-align:center;padding:5px;}
+
+.stepstofollow li
+{
+	list-style: none;
+    padding: 0 0 27px;
+    font-size: 20px;
+    line-height: 23px;
+}
+.stepstofollow li .fa{padding-right:8px;color:#b51140;}
+#mainContDisp h3{padding-bottom:5px;color:#045FB4;font-weight: bold;}
+label.error{color: red;}
+.groupHeading { font-size: 16px;
+    font-weight: 500;
+color: #a843ba; text-decoration: underline;}
+
+.bmd-form-group label{color:#000}
+.form-check, label{color:#000}
+label.error{color:red} 
+.form-control:disabled, .form-control[readonly] {background-color: #fff;} 
+.leftsidepanel{margin:50% 0;}
+.leftsidepanel img{text-align:center;}
+.leftsidepanel h2{color:#fff;text-align:center;margin:20px 0px;}
+</style> 
+<script src="<?php echo base_url(); ?>assets/js/jquery.validate.js"></script> 
+<script> 
+$.validator.addMethod('min_length', function (val, element) {
+    return this.optional(element) || val.length >= $(element).data('min');
+}, function(params, element) {
+	if(typeof $(element).data('min')==='undefined')
+	{
+		$('#mobilecode').valid();var errmsg='';
+	}
+	else
+	{
+		var errmsg='Please enter valid ' + $(element).data('min') + ' digit mobile number.';
+	}
+	return errmsg;
+	//return 'Please enter valid ' + $(element).data('min') + ' digit mobile number.'
+});
+
+$.validator.addMethod('min_length1', function (val, element) {
+    return this.optional(element) || val.length >= $(element).data('min');
+}, function(params, element) {
+	if(typeof $(element).data('min')==='undefined')
+	{
+		var errmsg1='Please select country code';
+	}
+	else
+	{
+		var errmsg1='Please enter valid ' + $(element).data('min') + ' digit mobile number.';
+	}
+	return errmsg1;
+	//return 'Please enter valid ' + $(element).data('min') + ' digit mobile number.'
+});
+
+
+$.validator.addMethod('minStrict', function (value, el, param) {
+    return value >= param;
+});
+$('.numbersOnly').keyup(function () { 
+    this.value = this.value.replace(/[^0-9]/g,'');
+});
+$('.alphaOnly').keyup(function () { 
+    this.value = this.value.replace(/[^a-zA-Z ]/g,'');
+});
+$('#txtPassword').bind("cut copy paste",function(e) {
+     e.preventDefault();
+});
+$('#txtCPassword').bind("cut copy paste",function(e) {
+     e.preventDefault();
+}); 
+
+/*
+var moblength; 
+$("#mobilecode").change(function()
+{ 
+	moblength = $('option:selected', this).attr('prefix');
+	$("#txtmobileno").attr('maxlength',moblength);
+	$("#txtmobileno").data('min',moblength);
+});
+
+ 
+
+$.validator.addMethod("filename", function(value, element) {
+return this.optional(element) || /\.(jpeg|png|jpg|JPG)$/i.test(value);
+}, "Please choose valid image");
+ */
+ 
+ $("#frmRegister").validate({
+        rules: 
+		{
+			"school_name": {required: false},
+            "grade": {required: false}, 
+            "section": {required: true}, 
+            "txtFname": {required: true,minlength: 3},
+           // "txtLname": {required: true}, 
+			"txtUsername":{required: true},
+			"txtPassword": {required: true,minlength: 8},
+			"txtpgm": {required: false}
+			
+        },
+        messages:
+		{
+			
+          //  "school_name": {required: "Please select school name"},
+           // "grade": {required: "Please select grade"},
+           // "section": {required: "Please select section"},
+          //  "txtFname": {required: "Please enter first name"},
+            //"txtLname": {required: "Please enter last name"},
+		//	"txtUsername": {required: "Please enter username",},
+			//"txtPassword": {required: "Please enter password"}
+				
+        },
+		errorPlacement: function(error, element) {
+    if (element.attr("type") === "radio") {
+        error.insertAfter(element.parent().parent());
+    } 
+	else if (element.attr("type") === "checkbox") {
+        error.insertAfter(element.parent().parent());
+    } 
+	else if (element.attr("id") === "file") {
+        error.insertAfter(element.parent().parent());
+    }
+	else if (element.attr("id") === "idproof") {
+        error.insertAfter(element.parent().parent());
+    } 
+	else {
+        error.insertAfter(element);
+    }
+},
+		highlight: function(input) {
+            $(input).addClass('error');
+        } 
+    });
+	
+	
+	
+	
+/*
+var isusravail=0;
+$('#txtUsername').blur(function()
+{
+	
+	$("#existerrormsg").empty();
+	if($('#txtUsername').val()!='')
+	{
+		$.ajax({
+			type:"POST",
+			url:"<?php echo base_url('index.php/admin/checkusrnameexist') ?>",
+			data:{username:$('#txtUsername').val()},
+			success:function(result)
+			{
+				if($.trim(result)>0)
+				{
+					isusravail=1;$("#errUsername").html("This username already exist").show();
+				}
+				else
+				{
+					isusravail=0;$("#errUsername").html("").show();
+				}
+			}
+		});
+	}
+});*/
+
+
+  $('#school_name').change(function()
+{
+	//alert("hiiii");
+	var sname = $(this).val();
+		$.ajax({
+			type:"POST",
+			url:"<?php echo base_url('index.php/admin/gradelist') ?>",  
+			data:{sname:$('#school_name').val()},
+			success:function(result)
+			{
+			//alert(result);
+				$("#grade").html(result);
+			}
+		});
+	 
+}); 
+
+
+ $('#grade').change(function()
+{
+	//alert("hiiiiii");
+	var grade = $(this).val();
+	var sname =  $('#school_name').val();
+		$.ajax({
+			type:"POST",
+			url:"<?php echo base_url('index.php/admin/sectionlist') ?>",  
+			data:{grade:$('#grade').val(),sname:sname},
+			success:function(result)
+			{
+			//alert(result);
+				$("#section").html(result);
+			}
+		}); 
+	 
+}); 
+
+$("#btnupdate").click(function()
+{
+	//alert("hii");
+	if($("#frmRegister").valid())
+	{ 
+		$("#errcommon").html('');
+		$("#iddivLoading").show();
+		//var form=$("#frmRegister");
+		
+		var form = $('#frmRegister')[0];
+		var formData = new FormData(form);
+		
+		$.ajax({
+		type:"POST",
+		dataType:"json",
+		contentType: false,       
+		cache: false,             
+		processData:false, 
+		url:"<?php echo base_url('index.php/admin/update_userdata') ?>",
+		//data:form.serialize(),
+		data:formData,
+		success:function(result)
+		{	//console.log(result);alert(result);
+			$("#iddivLoading").hide();
+			if($.trim(result.response)=='1')
+			{
+				//$('#frmreset').click();
+				$("#regdiv").hide();
+				$("#successmsg").html(result.msg);
+				//document.getElementById("frmRegister").reset();
+			}
+			else
+			{
+				$("#errcommon").show().html(result.msg);
+			}
+		}
+		});
+		 
+	}
+	else
+	{		//$("#errcoupcode").show();
+			$("#errUsername").show();
+		//	$("#errcommon").show().html("Please enter valid data");
+	}
+});
+ 
+
+ var colors = new Array(
+  [62,35,255],
+  [60,255,60],
+  [255,35,98],
+  [45,175,230],
+  [255,0,255],
+  [255,128,0]);
+
+var step = 0;
+//color table indices for: 
+// current color left
+// next color left
+// current color right
+// next color right
+var colorIndices = [0,1,2,3];
+
+//transition speed
+var gradientSpeed = 0.002;
+
+function updateGradient()
+{
+  
+  if ( $===undefined ) return;
+  
+	var c0_0 = colors[colorIndices[0]];
+	var c0_1 = colors[colorIndices[1]];
+	var c1_0 = colors[colorIndices[2]];
+	var c1_1 = colors[colorIndices[3]];
+
+	var istep = 1 - step;
+	var r1 = Math.round(istep * c0_0[0] + step * c0_1[0]);
+	var g1 = Math.round(istep * c0_0[1] + step * c0_1[1]);
+	var b1 = Math.round(istep * c0_0[2] + step * c0_1[2]);
+	var color1 = "rgb("+r1+","+g1+","+b1+")";
+
+	var r2 = Math.round(istep * c1_0[0] + step * c1_1[0]);
+	var g2 = Math.round(istep * c1_0[1] + step * c1_1[1]);
+	var b2 = Math.round(istep * c1_0[2] + step * c1_1[2]);
+	var color2 = "rgb("+r2+","+g2+","+b2+")";
+
+	 $('body').css({
+	   background: "-webkit-gradient(linear, left top, right top, from("+color1+"), to("+color2+"))"}).css({
+		background: "-moz-linear-gradient(left, "+color1+" 0%, "+color2+" 100%)"});
+	  
+	  step += gradientSpeed;
+	  if ( step >= 1 )
+	  {
+		step %= 1;
+		colorIndices[0] = colorIndices[1];
+		colorIndices[2] = colorIndices[3];
+		
+		//pick two new target color indices
+		//do not pick the same as the current one
+		colorIndices[1] = ( colorIndices[1] + Math.floor( 1 + Math.random() * (colors.length - 1))) % colors.length;
+		colorIndices[3] = ( colorIndices[3] + Math.floor( 1 + Math.random() * (colors.length - 1))) % colors.length;
+		
+	  }
+}
+
+//setInterval(updateGradient,25);
+</script>
+ 

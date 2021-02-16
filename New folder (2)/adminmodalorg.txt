@@ -1,0 +1,846 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Admin_model extends CI_Model {
+
+        
+        public function __construct()
+        {
+                // Call the CI_Model constructor
+                parent::__construct();
+				 $this->load->database();
+				 $this->load->library('Multipledb');
+        }
+
+        public function getschools()
+        {
+			$query = $this->db->query('select * from schools where status=1 and active=1');
+			
+			//echo $this->db->last_query(); exit;
+			return $query->result_array();
+        }
+		
+		 public function getskls()
+        {
+			$query = $this->db->query('select Distinct(school_name) as sklname from users where school_name!=""');
+			
+			//echo $this->db->last_query(); exit;
+			return $query->result_array();
+        }
+		
+		 public function getgrades()
+        {
+			$query = $this->db->query('select * from class WHERE status=1');
+			
+			//echo $this->db->last_query(); exit;
+			return $query->result_array();
+        }
+		
+		 public function getreport2($schoolid,$gradeid,$skillid,$sklid,$sectionid)
+        {
+			$where =  '';
+			if($sklid!='') { $where =  "and school_name='".$sklid."'"; } else if($sectionid!='') { $where =  "and section='".$sectionid."'"; }
+			
+				$query = $this->db->query('select id, fname, school_name, grade_id,(select classname from class where id=grade_id) as gradename,section,(select school_name from schools where id=sid) as schoolname,a2.score,a2.rstime,a3.score2,a3.rstime2 ,a4.score3,a4.rstime3  from users mu left join 
+(select (AVG(score)) as score, (AVG(restime)) as rstime, gu_id, gs_id, (select name from category_skills where id =gs_id ) as skillname, (SELECT sid from users where id=gu_id) as schoolid from (SELECT (AVG(`game_score`)) as score , (AVG(rtime)) as restime, gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id ="'.$skillid.'" and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) a2 on a2.gu_id=mu.id left join 
+
+(select (AVG(score)) as score2, (AVG(restime)) as rstime2,gu_id from (SELECT (AVG(`game_score`)) as score , (AVG(rtime)) as restime, gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id ="'.$skillid.'" and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) a3 on a3.gu_id=mu.id left join 
+
+(select (AVG(score)) as score3, (AVG(restime)) as rstime3,gu_id from (SELECT (AVG(`game_score`)) as score , (AVG(rtime)) as restime, gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id ="'.$skillid.'" and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) a4 on a4.gu_id=mu.id 
+
+where sid="'.$schoolid.'" and grade_id="'.$gradeid.'" and mu.status=1  '.$where.' ORDER BY a2.score DESC' );			
+			
+			//echo $this->db->last_query(); exit;
+			return $query->result_array();
+			
+		}
+		
+		
+		 public function getreport1($schoolid,$gradeid,$sklid,$sectionid)
+        {
+			$where =  '';
+			if($sklid!='') { $where =  "and school_name='".$sklid."'"; } else if($sectionid!='') { $where =  "and section='".$sectionid."'"; } else { $where =  ''; }
+			
+				$query = $this->db->query('select id, fname,username, grade_id,sid,school_name,section,(select classname from class where id=grade_id) as gradename,(select max(lastupdate) from game_reports where gu_id=mu.id) as completeddate,(select school_name from schools where id=sid) as schoolname, s1.skillscore_M as skillscorem, skillscore_V as skillscorev,skillscore_F as skillscoref,skillscore_P as skillscorep,skillscore_L as skillscorel, skillscore2_M as skillscore2m, skillscore2_V as skillscore2v, skillscore2_F as skillscore2f, skillscore2_P as skillscore2p, skillscore2_L as skillscore2l, skillscore3_M as skillscore3m,
+skillscore3_V as skillscore3v, skillscore3_F as skillscore3f, skillscore3_P as skillscore3p, skillscore3_L as skillscore3l, a3.finalscore as avgbspiset1,a3_set2.finalscore as avgbspiset2, COALESCE(a3.playedcount,0) as play, CASE  WHEN  playedcount = 5 THEN "Completed" WHEN  playedcount < 5 THEN "Incomplete" WHEN  playedcount=0 THEN "P"  END as status, a3_set3.finalscore as avgbspiset3 from users mu
+
+left join 
+ (SELECT SUM(score)/5 as finalscore,count(gu_id) as playedcount, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id in (59,60,61,62,63) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id ) a2 group by gu_id) a3   on a3.gu_id=mu.id 
+ 
+ left join
+(select (AVG(score)) as skillscore_M, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =59 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s1 on s1.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore_V, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =60 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s2 on s2.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore_F, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =61 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s3 on s3.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore_P, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =62 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s4 on s4.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore_L, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =63 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s5 on s5.gu_id=mu.id 
+ 
+ left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id in (59,60,61,62,63) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1_set2 group by gs_id, gu_id ) a2_set2 group by gu_id) a3_set2   on a3_set2.gu_id=mu.id 
+ 
+ left join
+(select (AVG(score)) as skillscore2_M, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id =59 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) t1 on t1.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore2_V, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id =60 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) t2 on t2.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore2_F, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id =61 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) t3 on t3.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore2_P, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id =62 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) t4 on t4.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore2_L, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id =63 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) t5 on t5.gu_id=mu.id 
+ 
+ 
+ left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id in (59,60,61,62,63) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1_set3 group by gs_id, gu_id ) a2_set3 group by gu_id) a3_set3   on a3_set3.gu_id=mu.id 
+ 
+ left join
+(select (AVG(score)) as skillscore3_M, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id =59 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) u1 on u1.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore3_V, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id =60 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) u2 on u2.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore3_F, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id =61 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) u3 on u3.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore3_P, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id =62 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) u4 on u4.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore3_L, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id =63 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) u5 on u5.gu_id=mu.id 
+ 
+ 
+ 
+ where sid="'.$schoolid.'" and grade_id="'.$gradeid.'"  and mu.status=1 '.$where.' ORDER BY avgbspiset1 DESC');
+ //echo $this->db->last_query(); exit;
+		return $query->result_array();
+		 
+}
+
+ public function getplanid($schoolid,$gradeid)
+        {
+			$query = $this->db->query('SELECT plan_id from skl_class_plan where school_id="'.$schoolid.'" AND class_id="'.$gradeid.'"');
+			return $query->result_array();
+		}
+		
+		 public function getgradeidsets($planid,$gradeid)
+        {
+			$query = $this->db->query('SELECT gradeid_set1, gradeid_set2,plan_id_set2,plan_id_set3,gradeid_set3 from assesment_class_set where plan_id="'.$planid.'" AND gradeid_set1="'.$gradeid.'"');
+			return $query->result_array();
+		}
+		
+		 public function getsection($schoolid,$gradeid)
+        {
+			$query = $this->db->query('select id,section from skl_class_section where class_id="'.$gradeid.'" and school_id="'.$schoolid.'"');
+		//	echo $this->db->last_query(); exit;
+			return $query->result_array();
+			
+		}
+		
+		 public function getClassPerformace_data($schoolid,$gradeid,$sectionid,$tablename,$rangefrom,$rangeto)
+        {
+			$query = $this->db->query('select  (@cnt := @cnt + 1) AS rowNumber,id, fname as name,lname,avatarimage, IF(avgbspiset1 IS NULL,0,avgbspiset1) as bspi from (select id as id, fname,lname,avatarimage, grade_id,(select classname from class where id=grade_id) as gradename,a3.finalscore as avgbspiset1 from users mu  left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM '.$tablename.' WHERE gs_id in (59,60,61,62,63) and lastupdate between (select startdate from academic_year order by id desc limit 1) and (select enddate from academic_year order by id desc limit 1) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id ) a2 group by gu_id) a3   on a3.gu_id=mu.id where sid="'.$schoolid.'" and grade_id="'.$gradeid.'" and section="'.$sectionid.'" and a3.finalscore BETWEEN '.$rangefrom.' AND  '.$rangeto.' ORDER BY avgbspiset1 ASC ) as a5 CROSS JOIN (SELECT @cnt := 0) AS dummy');
+ 
+			//echo $this->db->last_query(); 
+			return $query->result_array();
+		}
+		
+		public function getClassPerformace_data2($schoolid,$gradeid,$sectionid,$tablename,$rangefrom,$rangeto)
+        {
+			$query = $this->db->query('select  (@cnt := @cnt + 1) AS rowNumber,id, fname as name,lname,avatarimage, IF(avgbspiset1 IS NULL,0,avgbspiset1) as bspi from (select id as id, fname,lname,avatarimage, grade_id,(select classname from class where id=grade_id) as gradename,a3.finalscore as avgbspiset1 from users mu  left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM '.$tablename.' WHERE gs_id in (59,60,61,62,63) and lastupdate between (select startdate from academic_year order by id desc limit 1) and (select enddate from academic_year order by id desc limit 1) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id ) a2 group by gu_id) a3   on a3.gu_id=mu.id where sid="'.$schoolid.'" and grade_id="'.$gradeid.'" and section="'.$sectionid.'" and a3.finalscore BETWEEN '.$rangefrom.' AND  '.$rangeto.'  ORDER BY avgbspiset1 ASC ) as a5 CROSS JOIN (SELECT @cnt := 0) AS dummy');
+ 
+			//echo $this->db->last_query(); 
+			return $query->result_array();
+		}
+		
+		public function getClassPerformace_data3($schoolid,$gradeid,$sectionid,$tablename,$rangefrom,$rangeto)
+        {
+			$query = $this->db->query('select  (@cnt := @cnt + 1) AS rowNumber,id, fname as name,lname,avatarimage, IF(avgbspiset1 IS NULL,0,avgbspiset1) as bspi from (select id as id, fname,lname,avatarimage, grade_id,(select classname from class where id=grade_id) as gradename,a3.finalscore as avgbspiset1 from users mu  left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM '.$tablename.' WHERE gs_id in (59,60,61,62,63) and lastupdate between (select startdate from academic_year order by id desc limit 1) and (select enddate from academic_year order by id desc limit 1) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id ) a2 group by gu_id) a3   on a3.gu_id=mu.id where sid="'.$schoolid.'" and grade_id="'.$gradeid.'" and section="'.$sectionid.'" and a3.finalscore	 BETWEEN '.$rangefrom.' AND  '.$rangeto.'  ORDER BY avgbspiset1 ASC ) as a5 CROSS JOIN (SELECT @cnt := 0) AS dummy');
+ 
+			//echo $this->db->last_query(); 
+			return $query->result_array();
+		}
+		
+		public function getusercount($data0,$schoolid)
+        {
+			$query = $this->db->query("select count(*) as userCount from users where username LIKE (select concat('".str_replace('.','', str_replace(' ','', strtolower($data0)))."_%')) and sid='".$schoolid."'");
+			 
+			return $query->result_array();
+		}
+		
+		public function userimport($shpassword,$salt1,$salt2,$data0,$data1,$data2,$data3,$data4,$schoolid,$ddlGradeType,$ceationkey,$data5)
+        {
+			$creationdate = date("Y-m-d H:i:s");
+			
+			$query = $this->db->query("INSERT INTO users(password,salt1,salt2,creation_date, fname, lname, gender, dob, status, gp_id, grade_id, username,  sid, section, academicyear, creationkey,school_name) VALUES ('$shpassword','$salt1','$salt2','$creationdate','$data0','$data1','$data2','$data3','1',(select id from g_plans where grade_id=$ddlGradeType limit 1),'$ddlGradeType',(select concat('".str_replace('.','', str_replace(' ','', strtolower($data0)))."','.',(select school_code from schools where id='$schoolid'))),'$schoolid','$data4',(select id from academic_year limit 1), '".$ceationkey."','$data5' )");
+			
+			//return $query->result_array();
+		}
+		
+		public function userimport1($shpassword,$salt1,$salt2,$data0,$data1,$data2,$data3,$data4,$schoolid,$ddlGradeType,$ceationkey,$userexist,$data5)
+        {
+			$creationdate = date("Y-m-d H:i:s");
+			 
+			$query = $this->db->query("INSERT INTO users(password,salt1,salt2,creation_date,fname, lname, gender, dob, status, gp_id, grade_id, username,  sid, section, academicyear,creationkey,school_name) VALUES ('$shpassword','$salt1','$salt2','$creationdate','$data0','$data1','$data2','$data3','1',(select id from g_plans where grade_id=$ddlGradeType limit 1),'$ddlGradeType',(select concat('".str_replace('.','', str_replace(' ','', strtolower($data0)))."','_',($userexist+1),'.',(select school_code from schools where id='$schoolid'))),'$schoolid','$data4',(select id from academic_year limit 1), '".$ceationkey."','$data5')");
+		}
+		
+		public function userdownload($ceationkey)
+        {
+			$query = $this->db->query("SELECT *, (SELECT classname FROM class WHERE id=user.grade_id) as gradename FROM users user WHERE creationkey = '".$ceationkey."'");
+			return $query->result_array();
+		}
+		
+		public function getClassPerformace_data_overall($schoolid,$gradeid,$sectionid,$planidset2,$planidset3,$rangefrom,$rangeto)
+		 {
+			 $subquery='((coalesce(set1.avgbspiset1,0)+coalesce(set2.avgbspiset1,0)+coalesce(set3.avgbspiset1,0))/3) ';
+			 if($planidset2==0 && $planidset3==0){$subquery='(coalesce(set1.avgbspiset1,0)/1) ';}
+			 else if($planidset2!=0 && $planidset3!=0){$subquery='((coalesce(set1.avgbspiset1,0)+coalesce(set2.avgbspiset1,0)+coalesce(set3.avgbspiset1,0))/3) ';}
+			 else if($planidset2==0 && $planidset3!=0){$subquery='((coalesce(set1.avgbspiset1,0)+coalesce(set3.avgbspiset1,0))/2) ';}
+			 else if($planidset2!=0 && $planidset3==0){$subquery='((coalesce(set1.avgbspiset1,0)+coalesce(set2.avgbspiset1,0))/2) ';}
+			 
+			 /*echo "select (@cnt := @cnt + 1) AS rowNumber,id, fname as name,lname,avatarimage, IF(avgscore IS NULL,0,avgscore) as bspi from (select set1.id,set1.fname,set1.lname,set1.avatarimage,".$subquery." as avgscore from (select id as id, fname,lname,avatarimage, grade_id,(select classname from class where id=grade_id) as gradename,a3.finalscore as avgbspiset1 from users mu  left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM game_reports WHERE gs_id in (59,60,61,62,63) and lastupdate between (select startdate from academic_year order by id desc limit 1) and (select enddate from academic_year order by id desc limit 1) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id ) a2 group by gu_id) a3   on a3.gu_id=mu.id where sid=".$schoolid." and grade_id='".$gradeid."' and section='".$sectionid."'   ORDER BY avgbspiset1 DESC ) as set1 join (select id as id, fname,lname,avatarimage, grade_id,(select classname from class where id=grade_id) as gradename,a3.finalscore as avgbspiset1 from users mu  left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM game_reports_set2 WHERE gs_id in (59,60,61,62,63) and lastupdate between (select startdate from academic_year order by id desc limit 1) and (select enddate from academic_year order by id desc limit 1) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id ) a2 group by gu_id) a3   on a3.gu_id=mu.id where sid=".$schoolid." and grade_id='".$gradeid."' and section='".$sectionid."'   ORDER BY avgbspiset1 DESC ) as set2 on set1.id=set2.id join (select id as id, fname,lname,avatarimage, grade_id,(select classname from class where id=grade_id) as gradename,a3.finalscore as avgbspiset1 from users mu  left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM game_reports_set3 WHERE gs_id in (59,60,61,62,63) and lastupdate between (select startdate from academic_year order by id desc limit 1) and (select enddate from academic_year order by id desc limit 1) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id ) a2 group by gu_id) a3   on a3.gu_id=mu.id where sid=".$schoolid." and grade_id='".$gradeid."' and section='".$sectionid."'   ORDER BY avgbspiset1 DESC ) as set3  on set1.id=set3.id  WHERE ".$subquery."  BETWEEN ".$rangefrom." AND ".$rangeto."  order by avgscore desc )as a5 CROSS JOIN (SELECT @cnt := 0) AS dummy"; */
+			
+		$query = $this->db->query("select (@cnt := @cnt + 1) AS rowNumber,id, fname as name,lname,avatarimage, IF(avgscore IS NULL,0,avgscore) as bspi from (select set1.id,set1.fname,set1.lname,set1.avatarimage,".$subquery." as avgscore from (select id as id, fname,lname,avatarimage, grade_id,(select classname from class where id=grade_id) as gradename,a3.finalscore as avgbspiset1 from users mu  left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM game_reports WHERE gs_id in (59,60,61,62,63) and lastupdate between (select startdate from academic_year order by id desc limit 1) and (select enddate from academic_year order by id desc limit 1) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id ) a2 group by gu_id) a3   on a3.gu_id=mu.id where sid=".$schoolid." and grade_id='".$gradeid."' and section='".$sectionid."'   ORDER BY avgbspiset1 DESC ) as set1 join (select id as id, fname,lname,avatarimage, grade_id,(select classname from class where id=grade_id) as gradename,a3.finalscore as avgbspiset1 from users mu  left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM game_reports_set2 WHERE gs_id in (59,60,61,62,63) and lastupdate between (select startdate from academic_year order by id desc limit 1) and (select enddate from academic_year order by id desc limit 1) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id ) a2 group by gu_id) a3   on a3.gu_id=mu.id where sid=".$schoolid." and grade_id='".$gradeid."' and section='".$sectionid."'   ORDER BY avgbspiset1 DESC ) as set2 on set1.id=set2.id join (select id as id, fname,lname,avatarimage, grade_id,(select classname from class where id=grade_id) as gradename,a3.finalscore as avgbspiset1 from users mu  left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM game_reports_set3 WHERE gs_id in (59,60,61,62,63) and lastupdate between (select startdate from academic_year order by id desc limit 1) and (select enddate from academic_year order by id desc limit 1) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id ) a2 group by gu_id) a3   on a3.gu_id=mu.id where sid=".$schoolid." and grade_id='".$gradeid."' and section='".$sectionid."'   ORDER BY avgbspiset1 DESC ) as set3  on set1.id=set3.id  WHERE ".$subquery."  BETWEEN ".$rangefrom." AND ".$rangeto."  order by avgscore ASC )as a5 CROSS JOIN (SELECT @cnt := 0) AS dummy");
+		//echo $this->db->last_query(); 
+		
+			return $query->result_array();
+		 }
+		 
+	/* Dashboard Start*/
+	public function GetGradebySection($school_id)
+	{
+		$query = $this->db->query("SELECT class_id,section,(select classname from class where id=class_id) as gradename,CONCAT(class_id,section) as rowval FROM skl_class_section WHERE school_id=".$school_id." ");
+		//echo $this->db->last_query(); exit;
+		return $query->result_array();
+		
+	}
+	public function GetRegisteredStudentCount()
+	{
+		$query = $this->db->query('SELECT COUNT(*) AS RegisteredCount FROM users where  sid!=2 and  status=1');
+		//echo $this->db->last_query(); exit;
+		return $query->result_array();
+	}	
+	public function GetAssessmentTakenStudentCount()
+	{
+/*		
+		$query = $this->db->query('select count(distinct(gu_id)) as AssessmentTaken from(select gu_id from (SELECT gu_id from game_reports union all
+SELECT gu_id from game_reports_set3 union all
+SELECT gu_id from game_reports_set2 ) as a1 where gu_id!=0)as a2');
+*/
+
+$query = $this->db->query('select count(distinct(gu_id)) as AssessmentTaken from game_reports gr join users u on u.id=gr.gu_id where  sid!=2 and u.status=1');
+		//echo $this->db->last_query(); exit;
+		return $query->result_array();
+	}
+	public function GetFullyAssessmentTakenStudentCount()
+	{
+		/*
+		$query = $this->db->query('select count(Distinct(gu_id)) as AssessmentFullyTaken from(select gu_id from(SELECT gu_id,set1 from(SELECT gu_id,count(id) as set1 FROM game_reports where gu_id!=0  group by gu_id)a1 where set1>=5)b1
+union 
+select gu_id from(SELECT gu_id,set2 from(SELECT gu_id,count(id) as set2 FROM game_reports_set2 where gu_id!=0 group by gu_id)a2 where set2>=5)b2
+union
+select gu_id from(SELECT gu_id,set3 from(SELECT gu_id,count(id) as set3 FROM game_reports_set3 where gu_id!=0 group by gu_id)a3 where set3>=5)b3) c1');
+*/
+
+$query = $this->db->query('select count(Distinct(gu_id)) as AssessmentFullyTaken from(select gu_id from(SELECT gu_id,set1 from(SELECT gu_id,count(gr.id) as set1 FROM game_reports gr join users u on u.id=gr.gu_id where  sid!=2 and u.status=1 and gu_id!=0  group by gu_id)a1 where set1>=5)b1
+) c1');
+		//echo $this->db->last_query(); exit;
+		return $query->result_array();
+	}
+	
+	public function GetRegisteredStudentCountbyschool($sid,$school_name)
+	{		$where =  '';
+			if($school_name!='') { $where =  " AND school_name='".$school_name."'"; } else { $where =  ''; }
+			
+		$query = $this->db->query('select count(Distinct(id)) as RegisteredCount,(select classname from class where id=grade_id) as gradename,section, sid,CONCAT(grade_id,section) as rowval  FROM users as u where sid='.$sid.' '.$where.' and status=1 group by gradename,section');
+		//echo $this->db->last_query(); exit;
+		return $query->result_array();
+	}	
+	public function GetAssessmentTakenStudentCountbyschool($sid,$school_name)
+	{
+			$where =  '';
+			if($school_name!='') { $where =  " AND school_name='".$school_name."'"; } else { $where =  ''; }
+		/*$query = $this->db->query('select id as AssessmentTaken,gradename,section,sid,school_name,CONCAT(grade_id,section) as rowval from(select count(distinct(gu_id)) as id,(select classname from class where id=(select grade_id from users where id=gu_id)) as gradename,(select section from users where id=gu_id) as section,(select sid from users where id=gu_id) as sid,(select grade_id from users where id=gu_id) as grade_id,(select school_name from users where id=gu_id) as school_name  from (SELECT gu_id from game_reports union all
+SELECT gu_id from game_reports_set2 union all
+SELECT gu_id from game_reports_set3 ) as a1  group by gradename,section)as a2 where sid='.$sid.' '.$where.' ');*/
+$query = $this->db->query('select count(distinct(gu_id)) as AssessmentTaken,grade_id,sid,section,school_name,CONCAT(grade_id,section) as rowval,(select classname from class where id=u.grade_id) as gradename from game_reports gr join users u on gr.gu_id=u.id where u.sid='.$sid.' '.$where.' and status=1   group by u.grade_id,u.section');
+		//echo $this->db->last_query(); exit;
+		return $query->result_array();
+}
+public function GetAssessmentTakenStudentBspibyschool($sid,$school_name)
+{
+$where =  '';
+if($school_name!='') { $where =  " AND school_name='".$school_name."'"; } else { $where =  ''; }
+$query = $this->db->query('select gu_id,set1,ROUND(avg(bspi),2) as avgbspi,grade_id,sid,section,school_name,CONCAT(grade_id,section) as rowval,(select classname from class where id=u.grade_id) as gradename  from(SELECT gu_id,count(id) as set1,sum(game_score)/5 as bspi FROM game_reports where gu_id!=0  group by gu_id)a1 join users u on u.id=a1.gu_id where set1>=5 and  u.sid='.$sid.' '.$where.' group by u.grade_id,u.section');
+//echo $this->db->last_query(); exit;
+return $query->result_array();
+}
+
+	public function GetFullyAssessmentTakenStudentCountbyschool($sid,$school_name)
+	{	
+		$where =  '';
+		if($school_name!='') { $where =  " AND school_name='".$school_name."'"; } else { $where =  ''; }
+		/*$query = $this->db->query('select AssessmentFullyTaken,gradename,section,sid,school_name,CONCAT(grade_id,section) as rowval from(select count(Distinct(gu_id)) as AssessmentFullyTaken,(select classname from class where id=(select grade_id from users where id=gu_id)) as gradename,(select section from users where id=gu_id) as section,(select sid from users where id=gu_id) as sid,(select grade_id from users where id=gu_id) as grade_id,(select school_name from users where id=gu_id) as school_name  from(select gu_id from(SELECT gu_id,set1 from(SELECT gu_id,count(id) as set1 FROM game_reports where gu_id!=0  group by gu_id)a1 where set1>=5)b1) c1  group by gradename,section) a5 where sid='.$sid.' '.$where.' ');*/
+		$query = $this->db->query('select gu_id,set1,count(distinct(gu_id)) as AssessmentFullyTaken,grade_id,sid,section,school_name,CONCAT(grade_id,section) as rowval,(select classname from class where id=u.grade_id) as gradename  from(SELECT gu_id,count(id) as set1 FROM game_reports where gu_id!=0  group by gu_id)a1 join users u on u.id=a1.gu_id where set1>=5 and  u.sid='.$sid.' '.$where.' and status=1 group by u.grade_id,u.section'); 
+		
+		//echo $this->db->last_query(); exit;
+		return $query->result_array();
+	}
+	public function GetBestPuzzleSet($schoolid)
+	{
+$query = $this->db->query('select round(avg(avgbspiset1),2) as BSPISET1,round(avg(avgbspiset2),2) as BSPISET2,round(avg(avgbspiset3),2) as BSPISET3,grade_id,gradename from(select id, fname, grade_id,(select classname from class where id=grade_id) as gradename, s1.skillscore_M as skillscorem, skillscore_V as skillscorev,skillscore_F as skillscoref,skillscore_P as skillscorep,skillscore_L as skillscorel, skillscore2_M as skillscore2m, skillscore2_V as skillscore2v, skillscore2_F as skillscore2f, skillscore2_P as skillscore2p, skillscore2_L as skillscore2l, skillscore3_M as skillscore3m,
+skillscore3_V as skillscore3v, skillscore3_F as skillscore3f, skillscore3_P as skillscore3p, skillscore3_L as skillscore3l, a3.finalscore as avgbspiset1,a3_set2.finalscore as avgbspiset2,a3_set3.finalscore as avgbspiset3 from users mu
+
+left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id in (59,60,61,62,63) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id ) a2 group by gu_id) a3   on a3.gu_id=mu.id 
+ 
+ left join
+(select (AVG(score)) as skillscore_M, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =59 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s1 on s1.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore_V, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =60 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s2 on s2.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore_F, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =61 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s3 on s3.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore_P, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =62 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s4 on s4.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore_L, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =63 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s5 on s5.gu_id=mu.id 
+ 
+ left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id in (59,60,61,62,63) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1_set2 group by gs_id, gu_id ) a2_set2 group by gu_id) a3_set2   on a3_set2.gu_id=mu.id 
+ 
+ left join
+(select (AVG(score)) as skillscore2_M, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id =59 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) t1 on t1.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore2_V, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id =60 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) t2 on t2.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore2_F, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id =61 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) t3 on t3.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore2_P, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id =62 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) t4 on t4.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore2_L, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id =63 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) t5 on t5.gu_id=mu.id 
+ 
+ 
+ left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id in (59,60,61,62,63) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1_set3 group by gs_id, gu_id ) a2_set3 group by gu_id) a3_set3   on a3_set3.gu_id=mu.id 
+ 
+ left join
+(select (AVG(score)) as skillscore3_M, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id =59 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) u1 on u1.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore3_V, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id =60 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) u2 on u2.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore3_F, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id =61 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) u3 on u3.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore3_P, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id =62 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) u4 on u4.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore3_L, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id =63 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) u5 on u5.gu_id=mu.id 
+ 
+ 
+ 
+ where sid="'.$schoolid.'") x1 group by grade_id');
+ 
+		return $query->result_array();
+		 
+}
+	public function GetTOPBSPIScores($school_id,$gradeid,$topid)
+	{
+		$query = $this->db->query('select finalscore,gu_id,schoolid from(SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT AVG(game_score) as score , gs_id , gu_id, lastupdate FROM game_reports group by gs_id , gu_id, lastupdate) as a1 group by gs_id, gu_id) a2 group by gu_id) as a3 where schoolid='.$school_id.' group by gu_id order by finalscore DESC limit 0,'.$topid.' ');
+		return $query->result_array();
+	}
+	public function GetTOPBSPIUser($school_id,$gradeid,$topid,$sklid,$sectionid)
+	{
+		$where =  '';
+			if($sklid!='') { $where =  "and sklname='".$sklid."'"; } else if($sectionid!='') { $where_section =  "and section='".$sectionid."'"; } else { $where = ""; }
+		
+		$query = $this->db->query('select finalscore,group_concat(gu_id) as gu_ids,GROUP_CONCAT(username SEPARATOR ", ") as name,schoolid,grade_id from(SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid, (SELECT grade_id from users where id=gu_id '.$where_section.') as grade_id,(SELECT school_name from users where id=gu_id) as sklname,(select GROUP_CONCAT(CONCAT(fname," ",lname,"- Section ",section)) from `users` where id = gu_id) as username,(SELECT status from users where id=gu_id) as status from (select (AVG(score)) as score, gu_id, gs_id from (SELECT AVG(game_score) as score , gs_id , gu_id, lastupdate FROM game_reports group by gs_id , gu_id, lastupdate) as a1 group by gs_id, gu_id) a2 group by gu_id) as a3 where schoolid='.$school_id.' and grade_id='.$gradeid.' and status=1 '.$where.' group by finalscore order by finalscore DESC limit 0,'.$topid.' ');
+		//echo $this->db->last_query(); exit;
+		return $query->result_array();
+	}
+	
+	public function GetSkill1TopScore($school_id,$gradeid,$topid,$sklid,$sectionid)
+	{
+		$where =  '';
+			if($sklid!='') { $where =  "and school_name='".$sklid."'"; } else if($sectionid!='') { $where =  "and ua.section='".$sectionid."'"; } else { $where =  ''; }
+			
+			$query = $this->db->query('select GROUP_CONCAT(id),GROUP_CONCAT(CONCAT(fname," ",lname,"- Section ",section) SEPARATOR ", ") as username,s1.gamescore from users ua left join (
+SELECT (AVG(`game_score`)) as gamescore ,gs_id ,gu_id, lastupdate,DATE_FORMAT(`lastupdate`,"%m") as playedMonth  FROM `game_reports` WHERE gs_id in (59)  and  lastupdate between (select startdate from academic_year order by id desc limit 1) and (select enddate from academic_year order by id desc limit 1) group by gu_id,gs_id)s1 on s1.gu_id=ua.id where sid='.$school_id.' and grade_id='.$gradeid.'  and status=1 '.$where.' group by s1.gamescore  order by s1.gamescore DESC LIMIT 0,'.$topid.'');
+//echo $this->db->last_query(); exit;
+return $query->result_array();
+	}
+	public function GetSkill2TopScore($school_id,$gradeid,$topid,$sklid,$sectionid)
+	{
+		$where =  '';
+			if($sklid!='') { $where =  "and school_name='".$sklid."'"; }  else if($sectionid!='') { $where =  "and ua.section='".$sectionid."'"; } else { $where =  ''; }
+			
+			$query = $this->db->query('select GROUP_CONCAT(id),GROUP_CONCAT(CONCAT(fname," ",lname,"- Section ",section) SEPARATOR ", ") as username,s2.gamescore from users ua
+left join (
+SELECT (AVG(`game_score`)) as gamescore ,gs_id ,gu_id, lastupdate,DATE_FORMAT(`lastupdate`,"%m") as playedMonth  FROM `game_reports` WHERE gs_id in (60)  and  lastupdate between (select startdate from academic_year order by id desc limit 1) and (select enddate from academic_year order by id desc limit 1) group by gu_id,gs_id)s2 on s2.gu_id=ua.id where sid='.$school_id.' and grade_id='.$gradeid.'  and status=1 '.$where.' group by s2.gamescore  order by s2.gamescore DESC LIMIT 0,'.$topid.'');
+return $query->result_array();
+	}
+	
+	public function GetSkill3TopScore($school_id,$gradeid,$topid,$sklid,$sectionid)
+	{
+		$where =  '';
+			if($sklid!='') { $where =  "and school_name='".$sklid."'"; }  else if($sectionid!='') { $where =  "and ua.section='".$sectionid."'"; } else { $where =  ''; }
+		
+			$query = $this->db->query('select GROUP_CONCAT(id),GROUP_CONCAT(CONCAT(fname," ",lname,"- Section ",section) SEPARATOR ", ") as username,s3.gamescore from users ua
+left join (
+SELECT (AVG(`game_score`)) as gamescore ,gs_id ,gu_id, lastupdate,DATE_FORMAT(`lastupdate`,"%m") as playedMonth  FROM `game_reports` WHERE gs_id in (61)  and  lastupdate between (select startdate from academic_year order by id desc limit 1) and (select enddate from academic_year order by id desc limit 1) group by gu_id,gs_id)s3 on s3.gu_id=ua.id  where sid='.$school_id.' and grade_id='.$gradeid.'  and status=1 '.$where.' group by s3.gamescore  order by s3.gamescore DESC LIMIT 0,'.$topid.'');
+return $query->result_array();
+	}
+	
+	public function GetSkill4TopScore($school_id,$gradeid,$topid,$sklid,$sectionid)
+	{
+		$where =  '';
+			if($sklid!='') { $where =  "and school_name='".$sklid."'"; }  else if($sectionid!='') { $where =  "and ua.section='".$sectionid."'"; } else { $where =  ''; }
+		
+			$query = $this->db->query('select GROUP_CONCAT(id),GROUP_CONCAT(CONCAT(fname," ",lname,"- Section ",section) SEPARATOR ", ") as username,s4.gamescore from users ua
+left join (
+SELECT (AVG(`game_score`)) as gamescore ,gs_id ,gu_id, lastupdate,DATE_FORMAT(`lastupdate`,"%m") as playedMonth  FROM `game_reports` WHERE gs_id in (62)  and  lastupdate between (select startdate from academic_year order by id desc limit 1) and (select enddate from academic_year order by id desc limit 1) group by gu_id,gs_id)s4 on s4.gu_id=ua.id where sid='.$school_id.' and grade_id='.$gradeid.'  and status=1 '.$where.' group by s4.gamescore  order by s4.gamescore DESC LIMIT 0,'.$topid.'');
+return $query->result_array();
+	}
+	public function GetSkill5TopScore($school_id,$gradeid,$topid,$sklid,$sectionid)
+	{
+		$where =  '';
+			if($sklid!='') { $where =  "and school_name='".$sklid."'"; }  else if($sectionid!='') { $where =  "and ua.section='".$sectionid."'"; } else { $where =  ''; }
+		
+			$query = $this->db->query('select GROUP_CONCAT(id),GROUP_CONCAT(CONCAT(fname," ",lname,"- Section ",section) SEPARATOR ", ") as username,s5.gamescore from users ua
+left join (
+SELECT (AVG(`game_score`)) as gamescore ,gs_id ,gu_id, lastupdate,DATE_FORMAT(`lastupdate`,"%m") as playedMonth  FROM `game_reports` WHERE gs_id in (63)  and  lastupdate between (select startdate from academic_year order by id desc limit 1) and (select enddate from academic_year order by id desc limit 1) group by gu_id,gs_id)s5  on s5.gu_id=ua.id where sid='.$school_id.' and grade_id='.$gradeid.'  and status=1 '.$where.' group by s5.gamescore  order by s5.gamescore DESC LIMIT 0,'.$topid.'');
+return $query->result_array();
+	}
+	
+
+public function GetNithyaRefUsers($schoolid,$gradeid,$sklid,$sectionid)
+{
+$query = $this->db->query('select id,fname,username, grade_id,sid,school_name,section,login_date,creation_date,org_pwd,(select classname from class where id=grade_id) as gradename,(select max(lastupdate) from game_reports where gu_id=mu.id) as completeddate,(select school_name from schools where id=sid) as schoolname, s1.skillscore_M as skillscorem, skillscore_V as skillscorev,skillscore_F as skillscoref,skillscore_P as skillscorep,skillscore_L as skillscorel, skillscore2_M as skillscore2m, skillscore2_V as skillscore2v, skillscore2_F as skillscore2f, skillscore2_P as skillscore2p, skillscore2_L as skillscore2l, skillscore3_M as skillscore3m,
+skillscore3_V as skillscore3v, skillscore3_F as skillscore3f, skillscore3_P as skillscore3p, skillscore3_L as skillscore3l, a3.finalscore as avgbspiset1,a3_set2.finalscore as avgbspiset2, COALESCE(a3.playedcount,0) as play, CASE  WHEN  playedcount = 5 THEN "Completed" WHEN  playedcount < 5 THEN "Incomplete" WHEN  playedcount=0 THEN "P"  END as status, a3_set3.finalscore as avgbspiset3 from users mu
+
+left join 
+ (SELECT SUM(score)/5 as finalscore,count(gu_id) as playedcount, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id in (59,60,61,62,63) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id ) a2 group by gu_id) a3   on a3.gu_id=mu.id 
+ 
+ left join
+(select (AVG(score)) as skillscore_M, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =59 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s1 on s1.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore_V, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =60 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s2 on s2.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore_F, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =61 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s3 on s3.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore_P, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =62 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s4 on s4.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore_L, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =63 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s5 on s5.gu_id=mu.id 
+ 
+ left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id in (59,60,61,62,63) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1_set2 group by gs_id, gu_id ) a2_set2 group by gu_id) a3_set2   on a3_set2.gu_id=mu.id 
+ 
+ left join
+(select (AVG(score)) as skillscore2_M, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id =59 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) t1 on t1.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore2_V, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id =60 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) t2 on t2.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore2_F, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id =61 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) t3 on t3.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore2_P, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id =62 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) t4 on t4.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore2_L, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id =63 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) t5 on t5.gu_id=mu.id 
+ 
+ 
+ left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id in (59,60,61,62,63) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1_set3 group by gs_id, gu_id ) a2_set3 group by gu_id) a3_set3   on a3_set3.gu_id=mu.id 
+ 
+ left join
+(select (AVG(score)) as skillscore3_M, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id =59 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) u1 on u1.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore3_V, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id =60 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) u2 on u2.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore3_F, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id =61 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) u3 on u3.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore3_P, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id =62 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) u4 on u4.gu_id=mu.id 
+
+left join
+(select (AVG(score)) as skillscore3_L, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id =63 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) u5 on u5.gu_id=mu.id 
+ 
+ 
+ 
+ where sid="2" and referedby="NITHYA" ORDER BY creation_date DESC,mu.id');
+ //echo $this->db->last_query(); exit;
+		return $query->result_array();
+		 
+}
+
+public function UpdateUsername($uid,$uname)
+{ 
+	$query=$this->db->query("Update users SET fname='".$uname."' where id='".$uid."' ");
+}
+public function getUserReportCard($uid)
+{ 
+	$query = $this->db->query("select id, fname,username, grade_id,sid,school_name,section,(select classname from class where id=grade_id) as gradename,(select max(lastupdate) from game_reports where gu_id=mu.id) as completeddate,(select school_name from schools where id=sid) as schoolname, s1.skillscore_M as skillscorem, skillscore_V as skillscorev,skillscore_F as skillscoref,skillscore_P as skillscorep,skillscore_L as skillscorel,a3.finalscore as avgbspiset1 from users mu
+left join 
+ (SELECT SUM(score)/5 as finalscore,count(gu_id) as playedcount, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id in (59,60,61,62,63) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id ) a2 group by gu_id) a3   on a3.gu_id=mu.id  
+ left join
+(select (AVG(score)) as skillscore_M, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =59 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s1 on s1.gu_id=mu.id 
+left join
+(select (AVG(score)) as skillscore_V, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =60 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s2 on s2.gu_id=mu.id 
+left join
+(select (AVG(score)) as skillscore_F, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =61 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s3 on s3.gu_id=mu.id 
+left join
+(select (AVG(score)) as skillscore_P, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =62 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s4 on s4.gu_id=mu.id 
+left join
+(select (AVG(score)) as skillscore_L, gu_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id =63 and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id) s5 on s5.gu_id=mu.id  
+ left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set2` WHERE gs_id in (59,60,61,62,63) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1_set2 group by gs_id, gu_id ) a2_set2 group by gu_id) a3_set2   on a3_set2.gu_id=mu.id 
+  left join 
+ (SELECT SUM(score)/5 as finalscore, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select (AVG(score)) as score, gu_id, gs_id from (SELECT (AVG(`game_score`)) as score , gs_id , gu_id, lastupdate FROM `game_reports_set3` WHERE gs_id in (59,60,61,62,63) and gu_id in (select id from users) group by gs_id , gu_id, lastupdate) a1_set3 group by gs_id, gu_id ) a2_set3 group by gu_id) a3_set3   on a3_set3.gu_id=mu.id where id='".$uid."'  ORDER BY avgbspiset1 DESC ");
+ return $query->result_array();
+}
+
+
+public function getClassSkillScore($sid)
+{
+	 $query = $this->db->query("select a2.gp_id,a2.section,a2.grade_id, CONCAT(a2.grade_id,a2.section) as rowval,
+	(select ROUND(avg(game_score),2) from game_reports gr join users u on u.id=gr.gu_id where gr.gs_id=59 and u.status=1 and u.grade_id=a2.grade_id and u.section=a2.section and u.sid=a2.sid) as M1,
+	(select ROUND(avg(game_score),2) from game_reports gr join users u on u.id=gr.gu_id where gr.gs_id=60 and u.status=1 and u.grade_id=a2.grade_id and u.section=a2.section and u.sid=a2.sid) as VP1,
+	(select ROUND(avg(game_score),2) from game_reports gr join users u on u.id=gr.gu_id where gr.gs_id=61 and u.status=1 and u.grade_id=a2.grade_id and u.section=a2.section and u.sid=a2.sid) as FA1,
+	(select ROUND(avg(game_score),2) from game_reports gr join users u on u.id=gr.gu_id where gr.gs_id=62 and u.status=1 and u.grade_id=a2.grade_id and u.section=a2.section and u.sid=a2.sid) as PS1,
+	(select ROUND(avg(game_score),2) from game_reports gr join users u on u.id=gr.gu_id where gr.gs_id=63 and u.status=1 and u.grade_id=a2.grade_id and u.section=a2.section and u.sid=a2.sid) as LI1 from (select au.gp_id,au.section,au.grade_id,au.sid from users as au where au.sid='".$sid."' and au.status=1 group by au.section,au.grade_id) a2"); 
+	 return $query->result_array();
+}
+
+public function chkemail($emailid)
+	{
+	 $query = $this->db->query("select count(id) as tot from schools where `email`='".$emailid."' and status=1 and active=1"); 
+	 return $query->result_array();
+	}
+	
+	public function chkcode($school_code)
+	{
+	  $query = $this->db->query("select count(id) as tot from schools where `school_code`='".$school_code."' and status=1 and active=1"); 
+	 return $query->result_array();
+	}
+	
+	public function addschool($schoolname,$emailid,$school_code,$school_type,$program,$hots,$address,$city,$state,$country,$contactnumber,$mailto,$mailcc,$maildays,$statusmail,$time_zone)
+	{
+	  $query = $this->db->query("INSERT INTO `schools`(`school_name`, `school_address`, `phone`, `email`, `school_code`, `zone`, `district`, `state`, `country`, `city`, `logo`, `active`, `type`, `flag`, `asap_type`, `status`, `createdby`, `creation_date`, `modifiedby`, `modified_date`, `hotsstatus`,emailcc,emailcc1,maildays,isemailneed,time_zone) VALUES ('".$schoolname."','".$address."','".$contactnumber."','".$emailid."','".$school_code."','','','".$state."','".$country."','".$city."','',1,'".$school_type."',1,1,'',NOW(),'',NOW(),'".$hots."','".$mailto."','".$mailcc."','".$maildays."','".$statusmail."','".$time_zone."')"); 
+	  // echo $this->db->last_query(); exit;
+	  $insert_id = $this->db->insert_id();
+	  return  $insert_id;
+	// return $query->result_array();
+	 
+	}
+	
+	public function addschool_admin($schoolname,$emailid,$address,$contactnumber,$password,$sid)
+	{
+	  $query = $this->db->query("INSERT INTO `school_admin`(`email`, `password`, `fname`, `lname`, `initial`, `mobile`, `dob`, `address`, `School_Name`, `school_id`, `active`, `status`, `createdby`, `creation_date`, `modifiedby`, `modified_date`, `starton`) VALUES ('".$emailid."','".$password."','".$schoolname."','','','".$contactnumber."','','".$address."','".$schoolname."','".$sid."',1,1,'',NOW(),'',NOW(),'2018-2019')"); 
+	}
+	
+	public function updateschool($schoolname,$school_type,$status_mailid,$contactnumber,$schoolid,$isemailneed,$mailcc,$maildays)
+	{
+	  $query = $this->db->query("UPDATE `schools` SET `school_name`='".$schoolname."',`phone`='".$contactnumber."',`type`='".$school_type."',`modified_date`=NOW(),`emailcc`='".$status_mailid."',`isemailneed`='".$isemailneed."',emailcc1='".$mailcc."',maildays='".$maildays."' WHERE id='".$schoolid."'"); 
+	  //echo $this->db->last_query(); exit;
+	// return $query->result_array();
+	}
+	
+	public function updateschool_admin($schoolname,$contactnumber,$schoolid)
+	{
+	  $query = $this->db->query("UPDATE `school_admin` SET `fname`='".$schoolname."',`mobile`='".$contactnumber."',`School_Name`='".$schoolname."',`modified_date`=NOW() WHERE school_id='".$schoolid."'"); 
+	}
+	
+	public function user_bulk_insert($fname,$lname,$admno,$father_name,$mother_name,$gender,$dob,$plan,$class,$section,$portal,$is_asap,$medium,$schoolid,$username,$salt1,$salt2,$shpassword,$password)
+	{
+		
+	  $query = $this->db->query("INSERT INTO `adduser`(`fname`, `lname`, `gender`, `dob`, `fathername`,`mothername`, `class`,`grade_id`,`sec`,`medium`,`admission_number`,`username`,`orgpwd`,`sid`,`salt1`,`password`,`salt2`,`portal_type`,`is_asap`) VALUES ('".$fname."','".$lname."','".$gender."','".$dob."','".$father_name."','".$mother_name."','".$plan."','".$class."','".$section."','".$medium."','".$admno."','".$username."','".$password."','".$schoolid."','".$salt1."','".$shpassword."','".$salt2."','".$portal."','".$is_asap."')"); 
+	//  echo $this->db->last_query(); exit;
+	}
+	
+	public function truncate_temp_table()
+	{
+	  $query = $this->db->query("TRUNCATE TABLE `adduser`"); 
+	 // echo $this->db->last_query(); exit;
+	}
+	
+	public function getschool_code($schoolid)
+	{
+	  $query = $this->db->query("SELECT `school_code` FROM `schools` WHERE `id`='".$schoolid."' "); 
+	 return $query->result_array();
+	}
+	
+	public function update_mapping_tables($schoolid)
+	{
+	 $query = $this->db->query('CALL add_school_V1("'.$schoolid.'")');
+//	 echo $this->db->last_query(); exit;
+	 mysqli_next_result($this->db->conn_id);
+	}
+	
+	public function get_today_session($schoolid)
+	{
+	  $query = $this->db->query("select count(DISTINCT(id)) as total,sid as school_id, mu.grade_id as gradeid,(select classname from class where id=mu.grade_id) as gradename,mu.section,a2.attend as attendusers from users mu left join (select grade_id,section,count(DISTINCT gu_id) as attend from game_reports join users as u on u.id=gu_id where u.status=1 and sid='".$schoolid."' and grade_id NOT IN (1,2,11) group by grade_id,section order by u.grade_id,u.section) a2 on a2.grade_id=mu.grade_id and a2.section=mu.section where sid='".$schoolid."' and status=1 and mu.grade_id NOT IN (1,2,11) group by mu.grade_id,mu.section order by mu.grade_id,mu.section asc"); 
+	 return $query->result_array();
+	}
+	
+	public function psap_completedusers($schoolid)
+	{
+	  $query = $this->db->query("select set1,count(distinct(gu_id)) as cuser,grade_id,sid,section,(select classname from class where id=u.grade_id) as gradename  from(SELECT gu_id,count(id) as set1 FROM game_reports where gu_id!=0  group by gu_id)a1 join users u on u.id=a1.gu_id where set1>=5 and  u.sid='".$schoolid."' and u.grade_id NOT IN (1,2,11) and status=1 group by u.grade_id,u.section"); 
+	 return $query->result_array();
+	}
+	
+	public function incompletelist($schoolid,$gradeid)
+	{
+	  $query = $this->db->query('select count(id) as tot,grade_id,section,name,(select classname from class where id=grade_id) as gradename,username from (select id,grade_id,section,concat(fname,"",lname) as name, username, sid, COALESCE(a3.playedcount,0) as play, CASE  WHEN  playedcount = 5 THEN "Completed" WHEN  playedcount < 5 THEN "Incomplete" WHEN  playedcount=0 THEN "P"  END as status from users mu left join (SELECT count(gu_id) as playedcount, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select  gu_id, gs_id from (SELECT gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id in (59,60,61,62,63) and gu_id in (select id from users where sid = "'.$schoolid.'" and status=1 and grade_id="'.$gradeid.'" ) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id ) a2 group by gu_id) a3 on a3.gu_id=mu.id  where sid = "'.$schoolid.'" and grade_id="'.$gradeid.'"  and mu.status=1) x1  where play<5 and play!=""  group by id'); 
+	//  echo $this->db->last_query(); exit;
+	 return $query->result_array();
+	}
+	
+	public function pendinglist($schoolid,$gradeid)
+	{
+	  $query = $this->db->query('select count(id) as tot,grade_id,section,name,(select classname from class where id=grade_id) as gradename,username from (select id,grade_id,section,concat(fname,"",lname) as name, username, sid, COALESCE(a3.playedcount,0) as play, CASE  WHEN  playedcount = 5 THEN "Completed" WHEN  playedcount < 5 THEN "Incomplete" WHEN  playedcount=0 THEN "P"  END as status from users mu left join (SELECT count(gu_id) as playedcount, gu_id, (SELECT sid from users where id=gu_id) as schoolid from (select  gu_id, gs_id from (SELECT gs_id , gu_id, lastupdate FROM `game_reports` WHERE gs_id in (59,60,61,62,63) and gu_id in (select id from users where sid ="'.$schoolid.'" and grade_id="'.$gradeid.'" and status=1 ) group by gs_id , gu_id, lastupdate) a1 group by gs_id, gu_id ) a2 group by gu_id) a3 on a3.gu_id=mu.id  where sid = "'.$schoolid.'" and grade_id="'.$gradeid.'"  and mu.status=1) x1  where play=0 group by id'); 
+	//  echo $this->db->last_query(); exit;
+	 return $query->result_array();
+	}
+	
+	/* public function Getschool_list()
+	{
+	  $query = $this->db->query("SELECT s.id, s.school_name, school_address, phone, s.email, school_code, zone, district, state, country, city, type, asap_type, s.creation_date,emailcc,hotsstatus,max(lastupdate) as startdate FROM schools s, users u, game_reports gr WHERE s.active=1 and s.status=1 and flag=1 and s.id=u.sid and u.id=gr.gu_id group by s.id order by s.school_name ASC"); 
+	 return $query->result_array();
+	} */
+	
+	public function Getschool_list()
+	{
+	  $query = $this->db->query("SELECT id as sid, s.school_name, school_address, phone, s.email, school_code, zone, district, state, country, city, type, asap_type, s.creation_date,emailcc,hotsstatus,(select count(DISTINCT(id)) from users where status=1 and sid=s.id) as totaluser,isemailneed FROM schools s WHERE s.active=1 and s.status=1 and flag=1 group by s.id order by s.school_name ASC"); 
+	 return $query->result_array();
+	}
+	
+	public function Getschool_list1()
+	{
+	  $query = $this->db->query("select MIN(lastupdate) as startdate,MAX(lastupdate) as lastdate,u.sid from users u join game_reports gr ON u.id=gr.gu_id where u.status=1 group by u.sid order by sid asc"); 
+	 return $query->result_array();
+	}
+	
+	public function school_startdate($schoolid)
+	{
+	  $query = $this->db->query("select MIN(lastupdate) as startdate,MAX(lastupdate) as lastdate,u.sid from users u join game_reports gr ON u.id=gr.gu_id where u.status=1 and u.sid='".$schoolid."' group by u.sid order by sid asc"); 
+	 return $query->result_array();
+	}
+	
+		public function GetGrade($school_id)
+	{
+		$query = $this->db->query("SELECT class_id,(select classname from class where id=class_id) as gradename FROM skl_class_plan WHERE school_id='".$school_id."' and class_id NOT IN (1,2,11) ");
+		//echo $this->db->last_query(); exit;
+		return $query->result_array();
+		
+	}
+	
+	public function get_school_info($school_id)
+	{
+		$query = $this->db->query("SELECT id as sid, s.school_name, school_address, phone, s.email, school_code, state, country, city, type, asap_type, s.creation_date,emailcc,isemailneed,hotsstatus,emailcc1,maildays FROM schools s WHERE s.active=1 and s.status=1 and flag=1 and id='".$school_id."' ");
+		//echo $this->db->last_query(); exit;
+		return $query->result_array();
+		
+	}
+	
+	/*Daily Mail*/
+	public function getschools_asap()
+	{
+	  $query = $this->db->query("SELECT id, school_name,school_code, emailcc, emailcc1, isemailneed,maildays FROM schools WHERE status=1 and active=1 and flag=1 and isemailneed='Y'"); 
+	  return $query->result_array();
+	}
+	
+	public function checkMailSentToday($sid)
+		{
+			$query = $this->db->query("Select count(id) as issenton from eod_mail_log where sid='".$sid."' and date(sent_on)=CURDATE() and status=1");
+			//echo $this->db->last_query(); exit;
+			return $query->result_array();
+		}
+		
+	public function InsertTodayMail($sid)
+		{
+			$query = $this->db->query("INSERT INTO eod_mail_log(sid,sent_on,status)values('".$sid."',NOW(),1)");
+		}
+	/*Daily Mail*/
+	
+	/*NEW CODE*/
+	public function getschoolname()
+	{
+		$query = $this->db->query('SELECT id,school_name  FROM schools WHERE status=1');
+		//echo $this->db->last_query(); exit;
+		return $query->result_array();
+	}
+
+
+	public function getclass()
+	{
+		
+		$query = $this->db->query('SELECT id,classname FROM class WHERE status=1');
+		return $query->result_array();
+	}
+
+	public function getsections()
+	{
+		//$query = $this->db->query('SELECT grade_id FROM g_plans WHERE grade_id="'.$grade_id.'"');
+		$query = $this->db->query('SELECT id,section FROM `skl_class_section` ');
+		//echo $this->db->last_query(); exit;
+		return $query->result_array();
+			
+	}
+
+	public function getgradeid($grade_id)
+	{
+		//$query = $this->db->query('SELECT grade_id FROM g_plans WHERE grade_id="'.$grade_id.'"');
+		$query = $this->db->query('SELECT id  FROM `g_plans` WHERE `grade_id` = "'.$grade_id.'" order by id asc limit 1');
+		return $query->result_array();
+		//echo $this->db->last_query(); exit;
+	}
+
+	public function insertdata($fname,$lname,$username,$grade,$sid,$section,$academicyear,$salt1,$salt2,$saltedpass,$org_pwd,$pid,$referedby,$program)
+	{	 
+		 if($program=='Both')
+		 {
+			$IS_ASAP = 'N';
+			$portaltype = 'ASAP';
+		 }
+		 else
+		 {
+			$IS_ASAP = 'Y';
+			$portaltype = 'ASAP';
+		 }
+		$query = $this->db->query('INSERT INTO users (salt1,password,salt2,fname,lname,username,grade_id,gp_id,sid,section,academicyear,org_pwd,status,referedby,portal_type,IS_ASAP,creation_date,agreetermsandservice)VALUES("'.$salt1.'","'.$saltedpass.'","'.$salt2.'","'.$fname.'","'.$lname.'","'.$username.'","'.$grade.'","'.$pid.'","'.$sid.'","'.$section.'",19,"'.$org_pwd.'",1,"'.$referedby.'","'.$portaltype.'","'.$IS_ASAP.'",NOW(),1)');
+		//	echo $this->db->last_query(); exit;
+
+	}
+	public function getschoolcode($sid)
+	{
+		$query = $this->db->query('SELECT school_code  FROM schools WHERE id = "'.$sid.'"');
+		return $query->result_array();
+		//echo $this->db->last_query(); exit;
+	}
+	
+	
+	
+	
+	
+
+	public function insertdata_clp($salt1,$saltedpass,$salt2,$fname,$lname,$status,$visible,$pid,$grade,$username,$sid,$section,$academicyear,$login_count,$login_date,$pre_logindate, $creation_date,$agreetermsandservice,$islogin,$referedby,$org_pwd,$time_zone)
+	{	 
+
+		$query = $this->multipledb->db->query('INSERT INTO users(salt1,password,salt2,fname,lname,status, visible,gp_id,grade_id,username,sid,section,academicyear,login_count,login_date,pre_logindate,creation_date,agreetermsandservice,islogin,referedby,org_pwd,time_zone) VALUES ("'.$salt1.'","'.$saltedpass.'","'.$salt2.'","'.$fname.'","'.$lname.'",1,1,"'.$pid.'","'.$grade.'","'.$username.'","'.$sid.'","'.$section.'",20,0,"0000-00-00","0000-00-00",NOW(),1,0,"'.$referedby.'","skillangels","'.$time_zone.'")');
+		
+		return $this->multipledb->db->insert_id();
+		//echo $this->multipledb->db->last_query(); exit;
+
+	}  
+	public function insertdata_clp_academic($pid,$grade,$sid,$section,$insert_clp)
+	{
+		$query = $this->multipledb->db->query('INSERT INTO user_academic_mapping(id,grade_id,gp_id,sid, section,academicid,status,visible) VALUES ("'.$insert_clp.'","'.$grade.'","'.$pid.'","'.$sid.'","'.$section.'",20,1,1)');
+		//echo $this->multipledb->db->last_query(); exit;
+	}
+ 
+	public function checkusrnameexist($username)
+	{
+		$query = $this->db->query('select count(username) as usercount from users where username ="'.$username.'" and status=1');		
+		//echo $this->db->last_query(); exit;
+		return $query->result_array();
+	} 
+
+
+	 public function gradelist($sname)
+    {		 
+		$query = $this->db->query('select class_id,(select classname from class where id=class_id) as classname from skl_class_plan where school_id="'.$sname.'"');		
+		//echo $this->db->last_query(); exit;
+		return $query->result_array();
+    } 
+	
+	 public function sectionlist($grade_id,$sid)
+    {		 
+		$query = $this->db->query('select id,school_id,class_id,section from skl_class_section where school_id="'.$sid.'" and class_id="'.$grade_id.'"');		
+	//	echo $this->db->last_query(); exit;
+		return $query->result_array();
+    } 
+	
+							//for editing
+	public function get_user_info($id)
+	{
+		$query = $this->db->query("SELECT id,sname,grade_id,section,fname,lname,username,org_pwd,sid,(select classname from class where id=grade_id) as classname from users where status=1 and id='".$id."'");
+		//echo $this->db->last_query(); exit;
+		return $query->result_array();
+		
+	}
+
+	
+	public function update_usrdata($userid,$fname,$lname,$section,$org_pwd,$salt1,$salt2,$shpassword,$username,$program)
+	{
+	  $query = $this->db->query("UPDATE users SET fname='".$fname."',lname='".$lname."',section='".$section."',org_pwd='".$org_pwd."',salt1='".$salt1."',salt2='".$salt2."',password='".$shpassword."',modified_date=NOW() WHERE id='".$userid."' and username='".$username."'");
+	}
+	
+	public function update_bothdb($userid,$fname,$lname,$section,$org_pwd,$salt1,$salt2,$shpassword,$username,$program)
+	{
+	  $query = $this->multipledb->db->query("UPDATE users SET fname='".$fname."',lname='".$lname."',section='".$section."',org_pwd='".$org_pwd."',salt1='".$salt1."',salt2='".$salt2."',password='".$shpassword."',modified_date=NOW() WHERE  username='".$username."'");
+	}
+	
+	public function update_academic($section,$username)
+	{
+		$query = $this->multipledb->db->query('update user_academic_mapping set section="'.$section.'" where id =(select id from users where username="'.$username.'")');
+	}
+	
+	 public function get_academic_id($academic_id)
+	{
+		$query = $this->multipledb->db->query('select id from user_academic_mapping where id="'.$academic_id.'"');
+		return $query->result_array();
+	} 
+	
+	public function delete_data($username)  
+    {		 
+		$query = $this->db->query('update users set status=0 where username="'.$username.'"');	
+	}
+	
+	public function delete_clp_usrdata($username)
+    {		 
+		$query = $this->multipledb->db->query('update users set status=0 where username="'.$username.'" ');	
+	}
+	
+	public function delete_academic_usrdata($username)
+	{
+		$query = $this->multipledb->db->query('update user_academic_mapping set status=0 where id =(select id from users where username="'.$username.'")');
+	}
+	/*NEW CODE*/
+
+}
