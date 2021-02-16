@@ -1,0 +1,139 @@
+Dashboard templates
+1.https://dashboardpack.com/live-demo-preview/?livedemo=1881?utm_source=colorlib&utm_medium=reactlist&utm_campaign=architectangular
+2.https://demo.dashboardpack.com/architectui-angular-pro/dashboards/monitoring
+3.https://p.w3layouts.com/demos/28-03-2016/shoppy/web/index.html
+4.https://templatemag.com/demo/Dashio/  => for activity and team memebers (busy or available)
+5.https://colorlib.com/polygon/sufee/ui-progressbar.html => for dashboard and chart
+6.https://colorlib.com/polygon/notika/inbox.html# =>email
+7.https://colorlib.com/wp/free-bootstrap-admin-dashboard-templates/    =>    (may)
+8.https://demos.creative-tim.com/vue-light-bootstrap-dashboard/#/
+9.https://envato.com/blog/bootstrap-admin-templates/
+10.https://dashboardpack.com/live-demo-preview/?livedemo=290?utm_source=colorlib&utm_medium=reactlist&utm_campaign=architecthtml
+11.https://adminlte.io/themes/AdminLTE/index2.html#
+12.https://www.egrappler.com/edmin/index.html
+13.https://colorlib.com//polygon/admindek/default/index.html  for notification and chat
+14.https://w3layouts.com/preview/?l=/colored-admin-panel-category-flat-bootstrap-responsive-web-template/
+
+May be needed 
+46 Free Bootstrap Admin Dashboard Templates For Your Web App 2019
+July 3, 2019DamirWebsite Templates90 Comments
+
+ 
+Bootstrap 4 is the latest version of the Bootstrap and the largest web framework with a lot of features, all easy to use. We’ve hand-picked the list of over 30 free Bootstrap 4 admin dashboard templates. The focus of each template is different – some templates offer a wide range of customization while other focus on specific features. We’re certain you will find a template that suits your needs perfectly!
+
+These simple yet powerful admin templates are well suited for web apps or any other website or project that requires admin dashboard. This templates will serve as a solid foundation for your upcoming project and will save you a lot of time. Needless to say that Bootstrap makes these templates mobile-friendly and responsive.
+
+Below listed free Bootstrap admin templates are rather simple and might not be the right fit for everyone. If you are looking for more advanced and more customizable admin templates you can check this and this template collection. On those template collections, you will find HTML5/CSS3 coded admin templates as well as one powered by AngularJS and Bootstrap.
+
+ 
+
+Explore 2.5 Million Digital Assets including 600+ Admin Templates
+
+
+
+2M+ items from the worlds largest marketplace for Admin Templates, Themes & Design Assets. Whether that’s what you need, or you’re just after a few Stock Photos – all of it can be found here at Envato Market.
+
+DOWNLOAD NOW
+ArchitectUI – Angular 7 & Bootstrap 4
+
+ArchitectUI is a Bootstrap 4 admin dashboard template with a broad specter of options and possibilities. It is a stunning, clean and professional Angular 7 tool with full flexibility and extendability. If you are starting a fresh online project or application, ArchitectUI is the one tool you should not miss on your list. It will surely help you out creating the most killer admin panel, which will take your idea to new successes.
+
+Out of the box, you get to pick between a dope collection of nine samples of which all are beautiful and contemporary. While using them as they are is an option, we sure do advise you to alter and fine-tune them according to your needs and wants. Tons of elements, more than twenty widgets and components for forms, color presets and chart plugins are just some of the features that ArchitectUI has available for you.
+
+MORE INFO / DOWNLOAD DEMOGET HOSTING
+ArchitectUI HTML
+
+ArchitectUI HTML is a versatile and multi-purpose Bootstrap admin dashboard template with a horde of components, elements and widgets. Besides, ArchitectUI HTML also offers to choose from ten different dashboards. Right away, you will discover the best layout for your purpose. However, the process of establishing an admin does not end here. You can freely customize and modify ArchitectUI HTML to your requests and make it your own.
+
+Fifty elements, thirty chart boxes variations, stunning form layouts, tables, ready-made pages, you name it, ArchitectUI HTML covers it all and then some. In total, there are about 150 components that you gain access to once you unbox ArchitectUI HTML. The site skin makes sure everyone uses it to its full potential and gets the most out of it. With that in mind, waste no more time, approach the creation of your desired admin with an open mind and all the rest will become history.
+
+MORE INFO / DOWNLOAD DEMOGET HOSTING
+Kero
+
+Kero is a striking two-in-one Bootstrap admin dashboard template. It comes with a horizontal and a vertical layout. Moreover, each style also comes in additional nine different looks accompanied by nine color schemes. Just with the out of the box material, you already have tons of options to mix and match and craft the must-have admin. Also, it does not really matter what your application is all about, Kero easily caters to all your ideas and projects. Like that would not be enough, every Kero user also gains access to a friendly team of experts who will be happy to assist you.
+
+Other goodies of Kero are elements, plugins, layouts, tables, helpers, utilities, widgets and loads more. Last but not least, you can always introduce your creative touch and improve and enhance Kero further.
+
+MORE INFO / DOWNLOAD DEMOGET HOSTING
+Metronic (Premium)
+
+Metronic is by far one of the most remarkable and well-liked Bootstrap admin dashboard templates ever released. The tool comes with many layout variations and works as an HTML template, as well as Angular 7 native template. In short, you have many options and combinations available to hammer out a magnificent admin panel. Use it to track the performance of your application or software and optimize it according. This gives you a better overview and a higher chance of scoring big with your project.
+
+With Metronic, you will immediately notice how simple the process is. Basic coding knowledge is more than enough to complete establishing a spectacular admin with Metronic. After all, the majority of works and designs are already available for you to put into play. Last but not least, Metronic is also regularly updated for you to constantly get hit with new useful contents.
+
+MORE INFO / DOWNLOAD DEMOGET HOSTING
+Adminator (Top Pick)
+
+Needless to say, Adminator is by far the best free Bootstrap admin templates that you can get your hands on today. If we would say that it is a game changer it would be a massive understatement because it is playing a new game on its own. Period. Based on Bootstrap 4 packs the latest and greatest tools to improve web development like nothing you have ever seen released for free. Once you see Adminator in action, you will find it more premium-like than free. Enjoy and let us know what you think in the comment section below.
+
+Adminator has a minimal and appealing to the eye layout which instantly adjusts to all screens and devices. Also, Adminator is entirely congruent with all modern and popular web browsers for an always smooth operation. You will have a blast using Adminator that is for sure.
+
+MORE INFO / DOWNLOAD DEMOGET HOSTING
+ArchitectUI VueJS
+
+Fully sort out your application or software with an easy to use admin dashboard thanks to ArchitectUI VueJS. This convenient and up-to-the-minute template is all one needs when starting something fresh. No need to build things from complete scratch anymore, let the tools do the work for you. After all, you are already busy with the main objective and there is no need to keep yourself involved in the creation of an admin panel 100%.
+
+With ArchitectUI VueJS, you can now speed up the process and have an admin up and running sooner than later. You can easily customize and modify the default layout, choose between ten different color skins and enjoy scalable assets architecture. Whenever you find yourself in need of even more features, you can always upgrade and go premium.
+
+MORE INFO / DOWNLOAD DEMOGET HOSTING
+ArchitectUI Angular 7
+
+It does not happen very often that you have a free admin template based on Angular, especially Angular 7. Well, ArchitectUI Angular 7 sure is not your everyday tool. In the bundle of goodness, you will find all the necessities and more for a 100% active Angular dashboard. Besides, if you need even more flexibility and extendability, do not hesitate and upgrade to PRO. However, you can use the free version for as long as you want.
+
+Needless to say, ArchitectUI Angular 7 follows all the latest practices and regulations in modern web development. The layout is mobile-ready, responsive, cross-browser compatible, retina-friendly and optimized for fast loading speed. There are also ten different color variations of ArchitectUI Angular 7 for you to quickly find the one that suits your branding best. But do adjust the existing layout further and make it your own with ease.
+
+MORE INFO / DOWNLOAD DEMOGET HOSTING
+ArchitectUI React
+
+ArchitectUI React is sophisticated and easy to use Bootstrap admin dashboard template that you can use free of charge. Indeed, ArchitectUI React is very stunning, showcasing all the information and details beautifully. Bear in mind, regardless of the device and browsing platform you use, ArchitectUI React acclimatizes smoothly to all. That said, you can expect a steady and stable performance of your admin dashboard panel all the time.
+
+ArchitectUI React comes with all the components, elements and widgets you might be in need of. There are also multiple color schemes to choose from (ten) and you can also alter the default configurations. ArchitectUI React includes complete documentation folder, too, for you to never find yourself lost on your journey. But if you are looking for more you can always upgrade to PRO version and unlock a whole bunch of new features and functions.
+
+MORE INFO / DOWNLOAD DEMOGET HOSTING
+ArchitectUI HTML
+
+ArchitectUI HTML is an excellent free Bootstrap admin dashboard template with a light structure and a set of handy features. Have in mind, ArchitectUI HTML, after all, is a free tool and it comes with limiting options. However, at any time you would want more from the tool, you can always upgrade to premium. On the other hand, if the free version meets your expectations, by all means, use it for as long as you want.
+
+Anyhow, let’s take a peek at some of the goodies that you get when downloading ArchitectUI HTML. It has a responsive framework which fluently reshapes to all devices and browsing platforms. ArchitectUI HTML also allows you to adjust sidebar and header background color, which you can do by selecting from ten preset skins. It will also be a breeze including and excluding stylesheets due to ArchitectUI HTML’s scalable assets architecture.
+
+MORE INFO / DOWNLOAD DEMOGET HOSTING
+Admindek
+
+Admindek is a stunning, refined, great in performance and cutting-edge free Bootstrap admin dashboard template. You can use this exclusive tool for all sorts of online projects you are working on. Admindek offers you to mix and match all sorts of elements and components to suits you precisely. Out of the box, Admindek rocks three different styles; default, CRM and analytics. With these three home styles alone, you might already find yourself the ideal combination.
+
+Moreover, Admindek rocks all sorts of other goods as well. One of them is the hide/show navigation bar. This comes helpful for when you need to study your statistics in great detail with as little distractions as possible. A lot of UI elements, animations, forms, tables and widgets are also part of the free download.
+
+MORE INFO / DOWNLOAD (SOON) DEMOGET HOSTING
+Adminty
+
+If not niche-oriented, pretty much all free Bootstrap admin dashboard templates come applicable to numerous websites and applications. Adminty is one more super versatile site canvas that will take your breath away with the number of features it rocks. With as solid admin that you can build with the out of this world Adminty, you are on the right path to see the success you want to see. Having it all in total order is a must when running a business and bringing it to an entirely new level.
+
+With Adminty, that is very achievable.
+
+Adminty is an admin panel with three home designs and loads of other pages. It also has a full-screen button and a hide and show button for the sidebar. When both options turned on, you are all in your statistics and information, nothing else disturbing you.
+
+MORE INFO / DOWNLOAD (SOON) DEMOGET HOSTING
+Gentellela (Most Popular)
+gentelella-admin-template-preview
+Gentelella is a responsive, flat and fully featured admin template. This neat site canvas is built on Bootstrap 3 framework using modern techniques, like HTML5 and CSS3 to be used for backend solutions of any size. This is by far the most advanced and well designed free admin dashboard template that can easily compete with any premium alternative. And once you introduce your creative touch to it, the options go over and beyond. Indeed, there is no need to stick to the default settings. Still, if you dig Gentellela as is, go full-tilt with the existing layout.
+
+Moreover, Gentellela has handy libraries included in the bundle for calendar, tables, charts, off-canvas navigation and more. Additional features include but are not limited to progress bars, notifications, animations and forms. With future updates, you can also expect even more out of Gentellela.
+
+MORE INFO / DOWNLOAD DEMOGET HOSTING
+AdminLTE 2
+adminlte-free-bootstrap-admin-template
+AdminLTE provides a range of responsive, reusable, and commonly used components. It features over one thousand icons, custom-made plugins, six different skins and plenty more. With the out of the box version of AdminLTE, you will quickly find the right look for your project. And if you need to tweak it here and there, you can do that, too. AdminLTE has a lightweight structure which helps the final product to load faster. Speaking of performance, AdminLTE is also responsive and browser compatible.
+
+Of course, the amazingness of AdminLTE continues with eighteen plugins, two different dashboard styles and several more layout styles. As a free admin template, AdminLTE is a serious deal. But you will only discover the real power of the tool once you download it and put it to use. Once you commit, all the rest becomes history.
+
+MORE INFO / DOWNLOAD DEMOGET HOSTING
+CoolAdmin
+
+	https://colorlib.com/polygon/kiaalap/events.html
+
+	https://colorlib.com/wp/free-html5-admin-dashboard-templates/
+
+	https://webthemez.com/preview/?hybrid-bootstrap-admin-template#
+
+	https://colorlib.com/polygon/metis/fixed-header-fixed-mini-sidebar.html#
+https://themewagon.com/top-10-free-admin-dashboard-backend-bootstrap-html5-templates-2018/

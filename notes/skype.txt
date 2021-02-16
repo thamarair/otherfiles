@@ -1,0 +1,20 @@
+\\192.168.10.2\Common Web Development\Sundar\2019\Code\TPL
+\\192.168.10.2\Software Development\Sundar\2019\Project-Bkp\TPL\12092019-Org-Admin
+Username : admin@skillangels.com
+Password : 12345678
+
+$ENC_event_id=$this->uri->segment('3');
+$event_id=$this->my_simple_crypt($ENC_event_id,'KAR@2018');
+
+$("#product-variants-option-0 option[value=" + selectedVal+"]").attr("selected","selected") ;
+$("#product-variants-option-0").val( selectedVal );
+
+if($.trim(data.response)=='1')
+						{
+							
+							$("#suucessmsg").html(data.msg);
+						}
+						else
+						{
+							$("#errcommon").show().html(data.msg);
+						}

@@ -1,0 +1,38 @@
+				Document	
+		
+					TPL
+Skillkit
+	1. Skillkit is given to user based on their score.
+	2. User score will be compared with the Median score.
+	3. If user scores less than the median score then skillkit will be assigned.
+	4. Two levels(Level 1 and Level 2) of game will be assigned based on their score.
+	5. After 8 sessions skillkit will be refreshed.
+	6. Each skills can be played 5 times a day.
+
+					Kinderangels
+
+	1. New scenario of giving Assessment is added to Kinderangels.
+	2. The possible grades are PREKG,UKG,LKG and Grade I.
+	3. Assessment will be given from users actual grade.
+	4. Each grade has 3 games and each of which has 5 questions(i.e. 15 questions in total).	.
+
+	 If user scores above 14 in 3 games then  user can move to next higher grade.
+		Ex. If user from PREKG scores 14 above in 3 games then UKG games is assigned.
+
+	If user scores above 12 in 3 games then games will be assigned from the current grade.
+		Ex. If user from PREKG scores 12 above in 3 games then games from PREKG is assigned.
+
+	If user scores less than 12 then the games will be assigned from the grade less than the actual grade.
+		Ex. If user from UKG scores less than 12 then games will be assigned from PREKG.
+	
+	5. When  user is in training period then the user has to play 2 games daily.
+	6. Each game has 5 questions and for each question 1 star is awarded.
+	7. When  user gets above 4 stars then the game is completed.
+	8. Suppose if user gets less than 4 stars then next 2 games will be assigned and 
+	   the awarding stars will be based on adding new stars will the already awarded stars.
+	9.Once the entire game is played then the next set of games will be assigned based on the stars awarded.
+		i.e., games with less than 4 stars will be assigned.
+Note:
+ 	If user in PREKG scores less than 12 then game is assigned from PREKG itself.
+ 	If user in UKG scores above 12 then the games will be assigned from Grade I.
+

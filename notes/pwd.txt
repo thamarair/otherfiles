@@ -1,0 +1,36 @@
+brainy superadmin=>admin, Br@iny
+scladmn=>kgs@skillangels.com	,	skillangels
+school_admin=>pvsadmin ,	skillangels=>http://localhost/myproject/nschool/school-admin
+sadn=>pvs@skillangels, 	skillangels=>http://localhost/sadn/
+blessedsuperadmin=>admin@blessedangels.org,	Blessed@ngel=>http://localhost/myproject/nschool/blessed_sadmin
+kinderangels scl admin=>dpsd@kinderangels.com, kinderangels
+echo"hii";exit;   to chech where the flow is correct used in controller
+1.   have to write styles in assets->css->styleinner write styles for all projects and call it from link
+ 
+C:\Users\Edsix\Downloads\2019\June   -   to get the downloads
+
+2.      [ <div class="fdbkcontent welcontent <?php echo $data['getjobprofile'] ?> " style="padding-left: 150px;padding-right: 150px;"></div>
+ 
+this is used if it ( <?php echo $data['getjobprofile'] ?>) is not to be displayed to the user ].
+
+3.     [ <h3 class="modal-title" id="curday" style="text-align: center;"><?php echo $getjobprofile[0]['jobname']; ?></h3>
+<div class="fdbkcontent welcontent" style="padding-left: 150px;padding-right: 150px;"><?php echo $getjobprofile[0]['jobdescription']; ?></div>
+
+     what are all(column names) selected  in select query those should be mentioned in $getjobprofile[0]['columnname1(jobname)'] in html   ]
+
+4.      [	<?php 
+if(isset($getjobprofile[0]['jobname']) && $getjobprofile[0]['jobname']!=''){
+?>
+$('#jobprofile').modal({backdrop: 'static', keyboard: false}) ;
+<?php
+}
+?>	this is used to check wether the $getjobprofile[0]['jobname'] variable name is set or not(declare/defined) if it exits then it show data in that particular(necessary pages) page
+ else it wont show data in unwanted pages	]
+
+ G:\wamp\www\project\php\KinderAR\v3\application\views\home\dashboard.php (2 hits)
+	Line 736: 			$("#reportview").html(result);
+	Line 750: 			$("#Dailyreportview").html(result);
+
+http://localhost/project/myproject/nschools/v3/
+
+

@@ -1,0 +1,673 @@
+G:\wamp\www\project\php\2019\school19\v3\asap\application\views
+G:\wamp\www\project\myproject\mnt\nschools\school_assessreports\templates =asapreport
+http://localhost/project/myproject/mnt/nschools/school_assessreports/index.php?act=login
+Assessment Report Template G:\wamp\www\project\myproject\nschools\v1\school_assessreports\templates
+
+THIS 
+G:\wamp\www\project\myproject\nschools\v1
+http://localhost/project/myproject/nschools/v1/school_assessreports/index.php?act=login
+
+Trophies are won by the student in monthly.
+
+<?php 
+$background_colors = array('#1abb9c', '#73879c', '#1abb9c', '#73879c', '#1abb9c', '#73879c', '#1abb9c', '#73879c', '#1abb9c', '#73879c', '#1abb9c','#73879c');
+
+?>
+<div class="right_col" role="main">
+<div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="x_panel tile" style="text-align: center;background: #1abb9c;color: #fff;padding: 0;">
+			<h2 class="reporttitle"><?php echo $classname[0]['classname']; ?></h2> 
+		</div>
+	</div>
+</div>
+<div class="col-md-12 col-sm-12 col-xs-12">
+	<div class="row">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel tile">
+				<div class="x_title">
+				<h2 class="reporttitle">User count by grade</h2>
+
+					<ul class="nav navbar-right panel_toolbox">
+						<li><a class="collapse-link bounce"><i class="fa fa-chevron-up"></i></a></li>
+					 </ul>
+					 <div class="clearfix"></div>
+				</div>
+				<div class="clearfix"></div>
+				<div class="x_content" <?php if(count($sectioncount)>8){?>style="display: none;"<?php } ?>>
+				<?php $i=0; foreach($sectioncount as $seccount) { ?>
+					<div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+						<div class="tile-stats">
+							<div class="toppart" style="background-color: <?php echo$background_colors[$i]; ?>;color:#fff">
+							<div class="icon"><i class="fa fa-users"></i></div>
+								<div class="count"><?php echo $seccount['total']; ?></div>
+								<h4><?php  echo $seccount['gradename']." - ".$seccount['section'];?></h4>
+							</div>
+							<div class="footerpart">
+								<a href="<?php echo base_url(); ?>index.php/home/sectionuser/<?php echo $seccount['grade_id']; ?>/<?php echo $seccount['section']; ?>" style="display:block;overflow: hidden;" ><p class="pull-left"> View More</p><span class="pull-right"><i style="margin-right:5px" class="fa fa-arrow-circle-right"></i></span></a>
+							</div>
+						</div>
+				</div><?php $i++;} ?>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--
+	<div class="row" id="Monthwise">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			  <div class="x_panel tile">
+				<div class="x_title">
+				  <h2 class="reporttitle monthwiseavgbspi">Average BSPI score by month</h2>
+				  <div class="clearfix"></div>
+				</div>
+				<div class="x_title">
+					<div class="gradeFilter1 gf">
+						<label>Grade :</label>
+						 <select name="ddlgradefilter1" id="ddlgradefilter1" > 
+							<option value="">ALL Sections</option>
+							<?php $i=0;foreach($sectioncount as $seccount) { ?>
+								<option value="<?php echo $seccount['section']; ?>"><?php  echo $seccount['gradename']." - ".$seccount['section'];?></option>
+							<?php } ?>
+						 </select>
+					</div>
+				</div>
+				<div style="display:none; text-align:center;" id="iddivLoading5" class="loading"><img src="<?php echo base_url(); ?>assets/images/ajax-page-loader.gif"  style="width:50px;"  /></div>
+				<div id="monthwisebspi"></div>
+			  </div>
+		</div>
+		<div class="col-md-12 col-sm-12 col-xs-12">
+		  <div class="x_panel tile">
+			<div class="x_title">
+			  <h2 class="reporttitle">Average Skill score by month</h2>
+			  <div class="clearfix"></div>
+			</div>
+			<div class="x_title">
+			  <input type="button" value="ALL" id="ALL" name="viewreport" class="btn btn-success skillwisescore_M SkillActive" />
+				<input type="button" value="M" id="59" name="viewreport" class="btn btn-success skillwisescore_M" />
+				<input type="button" value="VP" id="60" name="viewreport" class="btn btn-success skillwisescore_M" />
+				<input type="button" value="FA" id="61" name="viewreport" class="btn btn-success skillwisescore_M" />
+				<input type="button" value="PS" id="62" name="viewreport" class="btn btn-success skillwisescore_M" />
+				<input type="button" value="L" id="63" name="viewreport" class="btn btn-success skillwisescore_M" />
+				<div class="gradeFilter2 gf">
+					<label>Grade :</label>
+					<select name="ddlgradefilter2" id="ddlgradefilter2" > 
+							<option value="">ALL Sections</option>
+							<?php $i=0;foreach($sectioncount as $seccount) { ?>
+								<option value="<?php echo $seccount['section']; ?>"><?php  echo $seccount['gradename']." - ".$seccount['section'];?></option>
+							<?php } ?>
+					</select>
+				</div>
+			</div>
+			<div style="display:none; text-align:center;" id="iddivLoading6" class="loading"><img src="<?php echo base_url(); ?>assets/images/ajax-page-loader.gif"  style="width:50px;"  /></div>
+			<div id="monthwiseskillscore"></div>
+		  </div>
+		</div>
+	</div>
+-->
+	
+</div>
+<!--
+<div class="col-md-4 col-sm-4 col-xs-4">
+<div class="row" id="Monthwise">
+	<div class="col-md-12 col-sm-12 col-xs-12 ipadwidth">
+	  <div class="x_panel tile">
+		<div class="x_title">
+		  <h2 class="reporttitle">Intervention Report</h2> 
+		  
+		  <div class="clearfix"></div>
+		</div>
+		<div style="display:none; text-align:center;" id="iddivLoading7"  class="loading"><img src="<?php echo base_url(); ?>assets/images/ajax-page-loader.gif" style="width:50px;" /></div>
+		<div id="intervetionreport"></div>
+	  </div>
+	</div>
+	<div class="col-md-12 col-sm-12 col-xs-12 ipadwidth">
+	  <div class="x_panel tile">
+		<div class="x_title">
+		  <h2 class="reporttitle">BSPI Toppers</h2><div><a class="btn btn-round viewmore" href="<?php echo base_url(); ?>index.php/home/bspitopper" >View More</a></div>
+		  
+		  <div class="clearfix"></div>
+		</div>
+		<div style="display:none; text-align:center;" id="iddivLoading3"  class="loading"><img src="<?php echo base_url(); ?>assets/images/ajax-page-loader.gif" style="width:50px;" /></div>
+		<div id="bspitopper_rprt" ></div>
+	  </div>
+	</div>
+	
+	<div class="col-md-12 col-sm-12 col-xs-12 ipadwidth">
+	  <div class="x_panel tile">
+		<div class="x_title">
+		  <h2 class="reporttitle">Skill Toppers</h2><div><a class="btn btn-round viewmore" href="<?php echo base_url(); ?>index.php/home/skilltopper" >View More</a></div>
+		  
+		  <div class="clearfix"></div>
+		</div>
+		<div style="display:none; text-align:center;" id="iddivLoading2"  class="loading"><img src="<?php echo base_url(); ?>assets/images/ajax-page-loader.gif" style="width:50px;" /></div>
+		<div id="skilltoppers_rprt" ></div>
+	  </div>
+	</div>
+	
+	<div class="col-md-12 col-sm-12 col-xs-12 ipadwidth">
+	  <div class="x_panel tile">
+		<div class="x_title">
+		  <h2 class="reporttitle">Crownies Toppers</h2><div><a class="btn btn-round viewmore" href="<?php echo base_url(); ?>index.php/home/crownytopper" >View More</a></div>
+		  
+		  <div class="clearfix"></div>
+		</div>
+		<div style="display:none; text-align:center;" id="iddivLoading4" class="loading"><img src="<?php echo base_url(); ?>assets/images/ajax-page-loader.gif"  style="width:50px;"  /></div>
+	   <div id="crownytopper_rprt"></div>
+	  </div>
+	</div>
+</div>
+ 
+</div>
+
+-->
+ <div class="clearfix"></div>
+ 
+ <div class="row">
+	<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+		<div class="x_panel tile">
+			<div class="x_title">
+				<h2 class="reporttitle">User Details - <?php echo $classname[0]['classname']; ?></h2>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content" >
+			<table id="UserScore" class="table table-bordered table-condensed table-hover table-striped dataTable">
+						<thead style="background-color:#1abb9c; color:#FFF;">
+							<tr>
+								<th>S.No.</th>
+								<!--<th>Username</th>-->
+								<th>Name</th>
+								<!--<th>Grade</th>-->
+								<th class="select-filter">Section</th>
+								<!--<th>Memory</th>
+								<th>Visual Processing</th>
+								<th>Focus and Attention</th>
+								<th>Problem Solving</th>
+								<th>Linguistics</th>
+								<th>CLP BSPI</th>
+								<th>ASAP BSPI</th>
+								<th>Improvement %</th>	-->
+								<th>Username</th>
+								<th>Initial Assessment - BSPI</th>
+								<th>Detailed Assessment Skill Index</th>
+								<th>Program Status</th>
+								<th>Registered Date</th>
+								<th>Action</th>
+								<!--<th>Completed Session</th>
+								
+								<th>ME No. of Times Played</th>
+								<th>VP No. of Times Played</th>
+								<th>FA No. of Times Played</th>
+								<th>PS No. of Times Played</th>
+								<th>LI No. of Times Played</th>-->
+							</tr>
+						</thead>
+		<tfoot>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+				
+                <th></th>				
+				<th></th>
+                <th></th>
+                <th></th>
+              <!--  <th></th>
+                <th></th>
+				
+                <th></th>
+                <th></th>
+				
+				<th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+				
+				<th></th>
+                <th></th>
+                <th></th>
+                <th></th>-->
+            </tr>
+        </tfoot>
+	<tbody>
+	<?php $j=1;
+	foreach($userskillscore as $row) {
+		// [0] => MAX && [1] => AVG Skill Score
+		$ME=explode(",",$row['Memory']);
+		$VP=explode(",",$row['VP']);
+		$FA=explode(",",$row['FA']);
+		$PS=explode(",",$row['PS']);
+		$LI=explode(",",$row['LI']);
+		
+	/*	$clp_bspi=round(($ME[0]+$VP[0]+$FA[0]+$PS[0]+$LI[0])/5,2);
+		$asap_bspi=$row['asapbspi'];
+		if($clp_bspi>$asap_bspi)
+		{
+			$growth_percentage=round(((($clp_bspi-$asap_bspi)/$asap_bspi)*100),2);
+			$growth_icon="fa fa-arrow-up";
+			$growth_color="green";
+		}
+		else
+		{
+			$growth_percentage=round(((($asap_bspi-$clp_bspi)/$clp_bspi)*100),2);
+			$growth_icon="fa fa-arrow-down";
+			$growth_color="red";
+		}		*/
+		
+		$m=$v=$f=$p=$l=0;
+		/*  echo "<pre>";print_r($row);exit;  echo "<pre>";print_r($row);exit;  */?>
+			<tr>
+				<td><?php echo $j; ?></td>
+				<!--<td><?php echo $row['username']; ?></td>-->
+				<td>
+				<!--	<a href="<?php echo base_url(); ?>index.php/home/studentprofile/<?php echo $row['username']; ?>"  style="text-decoration: underline;">
+						<//?php echo $row['fname']; ?>
+					</a>	-->
+					<a href="<?php echo base_url(); ?>index.php/home/userview/<?php echo $row['username']; ?>"  style="text-decoration: underline;">
+						<?php echo $row['fname']; ?>
+					</a>
+				</td>
+				<!--<td><?php echo $row['classname']; ?></td>-->
+				<td><?php echo $row['section']; ?></td>
+				<td><?php if($ME[1]==''){ echo "-"; $m=0;} else { echo $m=round($ME[1],2);} ?></td>
+				<td><?php if($VP[1]==''){ echo "-"; $v=0;} else { echo $v=round($VP[1],2);} ?></td>
+				<td><?php if($FA[1]==''){ echo "-"; $f=0;} else { echo $f=round($FA[1],2);} ?></td>
+				<td><?php if($PS[1]==''){ echo "-"; $p=0;} else { echo $p=round($PS[1],2);} ?></td>
+				<td><?php if($LI[1]==''){ echo "-"; $l=0;} else { echo $l=round($LI[1],2);} ?></td>
+	 
+				<td><?php echo round(($ME[0]+$VP[0]+$FA[0]+$PS[0]+$LI[0])/5,2); ?></td>
+				
+				<td><?php echo $row['asapbspi']; ?></td>
+				<td><i class="<?php echo $growth_icon; ?>" style="font-size:24px;color:<?php echo $growth_color; ?>"></i>  <?php echo $growth_percentage; ?></td>
+				<!--<td><?php echo $row['attempt_question']; ?></td>
+				<td><?php echo $row['answer']; ?></td>
+				<td><?php echo $row['rtime']; ?></td>
+				<td><?php echo floor($row['rtime']/60); ?></td>
+				<td><?php echo $row['scheduled_session']; ?></td>
+				<td><?php echo $row['AttendedSession']; ?></td>
+				<td><?php echo $row['CompletedSession']; ?></td>
+				
+				<td><?php echo $row['MEnoftimesplayed']; ?></td>
+				<td><?php echo $row['VPnoftimesplayed']; ?></td>
+				<td><?php echo $row['FAnoftimesplayed']; ?></td>
+				<td><?php echo $row['PSnoftimesplayed']; ?></td>
+				<td><?php echo $row['LInoftimesplayed']; ?></td>-->
+			</tr>
+	<?php $j++;	} ?>	
+	</tbody> 
+		
+	</table>
+	 
+
+	<link href="<?php echo base_url(); ?>assets/css/jquery.dataTables.css" rel="stylesheet" type="text/css">
+	<link href="<?php echo base_url(); ?>assets/css/dataTables.tableTools.css" rel="stylesheet" type="text/css">
+	<script src="<?php echo base_url(); ?>assets/js/jquery.min.js" type="text/javascript"></script>
+	<script src="<?php echo base_url(); ?>assets/js/jquery.dataTables.js" type="text/javascript"></script>
+	<script src="<?php echo base_url(); ?>assets/js/dataTables.tableTools.js" type="text/javascript"></script>
+	<script>
+	/* $('.dataTable').DataTable({
+		"lengthMenu": [[10,  -1], [10,  "All"]]
+		//"scrollX": true
+	}); */
+	$(document).ready(function() {
+		$('#UserScore').DataTable( {
+			"order": [[ 7, "desc" ]],
+			"rowCallback": function (nRow, aData, iDisplayIndex) {
+				 var oSettings = this.fnSettings ();
+				 $("td:first", nRow).html(oSettings._iDisplayStart+iDisplayIndex +1);
+				 return nRow;
+			},
+			initComplete: function () {
+				this.api().columns('.select-filter').every( function () {
+					var column = this; //console.log(column);
+					var select = $('<select><option value=""></option></select>')
+						.appendTo( $(column.footer()).empty() )
+						.on( 'change', function () {
+							var val = $.fn.dataTable.util.escapeRegex(
+								$(this).val()
+							);
+	 
+							column
+								.search( val ? '^'+val+'$' : '', true, false )
+								.draw();
+						} );
+	 
+					column.data().unique().sort().each( function ( d, j ) {
+						select.append( '<option value="'+d+'">'+d+'</option>' )
+					} );
+				});
+			}
+		} );
+	});
+	</script>
+				</div>
+			</div>
+		</div>
+	</div>
+ 
+</div>
+<style>
+
+#UserScore tfoot{display: table-header-group;background: #1abb9c;}
+ 
+#UserScore select {
+	width: 100%;
+    color: #1abb9c;
+    border: 2px solid;
+    font-weight: bold;
+	font-size:20px;
+}
+</style>
+<script src="<?php echo base_url(); ?>assets/js/jquery.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>assets/js/highcharts.js"></script>
+<script type="text/javascript">
+monthwisebspi_report()
+ $("#ddlgradefilter1").change(function(){
+	monthwisebspi_report();
+});
+function monthwisebspi_report()
+{
+	var section=$("#ddlgradefilter1").val();
+	
+	$("#iddivLoading5").show();
+	$.ajax({
+    type: "POST",
+	tryCount : 0,
+    retryLimit : 3,
+	dataType: "json",
+	async: true,
+    url: "<?php echo base_url(); ?>index.php/home/monthwiseavgbspi",
+    data: {type:'monthwisebspi',grade_id:'<?php echo $grade_id; ?>',section:section},
+    success: function(result)
+	{
+		   $("#iddivLoading5").hide();
+		/* $('#monthwisebspi').html(result); */
+			monthwisebspichart(result);
+    }	,
+    error : function(xhr, textStatus, errorThrown ) 
+	{
+        if (textStatus == 'timeout') {
+            this.tryCount++;
+            if (this.tryCount <= this.retryLimit) {
+                //try again
+                $.ajax(this);
+                return;
+            }            
+            return;
+        }
+        if (xhr.status == 500) {
+        } else {
+        }
+    }
+	
+	});
+} 
+function monthwisebspichart(result)
+{
+	var GradeName='<?php echo $classname[0]['classname']; ?>';
+	
+	if($("#ddlgradefilter1 option:selected").val()!='')
+	{var TitleContent=GradeName+" - "+$("#ddlgradefilter1 option:selected").val();}
+	else{var TitleContent=GradeName}
+	
+   $('#monthwisebspi').highcharts({
+		chart: {
+            type: 'column'
+        },
+		
+        title: {
+            text: TitleContent,
+            x: -20 //center
+        },
+        subtitle: {
+            text: '',
+            x: -20
+        },
+        xAxis: {
+            categories:result.categories
+        },
+        yAxis: {
+            min: 0,tickInterval: 10,max:100,
+            title: {
+                text: 'Score'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#ff3300'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '',
+			 shared: true
+        },
+		plotOptions: {
+        column: {
+            dataLabels: {
+                enabled: true,
+                crop: false,
+                overflow: 'none'
+            }
+        }
+    },
+        credits: {
+      enabled: false
+  },
+        series: [
+		
+		{
+			showInLegend: true,   
+			name: 'Training BSPI',
+			color: '#1abb9c',
+			data:result.data
+        },
+		{
+			name: 'Assessment BSPI',
+			type: 'spline',
+			color: '#ff9900',
+			data: result.asap, 
+        }
+		
+		
+		]
+    });
+
+}
+monthwiseskillscore_report('ALL');
+$("#ddlgradefilter2").change(function(){
+	var skillid = $(".SkillActive").attr('id');
+	monthwiseskillscore_report(skillid);
+});
+$('.skillwisescore_M').click(function()
+{ 
+	$('.skillwisescore_M').removeClass('SkillActive');
+	$(this).addClass('SkillActive');
+	
+	var skillid = $(this).attr('id');
+	 monthwiseskillscore_report(skillid);
+});
+function monthwiseskillscore_report(skillid)
+{
+	var section=$("#ddlgradefilter2").val();
+	
+	$("#iddivLoading6").show();
+	$.ajax({
+    type: "POST",
+	tryCount : 0,
+    retryLimit : 3,
+    url:  "<?php echo base_url(); ?>index.php/home/monthwiseskillscore",
+    data: {type:'monthwiseskillscore',skillid:skillid,grade_id:'<?php echo $grade_id; ?>',section:section},
+    success: function(result){
+	$("#iddivLoading6").hide();
+		$('#monthwiseskillscore').html(result);
+    },
+    error : function(xhr, textStatus, errorThrown ) 
+	{
+        if (textStatus == 'timeout') 
+		{
+            this.tryCount++;
+            if (this.tryCount <= this.retryLimit) 
+			{
+                //try again
+                $.ajax(this);
+                return;
+            }            
+            return;
+        }
+        if (xhr.status == 500) 
+		{
+        } else 
+		{
+        }
+    }
+});
+	
+}
+
+
+//setTimeout(function() { skilltoppersreport();  }, 10);
+//setTimeout(function() { bspitooper_rprt('');  }, 0);
+//setTimeout(function() { crownytooper_rprt('');  }, 100);
+ $(function(){
+   /* $('#skilltoppers_rprt').slimScroll({
+        height: '400px',
+		alwaysVisible: true
+    });*/
+});
+
+$(function(){
+   /* $('#crownytopper_rprt').slimScroll({
+        height: '400px',
+		alwaysVisible: false	
+    });*/
+});
+
+$(function(){
+   /* $('#bspitopper_rprt').slimScroll({
+        height: '400px',
+		alwaysVisible: false
+		
+		
+    });*/
+});
+function skilltoppersreport()
+{
+	$("#iddivLoading2").show();
+	$.ajax({
+    type: "POST",
+	tryCount : 0,
+    retryLimit : 3,
+    url: "<?php echo base_url(); ?>index.php/home/homeskilltopper",
+    data: {type:'skilltoppers',grade_id:'<?php echo $grade_id; ?>'},
+    success: function(result){
+		$("#iddivLoading2").hide();
+		$('#skilltoppers_rprt').html(result);
+    },
+    error : function(xhr, textStatus, errorThrown ) {
+		//alert(textStatus);
+        if (textStatus == 'timeout') {
+            this.tryCount++;
+            if (this.tryCount <= this.retryLimit) {
+                //try again
+                $.ajax(this);
+                return;
+            }            
+            return;
+        }
+        if (xhr.status == 500) {
+        } else {
+        }
+    }
+});
+	
+}
+function bspitooper_rprt()
+{
+	$("#iddivLoading3").show();
+	$.ajax({
+    type: "POST",
+	tryCount : 0,
+    retryLimit : 3,
+    url: "<?php echo base_url(); ?>index.php/home/homebspitopper",
+    data: {type:'bspitopper',grade_id:'<?php echo $grade_id; ?>'},
+    success: function(result){
+		$("#iddivLoading3").hide();
+	$('#bspitopper_rprt').html(result);
+    }
+	,
+    error : function(xhr, textStatus, errorThrown ) {
+        if (textStatus == 'timeout') {
+            this.tryCount++;
+            if (this.tryCount <= this.retryLimit) {
+                //try again
+                $.ajax(this);
+                return;
+            }            
+            return;
+        }
+        if (xhr.status == 500) {
+        } else {
+        }
+    }
+});
+	
+}
+function crownytooper_rprt()
+{
+	$("#iddivLoading4").show();
+	$.ajax({
+    type: "POST",
+	tryCount : 0,
+    retryLimit : 3,
+    url: "<?php echo base_url(); ?>index.php/home/homecrownytopper",
+    data: {type:'crownytopper',grade_id:'<?php echo $grade_id; ?>'},
+    success: function(result)
+	{
+		$("#iddivLoading4").hide();
+		$('#crownytopper_rprt').html(result);
+    },
+    error : function(xhr, textStatus, errorThrown)
+	{
+        if (textStatus == 'timeout')
+		{
+            this.tryCount++;
+            if (this.tryCount <= this.retryLimit)
+			{
+                //try again
+                $.ajax(this);
+                return;
+            }            
+            return;
+        }
+        if (xhr.status == 500)
+		{
+			
+        } 
+		else
+		{
+			
+        }
+    }
+});
+}
+//intervetionreport();
+function intervetionreport()
+{
+	$("#iddivLoading7").show();	
+	$.ajax({
+    type: "POST", 
+    url:  "<?php echo base_url(); ?>index.php/home/intervetionreport",
+    data: {grade_id:'<?php echo $grade_id; ?>'},
+    success: function(result)
+	{
+		$("#iddivLoading7").hide();
+		$('#intervetionreport').html(result);
+    } 
+});
+	
+}
+</script>    
+<script src="<?php echo base_url(); ?>assets/js/jquery.slimscroll.js" type="text/javascript"></script>

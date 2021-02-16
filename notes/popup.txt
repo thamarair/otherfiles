@@ -1,0 +1,66 @@
+To create a popup, 1.add  data-role="popup" attr.
+2.to tell the framework to open the popup when link is clicked add data-rel="popup"
+
+popup url :
+https://www.jqueryscript.net/lightbox/jQuery-Popup-Window-Plugin-with-CSS3-Flipping-Animation-Flip-Popup.html
+https://www.jqueryscript.net/demo/Responsive-jQuery-Modal-Window-Plugin-with-CSS3-Transitions-Custombox/
+https://dev.vast.com/jquery-popup-overlay/
+https://demos.jquerymobile.com/1.4.5/popup/
+
+https://joaopereirawd.github.io/animatedModal.js/
+https://tympanus.net/Development/ModalWindowEffects/
+https://codepen.io/akb20/pen/waymXJ
+https://codepen.io/designcouch/pen/obvKxm
+https://www.jqueryscript.net/lightbox/Modal-Animations-jQuery-CSS3-modalAnimate.html
+https://www.yogihosting.com/jquery-modal-popup-with-animation-effects/
+https://getbootstrap.com/docs/4.0/components/modal/
+https://bootsnipp.com/snippets/P2qy1
+https://www.w3schools.com/bootstrap4/bootstrap_modal.asp
+
+$arr_rt = explode(",",$restime); 
+$lang_id = $this->session->lang_id;
+
+ 192.168.10.149
+if(result=='IVIP') in G:\wamp\www\project\myproject\nschools\v3\application\views\footer.php comes from 
+G:\wamp\www\project\myproject\nschools\v3\application\controllers\home.php in userlogin function to chk ipaddress is valid or not to login
+
+select id,school_name,(select group_concat(class_id) from skl_class_plan where school_id=s.id) as grade from schools as s where status=1 and active=1 and visible=1 	
+p
+font-weight: 400;
+    font-size: 16px;
+    line-height: 45px;
+    color: #000;
+
+
+SELECT oc.occupationid,oc.occupation,sl.subsector,s2.abilityvalue,s3.subability,s3.description FROM occupations oc 
+
+right join sectorlist sl on oc.subsectorid=sl.subsectorid 
+
+right join occbyability s2 on s2.occupationid=oc.occupationid
+	
+right join abilitylist s3 on s3.subabilityid=s2.subabilityid
+ 
+WHERE oc.Status=1 and oc.occupationid=176
+
+
+	
+SELECT oc.occupationid,oc.occupation,sl.subsector,s5.subskill,s5.description,s4.skillvalue FROM occupations oc 
+
+join sectorlist sl on oc.subsectorid=sl.subsectorid 
+
+join occbyskill s4 on s4.occupationid=oc.occupationid
+
+join skillist s5 on s5.subskillid=s4.subskillid
+
+WHERE oc.Status=1 and oc.occupationid=176
+
+
+SELECT oc.occupationid,oc.occupation,sl.subsector,s2.abilityvalue,s3.subability,s3.description,(select skillvalue from occbyskill where occupationid=176) as skillvalue FROM occupations oc 
+
+right join sectorlist sl on oc.subsectorid=sl.subsectorid 
+
+right join occbyability s2 on s2.occupationid=oc.occupationid
+	
+right join abilitylist s3 on s3.subabilityid=s2.subabilityid
+ 
+WHERE oc.Status=1 and oc.occupationid=176	

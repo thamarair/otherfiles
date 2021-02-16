@@ -1,0 +1,129 @@
+		DASHBOARD TEMPLATE
+Purchase link
+
+1.https://dashboardpack.com/theme-details/architectui-dashboard-html-pro/
+[ https://demo.dashboardpack.com/architectui-angular-pro/widgets/profile-boxes ]
+
+2.https://templatemag.com/demo/Dashio/
+
+3.https://p.w3layouts.com/demos/28-03-2016/shoppy/web/index.html
+
+4.https://colorlib.com/wp/free-bootstrap-admin-dashboard-templates/     =>   Admindek
+
+5.https://colorlib.com/wp/free-dashboard-templates/ => Admindek,Sufee Admin,DashGum
+
+6.https://adminlte.io/ => AdminLTE
+style="float: right;"
+
+34495e	3498db
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Modal Heading</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          Modal body..
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+
+
+
+
+  <div class="col-lg-3 ds">
+            
+			 <div class=" ">
+             <!-- <h4><i class="fa fa-angle-right"></i> Modal Example</h4>-->
+              <!-- Button trigger modal -->
+              <button class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal" style="float: right;">
+               My Buddies
+                </button><br><br>
+              <!-- Modal -->
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title" id="myModalLabel">My Friends</h4>
+                    </div>
+                    <div class="modal-body">
+                       <div class="row centered mb">
+                    <ul class="my-friends">
+                            <li>
+							 
+								<div class="profile-pic">
+									<p><img src="<?php echo base_url(); ?>assets/img/tom.png" class="img-circle"><!--<a id="add-gritter-light" class="btn btn-warning  btn-lg" href="javascript:;">About</a>--></p><a href="#">TOM</a> 
+								</li>
+							 <li> 
+								<div class="profile-pic">
+										<p><img src="<?php echo base_url(); ?>assets/img/duck.jpeg" class="img-circle"></p><a href="#">duck</a><br/></div> 
+                            </li>
+                            <li><div class="profile-pic">
+									<p><img src="<?php echo base_url(); ?>assets/img/micky.jpeg" class="img-circle"></p><a href="#">micky</a><br/></div>
+								 
+                            </li>
+                            <li><div class="profile-pic">
+									<p><img src="<?php echo base_url(); ?>assets/img/panda.jpeg" class="img-circle"></p><a href="#">panda</a><br/></div>
+								 
+                            </li>
+                            <li><div class="profile-pic">
+									<p><img src="<?php echo base_url(); ?>assets/img/caty.jpeg" class="img-circle"></p><a href="#">caty</a><br/></div>
+                            
+                            </li>
+                            <li><div class="profile-pic">
+									<p><img src="<?php echo base_url(); ?>assets/img/lion.jpeg" class="img-circle"></p><a href="#">lion</a><br/></div>
+                               
+                            </li>
+                            <li><div class="profile-pic">
+									<p><img src="<?php echo base_url(); ?>assets/img/dora.jpeg" class="img-circle"></p><a href="#">dora</a><br/></div>
+                              
+                            </li>
+                            <li><div class="profile-pic">
+									<p><img src="<?php echo base_url(); ?>assets/img/fish.jpeg" class="img-circle"></p><a href="#">fish</a><br/></div>
+                             
+                            </li>
+                            <li><div class="profile-pic">
+									<p><img src="<?php echo base_url(); ?>assets/img/rabbit.jpeg" class="img-circle"></p><a href="#">rabbit</a><br/></div>
+                              
+                            </li>
+                            <li><div class="profile-pic">
+									<p><img src="<?php echo base_url(); ?>assets/img/pokymon.jpeg" class="img-circle"></p><a href="#">pokymon</a><br/></div>
+                               
+                            </li>
+                            <li>
+							<div class="profile-pic">
+									<p><img src="<?php echo base_url(); ?>assets/img/kookoo.jpeg" class="img-circle"></p><a href="#">kookoo</a><br/></div>
+                              
+                            </li>
+                          </ul>
+                          <div class="row mt">
+                            <div class="col-md-4 col-md-offset-4">
+                              <h6><a href="#">VIEW ALL</a></h6>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>

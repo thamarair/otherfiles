@@ -1,0 +1,56 @@
+			xampp
+
+C:\Users\edsix>d:
+
+D:\>cd D:\xampp\mysql\bin
+
+D:\xampp\mysql\bin>mysql -u  root -p
+
+Enter password:(hit enter)
+
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 46
+Server version: 10.1.37-MariaDB mariadb.org binary distribution
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use asap1920=>to which it has to be stored in mysql
+
+(create empty db before using the above line)   Database changed
+
+MariaDB [asap1920]> source db/may/asap-db.sql
+
+G:\wamp\bin\mysql\mysql5.6.17\bin\db\2019\july
+clp-db-29jun=>db to be uploaded
+
+		in wamp
+
+C:\Users\Edsix>g:
+
+G:\>cd G:\wamp\bin\mysql\mysql5.6.17\bin
+
+G:\wamp\bin\mysql\mysql5.6.17\bin>mysql -u root -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 51162
+Server version: 5.6.17 MySQL Community Server (GPL)
+Copyright (c) 2000, 2014, Oracle and/or its affiliates. All rights reserved.
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use jobportal
+Database changed
+mysql> source db\2019\jul04\jpbportal.sql
+ERROR:
+Failed to open file 'db\2019\jul04\jpbportal.sql', error: 2
+mysql> source bin\db\2019\jul04
+ERROR:
+Failed to open file 'bin\db\2019\jul04', error: 2
+mysql> source bin\db\2019\jul04\jobportal.sql
+ERROR:
+Failed to open file 'bin\db\2019\jul04\jobportal.sql', error: 2
+mysql> source G:\wamp\bin\mysql\mysql5.6.17\bin\db\2019\jul04\jobportal.sql
+Query OK, 0 rows affected (0.00 sec)

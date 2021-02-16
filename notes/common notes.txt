@@ -1,0 +1,265 @@
+Childsubmit
+kinderangels=>dpsd@kinderangels.com,kinderangels
+
+SELECT first_name || ' ' || last_name AS full_name FROM customer;
+$config['cookie_prefix']	= 'sadmin';
+$config['cookie_domain']	= '';
+$config['cookie_path']		= '/schooladmin/';
+
+ALTER TABLE `users` ADD `actual_grade_id` INT(11) NOT NULL AFTER `grade_id`;
+ALTER TABLE `users` ADD `groupid` INT(11) NOT NULL AFTER `gtec_org_id`;=>delete it
+ALTER TABLE `gamedata` ADD `groupid` INT(11) NOT NULL AFTER `App_randomid`;
+
+public function dashboard(){
+echo "<pre>";print_r($_SESSION);exit;	 
+ 
+	
+public function chkportaltype($username,$password)
+{
+	$query = $this->db->query("select id,login_type as portal_type,sid,gp_id,grade_id from users where username='".$username."' and password=SHA1(CONCAT(salt1,'".$password."',salt2)) and status=1");
+	//echo $this->db->last_query(); exit;
+	return $query->result_array();
+}
+SELECT SUM(gtime) as gtime_school_count , SUM(answer) as answer_school_count, SUM(attempt_question) as attempted_question_count, (select start_date from schools where id=120 ) as school_startdate FROM game_reports gr join users u on gr.gu_id=u.id WHERE gtime IS NOT NULL AND answer IS NOT NULL and u.sid=120 and lastupdate between '2017-06-01' and '2018-05-31'
+Array
+(
+    [0] => Array
+        (
+            [id] => 5391
+            [fname] => AARAV AGARWAL
+            [username] => d10751.dpsd
+            [password] => 7629b59b01b7b2b6a2075328805a581c8fd786e4
+            [email] => 
+            [gradename] => Grade LKG
+            [section] => A
+        )
+ [0] => Array
+        (
+            [id] => 5391
+            [fname] => AARAV AGARWAL
+            [lname] => 
+            [username] => d10751.dpsd
+            [gp_id] => 10
+            [section] => A
+            [grade_id] => 0
+            [assignedgrade] => 1
+            [creation_date] => 2019-04-16
+            [grade] => 
+            [cepgrade] => Grade LKG
+            [score] => 470
+            [star] => 17
+            [attendedsession] => 2
+            [crownies] => 206
+        )
+
+
+DATE_FORMAT(startdate, '%Y')
+postgres=> select * from games;
+insert into demo (fname,phone) values('kumar',2342543);
+create table organisation (id serial primary key,name varchar not null);
+select * from organisation;
+select * from organisation where id=5;
+insert into organisation(id,name) values(default,'ravichandran'),(default,'seethalakshmi');
+alter table organisation drop name where id=8;
+update organisation set name = 'kumar' where id=2;
+delete from organisation where id=8;
+alter table organisation add last_update date;
+select * from demo;
+select * from organisation where id=5;
+insert into organisation(id,name) values(default,'ravichandran'),(default,'seethalakshmi');
+alter table organisation drop name where id=8;
+insert into organisation (last_update)  values(current_date);
+update organisation set last_update;
+
+select enddate from academic_year where id = (select academic_id from schools where id=sa.school_id)=>20=20
+
+
+
+
+
+
+
+in js use + to concat=> return this.firstName + " " + this.lastName;
+to rmv btn when it is clicked=><button onclick="this.style.display='none'">Click to Remove Me!</button>
+In regular comparison, data type does not matter. In strict comparison, data type does matter.
+switch statements use strict comparison
+
+to avoid displaying of 2 search/pagination in datatable use this line in footer/header or on that pg itself
+#assementTable_wrapper #assementTable_wrapper #assementTable_length{display:none;}
+#assementTable_wrapper #assementTable_wrapper #assementTable_filter{display:none;}
+#assementTable_wrapper #assementTable_wrapper #assementTable_info{display:none;}
+#assementTable_wrapper #assementTable_wrapper #assementTable_paginate{display:none;}=>id of table
+
+<p id="demo"></p>
+var x = 30;
+document.getElementById("demo").innerHTML = Boolean(x = 10);
+document.getElementById("demo").innerHTML = x;
+
+to check checked box is checked and if so enable submit button
+<input type="submit" id="submit" value="Submit" disabled /> js below
+if ($(this).is(':checked')) {
+$('#check').click(function() {
+  if ($(this).is(':checked')) {
+    $('#submit').removeAttr('disabled');
+  } else {
+    $('#submit').attr('disabled', 'disabled');
+  }
+});
+}
+
+or  to use disable/enable button
+$(':input[type="submit"]').prop('disabled', false)/('disabled', true);
+
+<a href="<?php echo base_url().'index.php/home/downloadreport?userid='.$val3['username'];?>"  class="btn btn-success downloadcertificate" 
+data-username="<?php echo $val3['username']; ?>" data-centerid="<?php echo $val3['centerid']; ?>"  target="_blank">Download Certificate</a>
+
+<input type="hidden" id="hdnusrid" name="hdnusrid" value="">
+$(document).on('click','.mvtoclp',function(){
+$("#hdnusrid").val($(this).attr('data-username'));});=>
+
+to use hidden names/id and get it in variable name(brainyusrid)
+<input type="hidden" id="hdnbrainyuserid" name="hdnbrainyuserid" value="">
+$("#hdnbrainyuserid").val($(this).attr('data-username'));
+var brainyusrid = $("#hdnbrainyuserid").val();
+
+to get/display date
+<?php echo date('d-m-Y',strtotime($res['creation_date'])); ?>
+
+to fade txt after sometime
+$("#errmsg").delay(1500).fadeOut("slow");
+
+to reload a page after some time
+success: function(result){
+if(result==1){
+$("#msgFP").css("margin-bottom","10px").html("<div style='color:green'>Reset password link has been sent to your mail id.</div>");
+setTimeout(function () {location.reload();	}, 3000);}}
+
+$autoload['helper'] = array('url'); => know about this
+write styles in styleinner.php
+
+$(document).on('click','.mvtoclp(mainly use classname/id)',function(){}); to have click on all pages in pagination(ex.table pgnation)
+
+to reset value
+$('#txteditname').attr('value', "");
+
+to get /use value from config file 
+'.$this->config->item("asapdb").'
+
+echo "<pre>";print_r($finalpoints);exit;
+if($finalpoints!='' && $finalpoints!=0){
+$isexist=1;
+$userid = $this->session->user_id;
+$data['jobprofile_popupchk'] = $this->Assessment_model->insert_jobprofile_popup($userid);}
+
+echo for if condition must be declared outside if condition.
+$finalpoints!=0 if it is not given means then it will insert the data into table.so it is required toinsert the data only one time(first time login) in the table
+
+<!-----------------to have popup when link is clicked- include style,css,script files--------->
+<a style="text-decoration:underline;" href="#" data-target="#pwdModal" data-toggle="modal" id="pwdlink">Forgot / Change Password</a>
+<!--modal-->
+<div id="pwdModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+  <div class="modal-content"> 
+   <div style="display:none;" id="loadingimg" class="loading"></div>
+      <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h1 class="text-center">Forgot / Change Your Password?</h1>
+		  <div class="col-md-12" style="width:100%">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="text-center">
+                          <form class="form-horizontal"  role="form" name="frmFP" id="frmFP">
+                          <p>If you want to update your password you can reset it here.</p>
+                            <div class="panel-body"><div id="msgFP" style="font-size: 18px;"></div>
+                                <fieldset>
+                                    <div class="form-group modal-body1">
+                                        <input class="form-control input-lg" placeholder="E-mail Address" name="txtemail" type="text" id="txtemail">
+                                    </div>
+                                    <input class="btn btn-lg btn-primary btn-block" value="Submit" type="button" id="btnpwd" name="btnpwd">
+                                </fieldset>
+                            </div>
+	       </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      </div>
+       
+       
+  </div>
+  </div>
+</div>
+<!-----------------to have popup when link is clicked---------->
+
+<!-----------------cln name from db in ajax-------------------------------------->
+to get the column name fron database use the following
+			VIEW PAGE
+<script>
+$(document).ready(function () {
+
+    $("#JobPRO").on("click", ".viewmore", function()	//this is required to work viewmore button in every page
+	{  
+		var occid=$(this).attr('id');	
+		$.ajax({
+			type: "POST",
+			url: "<?php echo base_url()."index.php/home/jobprofilelist_popup"; ?>",
+			data: {occupationid:occid},
+			success: function(result)
+			{
+				$("#JP").html(result);
+				$('#jobrole').modal({backdrop: 'static', keyboard: false}) ;
+			}
+		});
+      
+    });
+});
+
+</script>
+				CONTROLLER
+$occupationid=$this->input->post('occupationid'); this [occupationid] comes from data: {[occupationid]:occid} in ajax
+
+$(document).ready(function () {
+$("#JobPRO").on("click", [".viewmore"], function()	//this is required to work viewmore button in every page				
+
+
+<!-----------------cln name from db in ajax-------------------------------------->
+
+<!-----------------jobprofilelist_ajax.php--------------------------->
+<?php
+foreach($SkillProfileData as $row1){
+if($j%3==1 || $j==1(<- may ormay not)){
+echo '<div class="row">';}
+ the above code is used to dtart a div and loop until the row contains the 3 boxes
+
+<?php
+if($j%3==0){
+echo '</div>';}
+$j++;}?> this ends after 3 boxes in a row
+<!-----------------jobprofilelist_ajax.php--------------------------->
+
+
+SELECT occupation as sector,(select subsector as jobprofile sectorlist where sectorid=1) from occupations occ WHERE occupationid=18
+<!--<?php
+				foreach ($jobprofiledata as $row){
+					<tr>
+						<td><//?php echo $row['occupation']; ?></td>
+						<td><?php echo $row['subsector']; ?></td>
+						<td><?php echo $row['viewmore']; ?></td>
+					   
+					</tr>
+					   </tr>
+					   <?php
+    }
+?>-->
+<label for="viewmore">View more</label>
+$.ajax({
+					url: "<?php echo base_url(); ?>index.php/home/jobprofilelist",
+					type:"POST",
+					dataType:"json",
+					//data:formData,
+					contentType: false,       
+					cache: false,             
+					processData:false, 
+					success: function (data) 
+					{
+	

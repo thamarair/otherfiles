@@ -1,0 +1,52 @@
+in js use + to concat=> return this.firstName + " " + this.lastName;
+to rmv btn when it is clicked=><button onclick="this.style.display='none'">Click to Remove Me!</button>
+In regular comparison, data type does not matter. In strict comparison, data type does matter.
+switch statements use strict comparison
+
+<p id="demo"></p>
+var x = 30;
+document.getElementById("demo").innerHTML = Boolean(x = 10);
+document.getElementById("demo").innerHTML = x;
+
+<button type="button" onclick="myFunction()" id="demo">Click Me!</button>
+[ <button type="button" onclick="myFunction()" >Click Me!</button>
+<p id="demo"></p> ]=>
+<script>
+function myFunction() {
+  var a = 5;
+  document.getElementById("demo").innerHTML = a * a;
+} =>it is used then when button is clicked it will multiply the value and that value will be displayed in the button itself
+<script>
+"use strict";
+x = 3.14;  // This will cause an error (x is not defined).
+</script>
+As an example, in normal JavaScript, mistyping a variable name creates a new global variable. 
+In strict mode, this will throw an error, making it impossible to accidentally create a global variable.
+
+var x = 0.1;
+var y = 0.2;
+var z = x + y   // the result in z will not be 0.3=>sln:var z = (x * 10 + y * 10) / 10;
+
+must use a "backslash" if you must break a statement in a string(space must be gn near the 1st str i.e before '\' )
+var x = "Hello \
+World!";
+
+if (x == 19);   =>to execute the code eventhough the condt. is false
+
+Arrays with named indexes are called associative arrays (or hashes).
+
+It is a default JavaScript behavior to close a statement automatically at the end of a line.
+
+Don't Use new Object()
+Use {} instead of new Object()
+Use "" instead of new String()
+Use 0 instead of new Number()
+Use false instead of new Boolean()
+Use [] instead of new Array()
+Use /()/ instead of new RegExp()
+Use function (){} instead of new Function()	var x1 = 2;"x1: " + typeof x1 + "<br>" +
+          use + after br to execute the nxt line 		"x2: " + typeof x2 + "<br>" +
+       use y or y.valueOf() to display y value		y.valueOf() + " " + typeof x;
+
+ == comparison operator type only
+=== operator forces comparison of values and type

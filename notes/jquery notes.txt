@@ -1,0 +1,46 @@
+.appendTo( $(column.footer()).empty() ) 	-  to have the dropdown menu below the header(e.g. to select section) may also use header instead of footer 
+$.fn.dataTable.util.escapeRegex() - Escape special characters in a regular expression string
+column
+	.search( val ? '^'+val+'$' : '', true, false )
+	.draw();	both is used for 
+
+
+ DELIMITER //
+ CREATE PROCEDURE GetAllProducts()
+   BEGIN
+   SELECT *  FROM products;
+   END //
+ DELIMITER ;
+procedure BEGIN
+
+INSERT INTO skl_class_plan(plan_id,school_id,class_id,status,creation_date)SELECT distinct(class) as class,sid,grade_id,0,NOW() FROM adduser WHERE sid=inschoolid;
+
+INSERT INTO skl_class_section(section,school_id,class_id,status,creation_date)SELECT distinct(sec) as sec,sid,grade_id,0,now() from adduser where sid=inschoolid;
+
+INSERT INTO users(deviceid, rollno, email, salt1, password, salt2, fname, lname, gender, mobile, dob, status, gp_id, glevel, grade_id, sname, father, mother, address, username, initial, sid, section,medium, academicyear, createdby, login_count, login_date, pre_logindate, creation_date, modifiedby, modified_date, avatarimage, agreetermsandservice, creationkey, session_id, islogin, last_active_datetime, school_name, referedby, org_pwd,portal_type,IS_ASAP)SELECT '',admission_number,'',salt1,password,salt2,fname,lname,gender,'',dob,1,class,'',grade_id,'',fathername,mothername,'',username,'',sid,sec,medium,19,'',0,'0000-00-00','0000-00-00',NOW(),'','','',1,'','',0,'','','',orgpwd,portal_type,is_asap FROM adduser where sid=inschoolid;
+
+INSERT INTO `rand_selection`(`section`,`gc_id`, `gs_id`, `gid`, `gp_id`, `grade_id`, `school_id`, `created_date`)
+
+SELECT distinct(sec), gc_id, gs_id, gid, gp_id, r.grade_id, inschoolid, NOW() FROM rand_selection r join adduser as a on a.class=gp_id WHERE school_id=2;
+ 
+END
+
+CALL PROCEDURE_NAME();
+loop	DELIMITER $$
+ DROP PROCEDURE IF EXISTS test_mysql_while_loop$$
+ CREATE PROCEDURE test_mysql_while_loop()
+ BEGIN
+ DECLARE x  INT;
+ DECLARE str  VARCHAR(255);
+ 
+ SET x = 1;
+ SET str =  '';
+ 
+ WHILE x  <= 5 DO
+ SET  str = CONCAT(str,x,',');
+ SET  x = x + 1; 
+ END WHILE;
+ 
+ SELECT str;
+ END$$
+DELIMITER ;

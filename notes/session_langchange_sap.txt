@@ -1,0 +1,25 @@
+ ALTER TABLE `users` ADD `language_id` INT(11) NOT NULL DEFAULT '101' AFTER `enddate`;
+
+UPDATE `language_master` SET `ID` = '101' WHERE `language_master`.`ID` = 1;
+UPDATE `language_master` SET `ID` = '102' WHERE `language_master`.`ID` = 2;
+UPDATE `language_master` SET `ID` = '103' WHERE `language_master`.`ID` = 3;
+UPDATE `language_master` SET `ID` = '104' WHERE `language_master`.`ID` = 4;
+
+//header(" url =<?php echo base_url() ?>");=> refresh
+//echo  $ci->session->userdata('language_id');exit; to echo in langloader pg
+
+<?php echo $this->lang->line("in_initialasap"); ?>=> to convert the lang use it
+
+/* $this->session->set_userdata(array(							 
+				'languageid'=>$data['getlanguage'][0]['ID']			 
+		)); $data['getlanguage'][0]['ID']
+	 	echo $_SESSION['languageid'];exit;
+		$language_id=$this->session->languageid;
+		echo $data['getlanguage'][0]['ID'];exit; */ 
+   
+
+//$data['bspi'] = $this->getBspi();'firstname'       => $data['query'][0]['firstname'],
+		//$data['mspi'] = $this->MyCurrentMspi('FN');
+		//$data['asapbspi'] = $this->getAsapBspi();		
+		//$data['query'] = $this->Assessment_model->getleftbardata($userid);
+		//$data['mytrophy'] = $this->Assessment_model->gettrophy($userid);

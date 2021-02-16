@@ -1,0 +1,66 @@
+DATE TYPE SPEC DATA TYPE SPEC
+CHAR String (0 - 255)         	 	     INT Integer (-2147483648 to 214748-3647)
+VARCHAR String (0 - 255)     		  BIGINT Integer (-9223372036854775808to 9223372036854775807)
+TINYTEXT String (0 - 255)      	   FLOAT Decimal (precise to 23 digits)
+TEXT String (0 - 65535)          		    DOUBLE Decimal (24 to 53 digits)
+BLOB String (0 - 65535)          		     DECIMAL "DOUBLE" stored as string
+MEDIUMTEXT String (0 - 16777215)             DATE YYYY-MM-DD
+MEDIUMBLOB String (0 - 16777215)            DATETIME YYYY-MM-DD HH:MM:SS
+LONGTEXT String (0 - 4294967295)              TIMESTAMP YYYYMMDDHHMMSS
+LONGBLOB String (0 - 4294967295)              TIME HH:MM:SS
+TINYINT Integer (-128 to 127) 		      ENUM One of preset options
+SMALLINT Integer (-32768 to 32767) 	      SET Selection of preset options
+MEDIUMINT Integer (-8388608 to8388607) BOOLEAN TINYINT(1)
+
+https://bootsnipp.com/snippets/y3K8
+https://mdbootstrap.com/docs/jquery/css/animations/
+https://bootsnipp.com/snippets/9jA
+https://bootsnipp.com/snippets/o8BvZ
+https://bootsnipp.com/snippets/7nGWK
+https://bootsnipp.com/snippets/Q0BG1
+https://bootsnipp.com/snippets/Qoykj
+https://bootsnipp.com/snippets/demWP
+https://bootsnipp.com/snippets/gNPo0	=> CHOSSEN
+bestjquery.com/tutorial/service-box/demo95/#
+https://tympanus.net/Tutorials/CaptionHoverEffects/index4.html
+https://tympanus.net/Development/HoverEffectIdeas/index2.html
+http://www.webtutorialplus.com/demo/css-hover-effect.htm
+https://www.script-tutorials.com/demos/225/index.html
+https://learn.shayhowe.com/advanced-html-css/transitions-animations/
+http://www.bestjquery.com/lab/service-box/page/10/
+
+https://tympanus.net/codrops/2014/01/07/shape-hover-effect-with-svg/
+
+
+https://bootsnipp.com/snippets/z4P39
+https://bootsnipp.com/snippets/EzB6P
+https://bootsnipp.com/snippets/mM6jp
+https://bootsnipp.com/snippets/N61VO
+
+    display: inline-block;
+    OVERFLOW: HIDDEN;
+    /* POSITION: ABSOLUTE; */
+    WIDTH: 55%;
+    TEXT-ALIGN: CENTER;
+style="margin-left:30%;bottom:30px;"
+
+<div id="JobPRO" class="row col-md-12 col-lg-12 col-sm-12 col-xs-12">
+<a href="#" class="card education col-md-4 col-sm-4 col-xs-4">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#009406 00ad07
+ <div class="fa-hover col-md-3 col-sm-4"><a href="font_awesome.html#chevron-circle-right"><i class="fa fa-chevron-circle-right"></i> fa-chevron-circle-right</a></div>
+<img src="images/CultivatingFriendship-icon.png" alt="CultivatingFriendship-icon.png">
+<a class="heediosopen" style="display:block;margin: 0 0 20px 0;" data-toggle="modal" data-target="#myModal1"><img src="images/CultivatingFriendship-icon.png" alt="CultivatingFriendship-icon.png"></a>

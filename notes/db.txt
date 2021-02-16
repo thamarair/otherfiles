@@ -1,0 +1,6 @@
+Line 18: SET @@SESSION.SQL_LOG_BIN= 0;
+	Line 24: SET @@GLOBAL.GTID_PURGED='';
+	Line 8445: SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN; remove them
+
+
+skillang_brainy_assess_new_live
